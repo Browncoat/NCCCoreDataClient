@@ -28,6 +28,12 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (NCCRequest)
 
+/*
+@property (nonatomic, strong) NSString *basePath;
+@property (nonatomic, strong) NSDictionary *defaultHeaders;
+@property (nonatomic, strong) NSString *uniqueIdentifierKey;
+*/
+
 + (void)setBasePath:(NSString *)basePath;
 + (void)setDefaultHeaders:(NSDictionary *)headers;
 + (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey;
@@ -67,6 +73,6 @@ typedef void(^ProgressBlock)(CGFloat progress);
 - (BOOL)DELETE:(NSString *)resource withError:(NSError **)error;
 
 - (NSDictionary *)dictionaryForKeys:(NSArray *)keys;
-- (NSDictionary *)dictionaryForKeyPathMappings:(NSDictionary *)keys;
+- (NSDictionary *)dictionaryOfKeyToKeyPathMappings:(NSDictionary *)keys;
 
 @end
