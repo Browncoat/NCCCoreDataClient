@@ -222,7 +222,7 @@
 
 #pragma mark - DELETE
 
-- (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
@@ -238,6 +238,16 @@
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
     [self makeRequest:request progress:nil withCompletion:completionBlock];
+}
+
+- (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+{
+    [[self class] DELETE:resource request:requestBlock withCompletion:completionBlock];
+}
+
+- (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self DELETE:resource request:nil withCompletion:completionBlock];
 }
 
 #pragma mark - Override in RequestAdapter Category
