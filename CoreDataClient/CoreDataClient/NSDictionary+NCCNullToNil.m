@@ -31,7 +31,9 @@
     NSMutableSet *nilKeys = [NSMutableSet set];
     for (NSString *key in self) {
         id val = [self valueForKey:key];
-        if ([val isEqual:[NSNull null]]) {
+        if ([val isKindOfClass:[NSDictionary class]]) {
+            [replaced setValue:[(NSDictionary *)val dictionaryByReplacingNullObjectswithNil] forKey:key];
+        } else if ([val isEqual:[NSNull null]]) {
             [nilKeys addObject:key];
         }
     }
