@@ -75,9 +75,9 @@
 
 + (NSArray *)allObjectsInManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (instancetype)managedObjectWithId:(NSString *)id;
++ (instancetype)managedObjectWithId:(id)uid;
 
-+ (instancetype)managedObjectWithId:(NSString *)id inManagedObjectContext:(NSManagedObjectContext *)context;
++ (instancetype)managedObjectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context;
 
 + (instancetype)managedObjectWithName:(NSString *)name;
 

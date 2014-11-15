@@ -75,7 +75,7 @@
 }
 
 // JSON
-+ (instancetype)upsertObjectWithDictionary:(NSDictionary *)dictionary uid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context
++ (instancetype)upsertObjectWithDictionary:(NSDictionary *)dictionary uid:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
     //    NSAssert([context isEqual:[self mainContext]], @"Create or Update Object on child context");
     id object = nil;
@@ -218,12 +218,12 @@
     return nil;
 }
 
-+ (NSArray *)managedObjectsWithId:(NSString *)id
++ (NSArray *)managedObjectsWithId:(id)uid
 {
-    return [self managedObjectsWithId:id inManagedObjectContext:[self mainContext]];
+    return [self managedObjectsWithId:uid inManagedObjectContext:[self mainContext]];
 }
 
-+ (NSArray *)managedObjectsWithId:(NSString *)id inManagedObjectContext:(NSManagedObjectContext *)context
++ (NSArray *)managedObjectsWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
     __block NSArray *results;
     __block NSError *error;
@@ -233,7 +233,7 @@
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
         request.entity = entity;
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid == %@", id];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid == %@", uid];
         request.predicate = predicate;
         request.includesSubentities = NO;
         
@@ -247,20 +247,20 @@
     return nil;
 }
 
-+ (instancetype)managedObjectWithId:(NSString *)id inManagedObjectContext:(NSManagedObjectContext *)context
++ (instancetype)managedObjectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    NSArray *results = [[self class] managedObjectsWithId:id inManagedObjectContext:context];
-//    NSAssert(results.count < 2, @"More than one %@ object with unique id not allowed", self);
-    if (results.count > 1) NSLog(@"More than one %@ object with unique id not allowed", self);
+    NSArray *results = [[self class] managedObjectsWithId:uid inManagedObjectContext:context];
+    NSAssert(results.count < 2, @"More than one %@ object with unique id not allowed", self);
+//    if (results.count > 1) NSLog(@"More than one %@ object with unique id not allowed", self);
     
     return [results lastObject];
 }
 
-+ (id)managedObjectWithId:(NSString *)id
++ (id)managedObjectWithId:(id)uid
 {
-    NSArray *results = [[self class] managedObjectsWithId:id];
-//    NSAssert(results.count < 2, @"More than one object with unique id not allowed");
-    if (results.count > 1) NSLog(@"More than one %@ object with unique id not allowed", self);
+    NSArray *results = [[self class] managedObjectsWithId:uid];
+    NSAssert(results.count < 2, @"More than one object with unique id not allowed");
+//    if (results.count > 1) NSLog(@"More than one %@ object with unique id not allowed", self);
     
     return [results lastObject];
 }
