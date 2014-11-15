@@ -251,6 +251,7 @@
 {
     NSArray *results = [[self class] managedObjectsWithId:id inManagedObjectContext:context];
 //    NSAssert(results.count < 2, @"More than one %@ object with unique id not allowed", self);
+    if (results.count > 1) NSLog(@"More than one %@ object with unique id not allowed", self);
     
     return [results lastObject];
 }
@@ -259,6 +260,7 @@
 {
     NSArray *results = [[self class] managedObjectsWithId:id];
 //    NSAssert(results.count < 2, @"More than one object with unique id not allowed");
+    if (results.count > 1) NSLog(@"More than one %@ object with unique id not allowed", self);
     
     return [results lastObject];
 }
