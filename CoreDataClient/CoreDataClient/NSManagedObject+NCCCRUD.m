@@ -250,7 +250,7 @@
 + (instancetype)managedObjectWithId:(NSString *)id inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSArray *results = [[self class] managedObjectsWithId:id inManagedObjectContext:context];
-    NSAssert(results.count < 2, @"More than one %@ object with unique id not allowed", self);
+//    NSAssert(results.count < 2, @"More than one %@ object with unique id not allowed", self);
     
     return [results lastObject];
 }
@@ -258,7 +258,7 @@
 + (id)managedObjectWithId:(NSString *)id
 {
     NSArray *results = [[self class] managedObjectsWithId:id];
-    NSAssert(results.count < 2, @"More than one object with unique id not allowed");
+//    NSAssert(results.count < 2, @"More than one object with unique id not allowed");
     
     return [results lastObject];
 }
