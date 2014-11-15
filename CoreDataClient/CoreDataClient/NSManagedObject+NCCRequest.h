@@ -77,7 +77,7 @@ typedef void(^ProgressBlock)(CGFloat progress);
 - (BOOL)DELETEWithError:(NSError **)error;
 - (BOOL)DELETE:(NSString *)resource withError:(NSError **)error;
 
-- (NSDictionary *)dictionaryForKeys:(NSArray *)keys;
-- (NSDictionary *)dictionaryOfKeyToKeyPathMappings:(NSDictionary *)keys;
+- (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
+- (NSDictionary *)dictionaryWithAttributeToKeyPathMappings:(NSDictionary *)keys;
 
 @end

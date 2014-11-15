@@ -273,7 +273,7 @@
 
 #pragma mark - Dictionary Mapping
 
-- (NSDictionary *)dictionaryForKeys:(NSArray *)keys
+- (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     for (NSString *key in keys) {
@@ -283,7 +283,7 @@
     return dictionary;
 }
 
-- (NSDictionary *)dictionaryOfKeyToKeyPathMappings:(NSDictionary *)keyMappings
+- (NSDictionary *)dictionaryWithAttributeToKeyPathMappings:(NSDictionary *)keyMappings
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [keyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id keyMapping, BOOL *stop) {
