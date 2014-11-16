@@ -1,4 +1,4 @@
-NCCCoreDataClient is a set of Categories to make working with Core Data and Restful API's quick and easy. Each NSManagedObject should take care of it's own request and data parsing from the web. It has been designed so that you have direct access to the NSMutableURLRequest from the NSManagedObject model and you can send that request with any HTTP Client you choose.
+NCCCoreDataClient is a set of Categories to make working with Core Data and Restful API's composable, loosely coupled and easier. Each NSManagedObject should take care of it's own request and data parsing from the web. It has been designed so that you have direct access to the NSMutableURLRequest from the NSManagedObject model and you can send that request with any HTTP Client you choose.
 
 ## How To Get Started
 
@@ -22,6 +22,29 @@ iOS 5.1+
 `NCCCoreDataClient` requires that you add an NSManagedObject Category that implements `+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save.
 
 `NSManagedObject (RequestAdapter)`
+```objective-c
+@implementation NSManagedObject (RequestAdapter)
+
+ + (void)makeRequest:(NSURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
+ {
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        NSURLResponse *response;
+        NSError *error;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        if (!error) {
+            NSError *error;
+            NSArray *results = [NSJSONSerialization JSONObjectWithData:data   options:NSJSONReadingMutableContainers    error:&   error];
+            completion(results, error);
+        } else {
+            completion(nil, error);
+        }
+    }];
+ }
+
+ @end
+ ```
+ Or with AFNetworking...
+
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
@@ -62,6 +85,8 @@ Each NSManagedObject Category can set it's own basePath and defaultHeaders by ov
     [self setUniqueIdentifierKey:@"id"];
 }
 ```
+
+The Core data objects are upserted based on their `uniqueIdentifierKey`. The `uniqueIdentifierKey` defaults to "id" but can be modified `[self setUniqueIdentifierKey:@"id"];`
 
 #### `GET` Request
 
