@@ -1,4 +1,4 @@
-NCCCoreDataClient is a set of Categories to make working with Core Data and Restful API's quick and easy. Each NSManagedObject subclass should take care of it's own request and data parsing from the web. You must add an NSManagedObject Category that implements `+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` to pass the final request to the HTTP Client of your choice and then pass the parsed JSON reponse to the completion block for core data to save. 
+NCCCoreDataClient is a set of Categories to make working with Core Data and Restful API's quick and easy. Each NSManagedObject should take care of it's own request and data parsing from the web. It has been designed so that you have direct access to the NSMutableURLRequest from the NSManagedObject model and you can send that request with any HTTP Client you choose.
 
 ## How To Get Started
 
@@ -13,26 +13,53 @@ NCCCoreDataClient is a set of Categories to make working with Core Data and Rest
 - If you **want to contribute**, submit a pull request.
 
 ## Requirements
-iOS 5+
+iOS 5.1+
 
 ## Usage
 
 ### NSManagedObject Categories
 
-`NCCCoreDataClient` encapsulates the common patterns of communicating with a web application over HTTP, including request creation, response serialization, network reachability monitoring, and security, as well as request operation management.
+`NCCCoreDataClient` requires that you add an NSManagedObject Category that implements `+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save.
 
-`User.h (Request)``
+`NSManagedObject (RequestAdapter)``
 ```objective-c
+@implementation NSManagedObject (RequestAdapter)
+
++ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
+{
+    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    op.responseSerializer = [AFJSONResponseSerializer serializer];
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        completion(responseObject, nil);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completion(nil, error);
+    }];
+    [[NSOperationQueue mainQueue] addOperation:op];
+}
+
+@end
+```
+
+`User (Request)``
+```objective-c
+@interface User (Request)
+
 - (void)userForUid:(NSString *)uid withCompletion:(CompletionBlock)completion;
 - (void)saveUserWithCompletion:(CompletionBlock)completion;
 - (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
 - (void)saveValuesForKeyPathMappings:(NSDictionary *)keyMappings withCompletion:(CompletionBlock)completion;
 - (void)deleteUserWithCompletion:(CompletionBlock)completion;
+
+@end
 ```
 
 `User.m (Request)``
 
-### Setup
+### Set BasePth and Default Headers
+
+Each NSManagedObject Category can set it's own basePath and defaultHeaders by overriding `+ (void)prepare` The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMUtableURLRequest directly.
 
 ```objective-c
 + (void)prepare
