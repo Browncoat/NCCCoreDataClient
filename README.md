@@ -99,11 +99,9 @@ The Core data objects are upserted based on their `uniqueIdentifierKey`. The `un
   }
 ```
 
-#### `POST` URL-Form-Encoded Request
+#### `POST` Request
 
 You can modify the NSMutableURLRequest directly in the request block to add additional headers or post body data
-
-#### `POST` URL-Form-Encoded Request
 
 `User.h (Request)``
 ```objective-c
