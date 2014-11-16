@@ -21,7 +21,7 @@ iOS 5.1+
 
 `NCCCoreDataClient` requires that you add an NSManagedObject Category that implements `+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save.
 
-`NSManagedObject (RequestAdapter)``
+`NSManagedObject (RequestAdapter)`
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
@@ -42,35 +42,21 @@ iOS 5.1+
 @end
 ```
 
-`User (Request)``
-```objective-c
-@interface User (Request)
+### Set BasePath and Default Headers
 
-- (void)userForUid:(NSString *)uid withCompletion:(CompletionBlock)completion;
-- (void)saveUserWithCompletion:(CompletionBlock)completion;
-- (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
-- (void)saveValuesForKeyPathMappings:(NSDictionary *)keyMappings withCompletion:(CompletionBlock)completion;
-- (void)deleteUserWithCompletion:(CompletionBlock)completion;
+Each NSManagedObject Category can set it's own basePath and defaultHeaders by overriding `+ (void)prepare` The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMutableURLRequest directly.
 
-@end
-```
-
-`User.m (Request)``
-
-### Set BasePth and Default Headers
-
-Each NSManagedObject Category can set it's own basePath and defaultHeaders by overriding `+ (void)prepare` The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMUtableURLRequest directly.
+`User (Request)`
 
 ```objective-c
 + (void)prepare
 {
     [self setBasePath:@"http://example.com/user/"];
-    
-    NSString *base64Header = [NSString base64WithString:[[NCCSession sharedSession] userInfo][SESSION_TOKEN_NAME]];
-    NSDictionary *headers = @{@"Authorization":base64Header,
-                              @"x-api-key":API_KEY,
-                              @"x-app-id":APP_ID,
-                              @"x-device-id":[NCCSession uuid]};
+
+    NSDictionary *headers = @{@"Authorization":###,
+                              @"x-api-key":###,
+                              @"x-app-id":###,
+                              @"x-device-id":###};
     [self setDefaultHeaders:headers];
     
     [self setUniqueIdentifierKey:@"id"];
@@ -82,14 +68,7 @@ Each NSManagedObject Category can set it's own basePath and defaultHeaders by ov
 ```objective-c
 - (void)userForUid:(NSString *)uid withCompletion:(CompletionBlock)completion
 {
-  [User GET:uid progress:nil request:^(NSMutableURLRequest *request) {
-        NSString *base64Header = [NSString base64WithString:token.accessToken];
-        NSDictionary *headers = @{@"Authorization":base64Header,
-                                  @"x-api-key":PW_API_KEY,
-                                  @"x-app-id":PW_APP_ID,
-                                  @"x-device-id":[NSString uuid]};
-        [request setHeaders:headers];
-    } withCompletion:^(NSArray *results, NSError *error) {
+  [User GET:uid progress:nil request:nil withCompletion:^(NSArray *results, NSError *error) {
         completion(results, error);
     }];
   }
@@ -97,24 +76,7 @@ Each NSManagedObject Category can set it's own basePath and defaultHeaders by ov
 
 #### `POST` URL-Form-Encoded Request
 
-`User.h (Request)``
-```objective-c
-- (void)saveUserWithCompletion:(CompletionBlock)completion
-{
-    [self POST:@"" request:^(NSMutableURLRequest *request) {
-        NSError *error;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:[self dictionaryWithKeys:keys] options:0 error:&error];
-        if (!error) {
-            [request setData:data ofContentType:postBodyContentTypeJSON];
-        } else {
-            NSLog(@"Error serializing data for request");
-        }
-    } withCompletion:^(NSArray *results, NSError *error) {
-        User *user = results.lastObject;
-        completion(user, error);
-    }];
-}
-```
+You can modify the NSMutableURLRequest directly in the request block to add additional headers or post body data
 
 #### `POST` URL-Form-Encoded Request
 
