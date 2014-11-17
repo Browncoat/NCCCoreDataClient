@@ -20,7 +20,9 @@ iOS 5.1+
 ### NSManagedObject Categories
 
 `NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides 
+
 `+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` 
+
 to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save.
 
 `NSManagedObject (RequestAdapter)`
@@ -67,8 +69,10 @@ to pass the final NSURLRequest object to the HTTP Client of your choice and then
 @end
 ```
 
-NCCCoreDataClient also requires that that you add an NSManagedObject Category that overrides 
+NCCCoreDataClient also requires that that you add an NSManagedObject Category that overrides
+
 `- (void)updateWithDictionary:(NSDictionary *)dictionary` 
+
 for each Core Data Model you that you wish to parse request responses to NSManagedObject attributes and relationships.
 
 `User (JSON)`
@@ -92,6 +96,12 @@ for each Core Data Model you that you wish to parse request responses to NSManag
 
 @end
 ```
+
+If the relationship is an update/create (upsert) then you can use the method
+
+`[Address upsertObjectWithDictionary:dictionary uid:dictionary[@"id"] inManagedObjectContext:self.managedObjectContext];`
+
+The helper method `[NSManagedObject mainContext]` is alos available to alsways reach the main NSManagedObjectContext.
 
 ### Set BasePath and Default Headers
 
