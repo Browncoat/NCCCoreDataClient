@@ -28,31 +28,28 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (NCCRequest)
 
-/*
-@property (nonatomic, strong) NSString *basePath;
-@property (nonatomic, strong) NSDictionary *defaultHeaders;
-@property (nonatomic, strong) NSString *uniqueIdentifierKey;
-*/
-
+// Prepare
 + (void)setBasePath:(NSString *)basePath;
 + (void)setDefaultHeaders:(NSDictionary *)headers;
 + (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey;
 
 // GET
-- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
-+ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
++ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
+
 - (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
+- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
 
 // POST
-- (void)POSTWithCompletion:(RequestCompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
+
+- (void)POSTWithCompletion:(RequestCompletionBlock)completionBlock;
 - (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 

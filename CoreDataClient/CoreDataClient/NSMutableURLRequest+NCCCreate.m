@@ -111,7 +111,7 @@ NSString * const ContentTypeImagePNG = @"image/png";
     }
 }
 
-- (void)setJSONDictionary:(NSDictionary *)dictionary
+- (void)setJSON:(NSDictionary *)dictionary
 {
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
@@ -120,6 +120,8 @@ NSString * const ContentTypeImagePNG = @"image/png";
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[jsonData length]];
         [self setValue:postLength forHTTPHeaderField:@"Content-Length"];
         self.HTTPBody = jsonData;
+    } else {
+        NSLog(@"%@", error);
     }
 }
 
