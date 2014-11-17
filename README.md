@@ -65,6 +65,30 @@ iOS 5.1+
 @end
 ```
 
+It also requires that you overide the method `- (void)updateWithDictionary:(NSDictionary *)dictionary` in an NSManagedObject Category to parse request responses to NSManagedObject attributes and relationships.
+
+`User (JSON)`
+```objective-c
+@implementation Token (JSON)
+
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+{
+    self.email = dictionary[@"email"];
+    self.firstName = dictionary[@"first"];
+    self.lastName = dictionary[@"last"];
+
+    Address *address = [Address insertObjectWithDictionary:@{@"city":dictionary[@"city"],
+                                                                       @"state":dictionary[@"state"],
+                                                                       @"address_1":dictionary[@"address"],
+                                                                       @"zip":dictionary[@"zip"]}
+                                              inManagedObjectContext:self.managedObjectContext];
+
+    self.address = address;
+}
+
+@end
+```
+
 ### Set BasePath and Default Headers
 
 Each NSManagedObject Category can set it's own basePath and defaultHeaders by overriding `+ (void)prepare` The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMutableURLRequest directly.
@@ -110,8 +134,8 @@ You can modify the NSMutableURLRequest directly in the request block to add addi
     [self POST:@"" request:^(NSMutableURLRequest *request) {
         NSError *error;
         NSData *data = [NSJSONSerialization dataWithJSONObject:[user dictionaryWithAttributeToKeyValuePathMappings:@{@"email":@"email",
-                                                  @"firstName":@"firstName",
-                                                  @"lastName":@"lastName",
+                                                  @"first":@"firstName",
+                                                  @"last":@"lastName",
                                                   @"address":@"address.street",
                                                   @"city":@"address.city",
                                                   @"state":@"address.state",
@@ -129,19 +153,14 @@ You can modify the NSMutableURLRequest directly in the request block to add addi
 ```
 
 #### `PUT` Request
+
+You can also use several request helper methods such as `setJSON` and `setPNG`
+
 ```objective-c
 - (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion
 {
     [self PUT:@"user" request:^(NSMutableURLRequest *request) {
-        NSError *error;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:[self dictionaryForKeys:keys] options:0 error:&error];
-        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        if (!error) {
-            [request setData:data ofContentType:postBodyContentTypeJSON];
-        } else {
-            NSLog(@"Error serializing data for request");
-        }
+       [request setJSON:[self dictionaryForKeys:keys]];
     } withCompletion:^(NSArray *results, NSError *error) {
         User *user = results.lastObject;
         completion(results, error);
