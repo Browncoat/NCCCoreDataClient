@@ -33,17 +33,17 @@ to pass the final NSURLRequest object to the HTTP Client of your choice and then
 
  + (void)makeRequest:(NSURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
  {
-    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        NSURLResponse *response;
-        NSError *error;
-        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        if (!error) {
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        id results = nil;
+        if (!connectionError) {
             NSError *error;
-            NSArray *results = [NSJSONSerialization JSONObjectWithData:data   options:NSJSONReadingMutableContainers    error:&   error];
-            completion(results, error);
-        } else {
-            completion(nil, error);
+            results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+            if (!error) {
+                NSLog(@"%@", error);
+            }
         }
+        
+        completion(results, connectionError);
     }];
  }
 
