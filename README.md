@@ -17,6 +17,8 @@ iOS 5.1+
 
 ## Usage
 
+Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in Category `AppDelegate (NCCCoreData)`
+
 ### NSManagedObject Categories
 
 `NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides 
