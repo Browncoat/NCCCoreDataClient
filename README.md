@@ -19,7 +19,9 @@ iOS 5.1+
 
 ### NSManagedObject Categories
 
-`NCCCoreDataClient` requires that you add an NSManagedObject Category that implements `+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save.
+`NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides 
+`+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` 
+to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save.
 
 `NSManagedObject (RequestAdapter)`
 ```objective-c
@@ -65,11 +67,13 @@ iOS 5.1+
 @end
 ```
 
-It also requires that you overide the method `- (void)updateWithDictionary:(NSDictionary *)dictionary` in an NSManagedObject Category to parse request responses to NSManagedObject attributes and relationships.
+NCCCoreDataClient also requires that that you add an NSManagedObject Category that overrides 
+`- (void)updateWithDictionary:(NSDictionary *)dictionary` 
+for each Core Data Model you that you wish to parse request responses to NSManagedObject attributes and relationships.
 
 `User (JSON)`
 ```objective-c
-@implementation Token (JSON)
+@implementation User (JSON)
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
@@ -79,7 +83,7 @@ It also requires that you overide the method `- (void)updateWithDictionary:(NSDi
 
     Address *address = [Address insertObjectWithDictionary:@{@"city":dictionary[@"city"],
                                                                        @"state":dictionary[@"state"],
-                                                                       @"address_1":dictionary[@"address"],
+                                                                       @"address":dictionary[@"address"],
                                                                        @"zip":dictionary[@"zip"]}
                                               inManagedObjectContext:self.managedObjectContext];
 
