@@ -30,8 +30,13 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 // Prepare
 + (void)setBasePath:(NSString *)basePath;
++ (NSString *)basePath;
+
 + (void)setDefaultHeaders:(NSDictionary *)headers;
++ (NSDictionary *)defaultHeaders;
+
 + (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey;
++ (NSString *)uniqueIdentifierKey;
 
 // GET
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;

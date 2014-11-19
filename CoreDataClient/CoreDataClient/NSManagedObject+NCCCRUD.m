@@ -199,7 +199,7 @@
     return [[self class] managedObjectWithName:name inManagedObjectContext:[self mainContext]];
 }
 
-+ (instancetype)managedObjectWithName:(NSString *)name inManagedObjectContext:(NSManagedObjectContext *)context
++ (instancetype)managedObjectsWith:(NSString *)name inManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -261,6 +261,41 @@
     if (results.count > 1) NSLog(@"More than one %@ object with unique id not allowed", self);
     
     return [results lastObject];
+}
+
++ (NSArray *)allUids
+{
+    NSManagedObjectContext *context = [NSManagedObject mainContext];
+    NSEntityDescription *entity = [NSEntityDescription  entityForName:NSStringFromClass([self class]) inManagedObjectContext:[self mainContext]];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    [request setResultType:NSDictionaryResultType];
+    [request setReturnsDistinctResults:YES];
+    [request setPropertiesToFetch:@[@"uid"]];
+    
+    // Execute the fetch.
+    NSError *error;
+    NSArray *uids = [[context executeFetchRequest:request error:&error] valueForKey:@"uid"];
+    if (uids == nil) {
+        NSLog(@"Error retrieving UIDS for Entity %@", NSStringFromClass([self class]));
+    }
+    
+    return uids;
+}
+
++ (NSArray *)allObjectsWithAttribute(id)attribute inArray:(NSArray *)attributes inContext:(NSManagedObjectContext *)context
+{
+    NSArray *sortedAttributes = [attributes sortedArrayUsingSelector:@selector(compare:)];
+    
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity: [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context]];
+    [fetchRequest setPredicate: [NSPredicate predicateWithFormat:@"(%K IN %@)", attribute, sortedAttributes]];
+    
+    // make sure the results are sorted as well
+    [fetchRequest setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:attribute ascending:YES]]];
+    
+    NSError *error;
+    NSArray *fetchedObjectsMatchingRemoteIds = [context executeFetchRequest:fetchRequest error:&error];
 }
 
 // Saving
@@ -478,10 +513,69 @@
 
 + (void)batchUpdateObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion
 {
+    
+    
     NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     childContext.parentContext = [NSManagedObject mainContext];
     
     [childContext performBlock:^{
+        NSArray *sortedRemoteObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            return [[obj1 valueForKey:uniqueIdentifierName] compare:[obj2 valueForKey:uniqueIdentifierName]];
+        }];
+//        NSArray *remoteUids = [[objects valueForKey:uniqueIdentifierName] sortedArrayUsingSelector:@selector(compare:)];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity: [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:childContext]];
+//        [fetchRequest setPredicate: [NSPredicate predicateWithFormat:@"(%K IN %@)", uniqueIdentifierName, remoteUids]];
+        
+        // make sure the results are sorted as well
+        [fetchRequest setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:uniqueIdentifierName ascending:YES]]];
+        
+        NSError *error;
+        NSArray *sortedFetchedObjects = [childContext executeFetchRequest:fetchRequest error:&error];
+        
+        __block NSUInteger fetchedObjectsIndex = 0;
+        [sortedRemoteObjects enumerateObjectsUsingBlock:^(NSDictionary *remoteObject, NSUInteger idx, BOOL *stop) {
+            NSString *remoteUid = [remoteObject valueForKey:uniqueIdentifierName];
+            NSString *localUid = [sortedFetchedObjects[fetchedObjectsIndex] uniqueIdentifierKey];
+            /*
+            if ([remoteUid isKindOfClass:[NSNumber class]]) {
+                remoteUid = [obj stringValue];
+            }
+             */
+//            if ([[objectsMatchingRemoteIds[idx] uid] isKindOfClass:[NSNumber class]]) {
+//                localUid = [[objectsMatchingRemoteIds[idx] uid] stringValue];
+//            }
+            
+//            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteUid == %@", localUid];
+            NSComparisonResult comparison = [remoteUid compare:localUid];
+            
+            // reached end of fetchedObjects, the rest of the remoteUids from list should be added as new objects
+            if (fetchedObjectsIndex > sortedFetchedObjects.count) {
+                comparison = NSOrderedAscending;
+            }
+            
+            if (comparison == NSOrderedSame) { // same uids from both lists, update
+                //update
+                [sortedFetchedObjects[fetchedObjectsIndex] updateWithAndRemoveNullsFromDictionary:remoteObject];
+                fetchedObjectsIndex++;
+            } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
+                // new
+                id object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:childContext];
+            } else { // delete until next local object uid matches current remote uid
+                NSComparisonResult comparison;
+                while (comparison == NSOrderedDescending) {
+                    [childContext deleteObject:sortedFetchedObjects[fetchedObjectsIndex]];
+                    fetchedObjectsIndex++;
+                    NSString *localUid = [sortedFetchedObjects[fetchedObjectsIndex] uniqueIdentifierKey];
+                    comparison = [remoteUid compare:localUid];
+                }
+            }
+        }];
+        
+        
+        
+        
         NSMutableArray *newObjects = [NSMutableArray array];
         NSArray *allObjects = [[self class] allObjects];
         
