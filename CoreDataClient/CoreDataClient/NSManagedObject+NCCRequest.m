@@ -51,7 +51,12 @@
 }
 
 + (NSString *)uniqueIdentifierKey {
-    return objc_getAssociatedObject(self, @selector(uniqueIdentifierKey));
+    NSString *key = objc_getAssociatedObject(self, @selector(uniqueIdentifierKey));
+    if (key) {
+        return key;
+    } else {
+        return @"uid";
+    }
 }
 
 + (void)checkClassNameIncludedInRequestUrl:(NSURL *)requestURL
