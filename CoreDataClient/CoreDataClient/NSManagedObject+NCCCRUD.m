@@ -77,22 +77,15 @@
 // JSON
 + (instancetype)upsertObjectWithDictionary:(NSDictionary *)dictionary uid:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    //    NSAssert([context isEqual:[self mainContext]], @"Create or Update Object on child context");
     id object = nil;
     
     if (uid) {
-        // look for object in child context
         object = [[self class] managedObjectWithId:uid inManagedObjectContext:context];
-        
-        // look for object in main context
-        if (!object) {
-            object = [[self class] managedObjectWithId:uid];
-        }
     }
     
     if (object) {
         // reference object by ID to prevent context errors
-        object = [context objectWithID:[object objectID]];
+        object = [[self mainContext] objectWithID:[object objectID]];
         
         [context performBlockAndWait:^{
             // update object on child context
