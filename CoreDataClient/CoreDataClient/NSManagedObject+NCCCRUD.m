@@ -613,7 +613,7 @@
     NSArray *sortedObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [[obj1 valueForKey:[self uniqueIdentifierKey]] compare:[obj2 valueForKey:[self uniqueIdentifierKey]]];
     }];
-    //        NSArray *remoteUids = [[objects valueForKey:uniqueIdentifierName] sortedArrayUsingSelector:@selector(compare:)];
+    NSMutableArray *remoteUids = [NSMutableArray array];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity: [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context]];
@@ -627,12 +627,16 @@
     
     __block NSUInteger index = 0;
     [sortedObjects enumerateObjectsUsingBlock:^(NSDictionary *remoteObject, NSUInteger idx, BOOL *stop) {
+        NSComparisonResult comparison;
+        
+
         NSString *remoteUid = [remoteObject valueForKey:[self uniqueIdentifierKey]];
-        NSString *localUid = [sortedManagedObjects[index] valueForKey:@"uid"];
         
         if ([remoteUid isKindOfClass:[NSNumber class]]) {
             remoteUid = [(NSNumber *)remoteUid stringValue];
         }
+        
+        [remoteUids addObject:remoteUid];
         
         /*
          if ([remoteUid isKindOfClass:[NSNumber class]]) {
@@ -644,15 +648,19 @@
         //            }
         
         //            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"remoteUid == %@", localUid];
-        NSComparisonResult comparison = [remoteUid compare:localUid];
         
-        // reached end of fetchedObjects, the rest of the remoteUids from list should be added as new objects
-        if (index > sortedManagedObjects.count) {
+        
+        // reached end of sortedManagedObjects, the rest of the remoteUids from list should be added as new objects
+        if (index > sortedManagedObjects.count - 1) {
             comparison = NSOrderedAscending;
-        }
-        // check for duplicates
-        if (index > 0 && [[sortedManagedObjects[index - 1] uid] compare:[sortedManagedObjects[index] uid]] == NSOrderedSame) {
-            NSLog(@"More than one %@ object with unique id not expected", self);
+        } else {
+            NSString *localUid = [sortedManagedObjects[index] valueForKey:@"uid"];
+            comparison = [remoteUid compare:localUid];
+            
+            // check for duplicates
+            if (index > 0 && [[sortedManagedObjects[index - 1] uid] compare:[sortedManagedObjects[index] uid]] == NSOrderedSame) {
+                NSLog(@"More than one %@ object with unique id not expected", self);
+            }
         }
         
         if (comparison == NSOrderedSame) { // same uids from both lists, update
@@ -664,17 +672,29 @@
             id object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
             [object updateWithAndRemoveNullsFromDictionary:remoteObject];
         } else { // delete until next local object uid matches current remote uid
-            NSComparisonResult comparison;
-            while (comparison == NSOrderedDescending) {
+            while (comparison == NSOrderedDescending && index < sortedManagedObjects.count) {
                 [context deleteObject:sortedManagedObjects[index]];
                 index++;
-                NSString *localUid = [sortedManagedObjects[index] uniqueIdentifierKey];
-                comparison = [remoteUid compare:localUid];
+                if (index < sortedManagedObjects.count) {
+                    NSString *localUid = [sortedManagedObjects[index] uid];
+                    comparison = [remoteUid compare:localUid];
+                } else {
+                    comparison = NSOrderedAscending;
+                }
+            }
+            
+            if (comparison == NSOrderedSame) {
+                [sortedManagedObjects[index] updateWithAndRemoveNullsFromDictionary:remoteObject];
+            }
+            
+            if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
+                // new
+                id object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+                [object updateWithAndRemoveNullsFromDictionary:remoteObject];
             }
         }
     }];
     
-    NSArray *remoteUids = [objects valueForKey:[self uniqueIdentifierKey]];
     NSArray *fetchedObjectsWithUidsInremoteIds = [sortedManagedObjects filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(%K IN %@)", @"uid", remoteUids]];
     
     NSMutableArray *mainContextObjects = [NSMutableArray array];
