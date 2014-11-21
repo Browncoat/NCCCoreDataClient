@@ -55,7 +55,7 @@
     if (key) {
         return key;
     } else {
-        return @"uid";
+        return @"id";
     }
 }
 
@@ -100,9 +100,7 @@
             if (![responseObject isKindOfClass:[NSArray class]]) {
                 responseObject = @[responseObject];
             }
-            if (![self uniqueIdentifierKey]) {
-                [self setUniqueIdentifierKey:@"id"];
-            }
+            
             [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self uniqueIdentifierKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
@@ -174,9 +172,7 @@
             if (![responseObject isKindOfClass:[NSArray class]]) {
                 responseObject = @[responseObject];
             }
-            if (![self uniqueIdentifierKey]) {
-                [self setUniqueIdentifierKey:@"id"];
-            }
+            
             [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self uniqueIdentifierKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
