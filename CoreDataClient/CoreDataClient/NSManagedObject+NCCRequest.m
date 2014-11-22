@@ -46,17 +46,27 @@
     return objc_getAssociatedObject(self, @selector(defaultHeaders));
 }
 
-+ (void)setUniqueIdentifierKey:(NSString *)newUniqueIdentifierKey {
-    objc_setAssociatedObject(self, @selector(uniqueIdentifierKey), newUniqueIdentifierKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
++ (void)setUniqueIdentifierAttributeToKeyPathMapping:(NSDictionary *)newUniqueIdentifierAttributeToKeyPathMapping {
+    objc_setAssociatedObject(self, @selector(uniqueIdentifierAttributeToKeyPathMapping), newUniqueIdentifierAttributeToKeyPathMapping, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-+ (NSString *)uniqueIdentifierKey {
-    NSString *key = objc_getAssociatedObject(self, @selector(uniqueIdentifierKey));
-    if (key) {
-        return key;
++ (NSDictionary *)uniqueIdentifierAttributeToKeyPathMapping {
+    NSDictionary *uidMapping = objc_getAssociatedObject(self, @selector(uniqueIdentifierAttributeToKeyPathMapping));
+    if (uidMapping) {
+        return uidMapping;
     } else {
-        return @"id";
+        return @{@"id":@"id"};
     }
+}
+
++ (NSString *)responseObjectUniqueIdentifierKey
+{
+    return [self uniqueIdentifierAttributeToKeyPathMapping].allKeys[0];
+}
+
++ (NSString *)managedObjectUniqueIdentifierKey
+{
+    return [self uniqueIdentifierAttributeToKeyPathMapping].allValues[0];
 }
 
 + (void)checkClassNameIncludedInRequestUrl:(NSURL *)requestURL
@@ -101,7 +111,7 @@
                 responseObject = @[responseObject];
             }
             
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self uniqueIdentifierKey] progress:^(CGFloat progress) {
+            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUniqueIdentifierKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -173,7 +183,7 @@
                 responseObject = @[responseObject];
             }
             
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self uniqueIdentifierKey] progress:^(CGFloat progress) {
+            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUniqueIdentifierKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }

@@ -26,8 +26,6 @@
 
 @implementation NSManagedObject (NCCCRUD)
 
-@dynamic uid;
-
 // XML
 + (instancetype)upsertObjectWithRXMLElement:(RXMLElement *)element uid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
@@ -226,7 +224,7 @@
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
         request.entity = entity;
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uid == %@", uid];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", [self managedObjectUniqueIdentifierKey], uid];
         request.predicate = predicate;
         request.includesSubentities = NO;
         
@@ -264,11 +262,11 @@
     [request setEntity:entity];
     [request setResultType:NSDictionaryResultType];
     [request setReturnsDistinctResults:YES];
-    [request setPropertiesToFetch:@[@"uid"]];
+    [request setPropertiesToFetch:@[[self managedObjectUniqueIdentifierKey]]];
     
     // Execute the fetch.
     NSError *error;
-    NSArray *uids = [[context executeFetchRequest:request error:&error] valueForKey:@"uid"];
+    NSArray *uids = [[context executeFetchRequest:request error:&error] valueForKey:[self managedObjectUniqueIdentifierKey]];
     if (uids == nil) {
         NSLog(@"Error retrieving UIDS for Entity %@", NSStringFromClass([self class]));
     }
@@ -387,7 +385,7 @@
     if (deleteSet.count > 0) {
         [context performBlockAndWait:^{
             for (NSManagedObject *object in deleteSet) {
-                [context deleteObject:object];
+                [context deleteObject:[context objectWithID:object.objectID]];
             }
         }];
     }
@@ -440,7 +438,7 @@
 
 + (NSSet *)duplicateManagedObjectsInMainContextForObject:(NSManagedObject *)object
 {
-    NSSet *duplicateObjects = [NSSet setWithArray:[[object class] managedObjectsWithId:object.uid]];
+    NSSet *duplicateObjects = [NSSet setWithArray:[[object class] managedObjectsWithId:[object valueForKey:[self managedObjectUniqueIdentifierKey]]]];
     
     return duplicateObjects;
 }
@@ -520,7 +518,7 @@
 + (NSArray *)updatedWithObjects:(NSArray *)objects context:(NSManagedObjectContext *)context
 {
     NSArray *sortedObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        return [[obj1 valueForKey:[self uniqueIdentifierKey]] compare:[obj2 valueForKey:[self uniqueIdentifierKey]]];
+        return [[obj1 valueForKey:[self responseObjectUniqueIdentifierKey]] compare:[obj2 valueForKey:[self responseObjectUniqueIdentifierKey]]];
     }];
     NSMutableArray *resultsObjects = [NSMutableArray array];
     
@@ -529,7 +527,7 @@
     //        [fetchRequest setPredicate: [NSPredicate predicateWithFormat:@"(%K IN %@)", uniqueIdentifierName, remoteUids]];
     
     // make sure the results are sorted as well
-    [fetchRequest setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:@"uid" ascending:YES]]];
+    [fetchRequest setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:[self managedObjectUniqueIdentifierKey] ascending:YES]]];
     
     NSError *error;
     NSArray *sortedManagedObjects = [context executeFetchRequest:fetchRequest error:&error];
@@ -539,7 +537,7 @@
         NSComparisonResult comparison;
         
 
-        NSString *remoteUid = [remoteObject valueForKey:[self uniqueIdentifierKey]];
+        NSString *remoteUid = [remoteObject valueForKey:[self responseObjectUniqueIdentifierKey]];
         
         if ([remoteUid isKindOfClass:[NSNumber class]]) {
             remoteUid = [(NSNumber *)remoteUid stringValue];
@@ -549,11 +547,11 @@
         if (index > sortedManagedObjects.count - 1) {
             comparison = NSOrderedAscending;
         } else {
-            NSString *localUid = [sortedManagedObjects[index] valueForKey:@"uid"];
+            NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUniqueIdentifierKey]];
             comparison = [remoteUid compare:localUid];
             
             // check for duplicates
-            if (index > 0 && [[sortedManagedObjects[index - 1] uid] compare:[sortedManagedObjects[index] uid]] == NSOrderedSame) {
+            if (index > 0 && [[sortedManagedObjects[index - 1] valueForKey:[self managedObjectUniqueIdentifierKey]] compare:[sortedManagedObjects[index] valueForKey:[self managedObjectUniqueIdentifierKey]]] == NSOrderedSame) {
                 NSLog(@"More than one %@ object with unique id not expected", self);
             }
         }
@@ -574,7 +572,7 @@
                 [context deleteObject:sortedManagedObjects[index]];
                 index++;
                 if (index < sortedManagedObjects.count) {
-                    NSString *localUid = [sortedManagedObjects[index] uid];
+                    NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUniqueIdentifierKey]];
                     comparison = [remoteUid compare:localUid];
                 } else {
                     comparison = NSOrderedAscending;
