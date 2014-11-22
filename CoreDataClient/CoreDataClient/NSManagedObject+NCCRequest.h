@@ -38,6 +38,9 @@ typedef void(^ProgressBlock)(CGFloat progress);
 + (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey;
 + (NSString *)uniqueIdentifierKey;
 
++ (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey;
++ (NSString *)uniqueIdentifierKey;
+
 // GET
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
