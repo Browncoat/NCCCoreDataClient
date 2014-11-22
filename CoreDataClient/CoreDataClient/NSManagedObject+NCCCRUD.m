@@ -548,7 +548,7 @@
             }
             
             // reached end of sortedManagedObjects, the rest of the remoteUids from list should be added as new objects
-            if (index > sortedManagedObjects.count - 1) {
+            if (sortedManagedObjects.count == 0 || index > sortedManagedObjects.count - 1) {
                 comparison = NSOrderedAscending;
             } else {
                 NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
