@@ -24,46 +24,56 @@
 #import "NSManagedObject+NCCRequest.h"
 #import "NSMutableURLRequest+NCCCreate.h"
 
-static NSString *_basePath = nil;
-static NSDictionary *_defaultHeaders = nil;
-static NSString *_uniqueIdentifierKey = nil;
-
 @implementation NSManagedObject (NCCRequest)
 
-+ (void)setBasePath:(NSString *)basePath
++ (void)setBasePath:(NSString *)newBasePath {
+    BOOL hasTrailingSlash = [newBasePath characterAtIndex:newBasePath.length - 1] == '/';
+    if (!hasTrailingSlash) {
+        NSLog(@"WARNING: %@ does not contain a trailing '/'", newBasePath);
+    }
+    objc_setAssociatedObject(self, @selector(basePath), newBasePath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (NSString *)basePath {
+    return objc_getAssociatedObject(self, @selector(basePath));
+}
+
++ (void)setDefaultHeaders:(NSDictionary *)newDefaultHeaders {
+    objc_setAssociatedObject(self, @selector(defaultHeaders), newDefaultHeaders, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (NSDictionary *)defaultHeaders {
+    return objc_getAssociatedObject(self, @selector(defaultHeaders));
+}
+
++ (void)setResponseObjectUidKey:(NSString *)uidKey
 {
-    //NSManagedObject+NCCRequest basePath should only be set once, any other url updates should be made on each request object using setURL: or URLWithString:relativeToURL:
-    if (!_basePath) {
-        _basePath = basePath;
+    objc_setAssociatedObject(self, @selector(responseObjectUidKey), uidKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (NSString *)responseObjectUidKey
+{
+    NSString *key = objc_getAssociatedObject(self, @selector(responseObjectUidKey));
+    if (key) {
+        return key;
+    } else {
+        return @"id";
     }
 }
 
-+ (NSString *)basePath
++ (void)setManagedObjectUidKey:(NSString *)uidKey
 {
-    return _basePath;
+    objc_setAssociatedObject(self, @selector(managedObjectUidKey), uidKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-+ (void)setDefaultHeaders:(NSDictionary *)defaultHeaders
++ (NSString *)managedObjectUidKey
 {
-    //NSManagedObject+NCCRequest defaultHeaders should only be set once, any other header updates should be made on each request object using setHeaders or setValue:forHTTPHeaderField:
-    if (!_defaultHeaders) {
-        _defaultHeaders = defaultHeaders;
+    NSString *key = objc_getAssociatedObject(self, @selector(managedObjectUidKey));
+    if (key) {
+        return key;
+    } else {
+        return @"id";
     }
-}
-
-+ (NSDictionary *)defaultHeaders
-{
-    return _defaultHeaders;
-}
-
-+ (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey
-{
-    _uniqueIdentifierKey = uniqueIdentifierKey;
-}
-
-+ (NSString *)uniqueIdentifierKey
-{
-    return _uniqueIdentifierKey;
 }
 
 + (void)checkClassNameIncludedInRequestUrl:(NSURL *)requestURL
@@ -75,24 +85,15 @@ static NSString *_uniqueIdentifierKey = nil;
     }
 }
 
-#pragma mark - NSMutableURLRequest
-
-- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
-{
-    
-    
-}
-
 #pragma mark - GET
 
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_basePath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"GET";
-    [request setHeaders:_defaultHeaders];
     
     if (requestBlock) {
         requestBlock(request);
@@ -105,10 +106,8 @@ static NSString *_uniqueIdentifierKey = nil;
             if (![responseObject isKindOfClass:[NSArray class]]) {
                 responseObject = @[responseObject];
             }
-            if (!_uniqueIdentifierKey) {
-                _uniqueIdentifierKey = @"id";
-            }
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:_uniqueIdentifierKey progress:^(CGFloat progress) {
+            
+            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -140,6 +139,11 @@ static NSString *_uniqueIdentifierKey = nil;
    [self GET:resource progress:nil request:nil withCompletion:completionBlock];
 }
 
++ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self GET:nil progress:nil request:nil withCompletion:completionBlock];
+}
+
 - (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
     [[self class] GET:resource progress:progressBlock request:nil withCompletion:completionBlock];
@@ -155,16 +159,20 @@ static NSString *_uniqueIdentifierKey = nil;
     [[self class] GET:resource progress:nil request:nil withCompletion:completionBlock];
 }
 
+- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [[self class] GETWithCompletion:completionBlock];
+}
+
 #pragma mark - POST
 
 + (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_basePath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"POST";
-    [request setHeaders:_defaultHeaders];
     
     if (requestBlock) {
         requestBlock(request);
@@ -177,10 +185,8 @@ static NSString *_uniqueIdentifierKey = nil;
             if (![responseObject isKindOfClass:[NSArray class]]) {
                 responseObject = @[responseObject];
             }
-            if (!_uniqueIdentifierKey) {
-                _uniqueIdentifierKey = @"id";
-            }
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:_uniqueIdentifierKey progress:^(CGFloat progress) {
+            
+            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -216,12 +222,11 @@ static NSString *_uniqueIdentifierKey = nil;
 
 - (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_basePath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"PUT";
-    [request setHeaders:_defaultHeaders];
     
     if (requestBlock) {
         requestBlock(request);
@@ -234,14 +239,13 @@ static NSString *_uniqueIdentifierKey = nil;
 
 #pragma mark - DELETE
 
-- (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_basePath]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"DELETE";
-    [request setHeaders:_defaultHeaders];
     
     if (requestBlock) {
         requestBlock(request);
@@ -252,6 +256,21 @@ static NSString *_uniqueIdentifierKey = nil;
     [self makeRequest:request progress:nil withCompletion:completionBlock];
 }
 
+- (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+{
+    [[self class] DELETE:resource request:requestBlock withCompletion:completionBlock];
+}
+
+- (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self DELETE:resource request:nil withCompletion:completionBlock];
+}
+
+- (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self DELETE:nil request:nil withCompletion:completionBlock];
+}
+
 #pragma mark - Override in RequestAdapter Category
 
 + (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
@@ -260,14 +279,14 @@ static NSString *_uniqueIdentifierKey = nil;
                 format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
 }
 
-- (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
+- (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
     [[self class] makeRequest:request progress:progressBlock withCompletion:completion];
 }
 
 #pragma mark - Dictionary Mapping
 
-- (NSDictionary *)dictionaryForKeys:(NSArray *)keys
+- (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     for (NSString *key in keys) {
@@ -277,11 +296,11 @@ static NSString *_uniqueIdentifierKey = nil;
     return dictionary;
 }
 
-- (NSDictionary *)dictionaryForKeyPathMappings:(NSDictionary *)keyMappings
+- (NSDictionary *)dictionaryWithAttributeToKeyPathMappings:(NSDictionary *)keyMappings
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [keyMappings enumerateKeysAndObjectsUsingBlock:^(id key, id keyMapping, BOOL *stop) {
-        [dictionary setValue:[self valueForKeyPath:key] forKey:keyMapping];
+        [dictionary setValue:[self valueForKeyPath:keyMapping] forKey:key];
     }];
     
     return dictionary;

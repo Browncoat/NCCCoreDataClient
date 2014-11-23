@@ -23,8 +23,16 @@
 #import "NSMutableURLRequest+NCCCreate.h"
 #import <CommonCrypto/CommonDigest.h>
 
+#define NEWLINE @"\r\n"
+
 NSString * const postBodyContentTypeData = @"multipart/form-data; boundary=---------------------------14737809831466499882746641449";
 NSString * const postBodyContentTypeJSON = @"application/json";
+
+//NSString * const postBodyContentTypeData = @"Content-Disposition: form-data; name=\"uploadedfile\"; filename=\"%@\"\r\n", imageName]"
+NSString * const ContentTypeMultiPartFormData = @"multipart/form-data; boundary=---------------------------14737809831466499882746641449";
+NSString * const ContentTypeJSON = @"application/json";
+NSString * const ContentTypeByteStream = @"application/octet-stream";
+NSString * const ContentTypeImagePNG = @"image/png";
 
 @implementation NSMutableURLRequest (NCCCreate)
 
@@ -101,6 +109,35 @@ NSString * const postBodyContentTypeJSON = @"application/json";
         [self setValue:postLength forHTTPHeaderField:@"Content-Length"];
         self.HTTPBody = data;
     }
+}
+
+- (void)setJSON:(NSDictionary *)dictionary
+{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
+    if (!error) {
+        [self setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
+        NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[jsonData length]];
+        [self setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        self.HTTPBody = jsonData;
+    } else {
+        NSLog(@"%@", error);
+    }
+}
+
+- (void)setPNG:(NSData *)imageData filename:(NSString *)filename
+{
+    NSString *boundary = [[self class] boundary];
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+    [self setValue:contentType forHTTPHeaderField:@"Content-Type"];
+    
+    NSMutableData *body = [NSMutableData data];
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding: NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"image\"; filename=\"%@\"\r\n", filename] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[NSString stringWithFormat:@"Content-Type: image/png\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:imageData];
+    [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [self setHTTPBody:body];
 }
 
 #pragma mark - Post Body

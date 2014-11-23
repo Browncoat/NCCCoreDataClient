@@ -26,8 +26,6 @@
 
 @interface NSManagedObject (NCCCRUD)
 
-@property (retain, nonatomic) NSString *uid;
-
 // CREATING FROM XML
 + (instancetype)upsertObjectWithRXMLElement:(RXMLElement *)element uid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context;
 
@@ -75,9 +73,9 @@
 
 + (NSArray *)allObjectsInManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (instancetype)managedObjectWithId:(NSString *)id;
++ (instancetype)managedObjectWithId:(id)uid;
 
-+ (instancetype)managedObjectWithId:(NSString *)id inManagedObjectContext:(NSManagedObjectContext *)context;
++ (instancetype)managedObjectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context;
 
 + (instancetype)managedObjectWithName:(NSString *)name;
 
