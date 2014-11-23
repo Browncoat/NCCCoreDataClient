@@ -23,16 +23,22 @@ Remove all of the boilerplate Core Data methods from your appDelegate class. The
 
 `NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides 
 
-`+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` 
+`+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` 
 
-to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save.
+to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save. Here you can also set the 'session' headers globaly since you have access to the NSURLRequest object before it is sent.
 
 `NSManagedObject (RequestAdapter)`
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
- + (void)makeRequest:(NSURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
+ + (void)makeRequest:(NSMutableURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
  {
+    // Session headers
+    [request setHeaders:@{@"Authorization":###,
+                              @"x-api-key":###,
+                              @"x-app-id":###,
+                              @"x-device-id":###};];
+
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         id results = nil;
         if (!connectionError) {
@@ -54,8 +60,14 @@ to pass the final NSURLRequest object to the HTTP Client of your choice and then
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
-+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
+  // Session headers
+    [request setHeaders:@{@"Authorization":###,
+                              @"x-api-key":###,
+                              @"x-app-id":###,
+                              @"x-device-id":###};];
+
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     op.responseSerializer = [AFJSONResponseSerializer serializer];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -107,36 +119,30 @@ The helper method `[NSManagedObject mainContext]` is alos available to alsways r
 
 ### Set BasePath and Default Headers
 
-Each NSManagedObject Category can set it's own basePath and defaultHeaders by overriding `+ (void)prepare` The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMutableURLRequest directly.
+Each NSManagedObject Category can set it's own basePath, responseObjectUidKey and managedObjectUidKey by overriding `+ (void)initialize` Only properties that you expect not to change should be modified in the `+ (void)initialize` method. The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMutableURLRequest directly. These can also be modified in the `RequestAdapter` Category if they are the same for every NSManagedObject.
 
 `User (Request)`
 
 ```objective-c
-+ (void)prepare
++ (void)initialize
 {
-    [self setBasePath:@"http://example.com/user/"];
-
-    NSDictionary *headers = @{@"Authorization":###,
-                              @"x-api-key":###,
-                              @"x-app-id":###,
-                              @"x-device-id":###};
-    [self setDefaultHeaders:headers];
-    
-    [self setUniqueIdentifierKey:@"id"];
+    [self setResponseObjectUidKey:@"id"];
+    [self setManagedObjectUidKey:@"uid"];
+    [self setBasePath:PW_API_URL];
 }
 ```
 
-The Core data objects are upserted based on their `uniqueIdentifierKey`. The `uniqueIdentifierKey` defaults to "id" but can be modified `[self setUniqueIdentifierKey:@"id"];`
+The Core data objects are upserted based on their `objectUidKey`. The `objectUidKey` defaults to "id" but can be modified `[self setResponseObjectUidKey:@"id"];` and `[self setManagedObjectUidKey:@"uid"];` for the response dictionary and managedObject model respectively.
 
 #### `GET` Request
 
 ```objective-c
 - (void)userForUid:(NSString *)uid withCompletion:(CompletionBlock)completion
 {
-  [User GET:uid progress:nil request:nil withCompletion:^(NSArray *results, NSError *error) {
+    [User GET:uid progress:nil request:nil withCompletion:^(NSArray *results, NSError *error) {
         completion(results, error);
     }];
-  }
+}
 ```
 
 #### `POST` Request
