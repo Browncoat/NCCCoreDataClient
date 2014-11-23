@@ -30,8 +30,26 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 // Prepare
 + (void)setBasePath:(NSString *)basePath;
++ (NSString *)basePath;
+
+/*
 + (void)setDefaultHeaders:(NSDictionary *)headers;
-+ (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey;
++ (NSDictionary *)defaultHeaders;
+ */
+/*
++ (void)setUniqueIdentifierAttributeToKeyPathMapping:(NSDictionary *)mapping;
++ (NSDictionary *)uniqueIdentifierAttributeToKeyPathMapping;
+*/
++ (void)setResponseObjectUidKey:(NSString *)uid;
++ (NSString *)responseObjectUidKey;
+
++ (void)setManagedObjectUidKey:(NSString *)uid;
++ (NSString *)managedObjectUidKey;
+
+/*
++ (NSString *)responseObjectUniqueIdentifierKey;
++ (NSString *)managedObjectUniqueIdentifierKey;
+*/
 
 // GET
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
@@ -76,5 +94,9 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 - (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
 - (NSDictionary *)dictionaryWithAttributeToKeyPathMappings:(NSDictionary *)keys;
+
+// Overrides
++ (void)prepare;
+- (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
 
 @end

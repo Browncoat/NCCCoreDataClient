@@ -46,13 +46,61 @@
     return objc_getAssociatedObject(self, @selector(defaultHeaders));
 }
 
-+ (void)setUniqueIdentifierKey:(NSString *)newUniqueIdentifierKey {
-    objc_setAssociatedObject(self, @selector(uniqueIdentifierKey), newUniqueIdentifierKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+/*
++ (void)setUniqueIdentifierAttributeToKeyPathMapping:(NSDictionary *)newUniqueIdentifierAttributeToKeyPathMapping {
+    objc_setAssociatedObject(self, @selector(uniqueIdentifierAttributeToKeyPathMapping), newUniqueIdentifierAttributeToKeyPathMapping, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-+ (NSString *)uniqueIdentifierKey {
-    return objc_getAssociatedObject(self, @selector(uniqueIdentifierKey));
++ (NSDictionary *)uniqueIdentifierAttributeToKeyPathMapping {
+    NSDictionary *uidMapping = objc_getAssociatedObject(self, @selector(uniqueIdentifierAttributeToKeyPathMapping));
+    if (uidMapping) {
+        return uidMapping;
+    } else {
+        return @{@"id":@"id"};
+    }
 }
+*/
++ (void)setResponseObjectUidKey:(NSString *)uidKey
+{
+    objc_setAssociatedObject(self, @selector(responseObjectUidKey), uidKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (NSString *)responseObjectUidKey
+{
+    NSString *key = objc_getAssociatedObject(self, @selector(responseObjectUidKey));
+    if (key) {
+        return key;
+    } else {
+        return @"id";
+    }
+}
+
++ (void)setManagedObjectUidKey:(NSString *)uidKey
+{
+    objc_setAssociatedObject(self, @selector(managedObjectUidKey), uidKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
++ (NSString *)managedObjectUidKey
+{
+    NSString *key = objc_getAssociatedObject(self, @selector(managedObjectUidKey));
+    if (key) {
+        return key;
+    } else {
+        return @"id";
+    }
+}
+
+/*
++ (NSString *)responseObjectUniqueIdentifierKey
+{
+    return [self uniqueIdentifierAttributeToKeyPathMapping].allKeys[0];
+}
+
++ (NSString *)managedObjectUniqueIdentifierKey
+{
+    return [self uniqueIdentifierAttributeToKeyPathMapping].allValues[0];
+}
+*/
 
 + (void)checkClassNameIncludedInRequestUrl:(NSURL *)requestURL
 {
@@ -75,14 +123,15 @@
 
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    [self prepare];
+//    NSDictionary *defaultHeaders = [self sessionHeaders];
+//    [self setDefaultHeaders:defaultHeaders];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"GET";
-    [request setHeaders:[self defaultHeaders]];
+//    [request setHeaders:[self defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -95,10 +144,8 @@
             if (![responseObject isKindOfClass:[NSArray class]]) {
                 responseObject = @[responseObject];
             }
-            if (![self uniqueIdentifierKey]) {
-                [self setUniqueIdentifierKey:@"id"];
-            }
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self uniqueIdentifierKey] progress:^(CGFloat progress) {
+            
+            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -149,14 +196,15 @@
 
 + (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    [self prepare];
+//    NSDictionary *defaultHeaders = [self sessionHeaders];
+//    [self setDefaultHeaders:defaultHeaders];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"POST";
-    [request setHeaders:[self defaultHeaders]];
+//    [request setHeaders:[self defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -169,10 +217,8 @@
             if (![responseObject isKindOfClass:[NSArray class]]) {
                 responseObject = @[responseObject];
             }
-            if (![self uniqueIdentifierKey]) {
-                [self setUniqueIdentifierKey:@"id"];
-            }
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self uniqueIdentifierKey] progress:^(CGFloat progress) {
+            
+            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -208,14 +254,15 @@
 
 - (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    [[self class] prepare];
+//    NSDictionary *defaultHeaders = [[self class] sessionHeaders];
+//    [[self class] setDefaultHeaders:defaultHeaders];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"PUT";
-    [request setHeaders:[[self class] defaultHeaders]];
+//    [request setHeaders:[[self class] defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -230,14 +277,15 @@
 
 + (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-    [self prepare];
+//    NSDictionary *defaultHeaders = [self sessionHeaders];
+//    [self setDefaultHeaders:defaultHeaders];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"DELETE";
-    [request setHeaders:[[self class] defaultHeaders]];
+//    [request setHeaders:[[self class] defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -266,7 +314,7 @@
                 format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
 }
 
-- (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
+- (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
     [[self class] makeRequest:request progress:progressBlock withCompletion:completion];
 }
@@ -299,7 +347,7 @@
                 format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
 }
 
-+ (void)prepare
++ (NSDictionary *)sessionHeaders
 {
     [NSException raise:NSInternalInconsistencyException
                 format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
