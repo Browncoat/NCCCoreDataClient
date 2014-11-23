@@ -46,20 +46,6 @@
     return objc_getAssociatedObject(self, @selector(defaultHeaders));
 }
 
-/*
-+ (void)setUniqueIdentifierAttributeToKeyPathMapping:(NSDictionary *)newUniqueIdentifierAttributeToKeyPathMapping {
-    objc_setAssociatedObject(self, @selector(uniqueIdentifierAttributeToKeyPathMapping), newUniqueIdentifierAttributeToKeyPathMapping, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-+ (NSDictionary *)uniqueIdentifierAttributeToKeyPathMapping {
-    NSDictionary *uidMapping = objc_getAssociatedObject(self, @selector(uniqueIdentifierAttributeToKeyPathMapping));
-    if (uidMapping) {
-        return uidMapping;
-    } else {
-        return @{@"id":@"id"};
-    }
-}
-*/
 + (void)setResponseObjectUidKey:(NSString *)uidKey
 {
     objc_setAssociatedObject(self, @selector(responseObjectUidKey), uidKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -90,18 +76,6 @@
     }
 }
 
-/*
-+ (NSString *)responseObjectUniqueIdentifierKey
-{
-    return [self uniqueIdentifierAttributeToKeyPathMapping].allKeys[0];
-}
-
-+ (NSString *)managedObjectUniqueIdentifierKey
-{
-    return [self uniqueIdentifierAttributeToKeyPathMapping].allValues[0];
-}
-*/
-
 + (void)checkClassNameIncludedInRequestUrl:(NSURL *)requestURL
 {
     BOOL success = [requestURL.absoluteString rangeOfString:NSStringFromClass([self class]) options:NSCaseInsensitiveSearch].location != NSNotFound;
@@ -111,27 +85,15 @@
     }
 }
 
-#pragma mark - NSMutableURLRequest
-
-- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
-{
-    
-    
-}
-
 #pragma mark - GET
 
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-//    NSDictionary *defaultHeaders = [self sessionHeaders];
-//    [self setDefaultHeaders:defaultHeaders];
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"GET";
-//    [request setHeaders:[self defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -177,6 +139,11 @@
    [self GET:resource progress:nil request:nil withCompletion:completionBlock];
 }
 
++ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self GET:nil progress:nil request:nil withCompletion:completionBlock];
+}
+
 - (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
     [[self class] GET:resource progress:progressBlock request:nil withCompletion:completionBlock];
@@ -192,19 +159,20 @@
     [[self class] GET:resource progress:nil request:nil withCompletion:completionBlock];
 }
 
+- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [[self class] GETWithCompletion:completionBlock];
+}
+
 #pragma mark - POST
 
 + (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-//    NSDictionary *defaultHeaders = [self sessionHeaders];
-//    [self setDefaultHeaders:defaultHeaders];
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"POST";
-//    [request setHeaders:[self defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -254,15 +222,11 @@
 
 - (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-//    NSDictionary *defaultHeaders = [[self class] sessionHeaders];
-//    [[self class] setDefaultHeaders:defaultHeaders];
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"PUT";
-//    [request setHeaders:[[self class] defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -277,15 +241,11 @@
 
 + (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
-//    NSDictionary *defaultHeaders = [self sessionHeaders];
-//    [self setDefaultHeaders:defaultHeaders];
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
         request.URL = [NSURL URLWithString:resource relativeToURL:request.URL];
     }
     request.HTTPMethod = @"DELETE";
-//    [request setHeaders:[[self class] defaultHeaders]];
     
     if (requestBlock) {
         requestBlock(request);
@@ -304,6 +264,11 @@
 - (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock
 {
     [self DELETE:resource request:nil withCompletion:completionBlock];
+}
+
+- (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self DELETE:nil request:nil withCompletion:completionBlock];
 }
 
 #pragma mark - Override in RequestAdapter Category
@@ -342,12 +307,6 @@
 }
 
 - (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion
-{
-    [NSException raise:NSInternalInconsistencyException
-                format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
-}
-
-+ (NSDictionary *)sessionHeaders
 {
     [NSException raise:NSInternalInconsistencyException
                 format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];

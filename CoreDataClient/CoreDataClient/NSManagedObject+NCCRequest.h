@@ -28,28 +28,14 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (NCCRequest)
 
-// Prepare
 + (void)setBasePath:(NSString *)basePath;
 + (NSString *)basePath;
 
-/*
-+ (void)setDefaultHeaders:(NSDictionary *)headers;
-+ (NSDictionary *)defaultHeaders;
- */
-/*
-+ (void)setUniqueIdentifierAttributeToKeyPathMapping:(NSDictionary *)mapping;
-+ (NSDictionary *)uniqueIdentifierAttributeToKeyPathMapping;
-*/
 + (void)setResponseObjectUidKey:(NSString *)uid;
 + (NSString *)responseObjectUidKey;
 
 + (void)setManagedObjectUidKey:(NSString *)uid;
 + (NSString *)managedObjectUidKey;
-
-/*
-+ (NSString *)responseObjectUniqueIdentifierKey;
-+ (NSString *)managedObjectUniqueIdentifierKey;
-*/
 
 // GET
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
@@ -67,21 +53,11 @@ typedef void(^ProgressBlock)(CGFloat progress);
 + (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
-- (void)POSTWithCompletion:(RequestCompletionBlock)completionBlock;
 - (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
-- (BOOL)POSTWithError:(NSError **)error;
-- (BOOL)POST:(NSString *)resource withError:(NSError **)error;
-
 // PUT
-- (void)PUTWithCompletion:(RequestCompletionBlock)completionBlock;
 - (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-
-- (BOOL)PUTWithError:(NSError **)error;
-- (BOOL)PUT:(NSString *)enresourcetity withError:(NSError **)error;
-
-- (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
 
 // DELETE
 + (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
@@ -89,14 +65,11 @@ typedef void(^ProgressBlock)(CGFloat progress);
 - (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
 
-- (BOOL)DELETEWithError:(NSError **)error;
-- (BOOL)DELETE:(NSString *)resource withError:(NSError **)error;
-
+// KeyPath Mapping
 - (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
 - (NSDictionary *)dictionaryWithAttributeToKeyPathMappings:(NSDictionary *)keys;
 
 // Overrides
-+ (void)prepare;
 - (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
 
 @end
