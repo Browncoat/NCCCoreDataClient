@@ -468,13 +468,10 @@
     NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     childContext.parentContext = [NSManagedObject mainContext];
     
-    __block NSArray *fetchedObjectsWithUidsInremoteIds;
-    
-    __block float total = objects.count;
-    __block float count = total;
+    __block NSArray *resultObjects;
     
     [childContext performBlockAndWait:^{
-        fetchedObjectsWithUidsInremoteIds = [self updatedWithObjects:objects context:childContext];
+        resultObjects = [self managedObjectsWithResponseObjects:objects context:childContext progress:nil];
     }];
     
     NSError *error = nil;
@@ -485,7 +482,7 @@
         NSLog(@"Core Data Save Error: %@, %@", self, [error localizedDescription]);
     }
     
-    return fetchedObjectsWithUidsInremoteIds;
+    return resultObjects;
 }
 
 + (void)batchUpdateObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName completion:(void(^)(NSArray *results, NSError *error))completion
@@ -500,7 +497,7 @@
     
     [childContext performBlock:^{
         
-        NSArray *fetchedObjectsWithUidsInremoteIds = [self updatedWithObjects:objects context:childContext];
+        NSArray *resultObjects = [self managedObjectsWithResponseObjects:objects context:childContext progress:progress];
         
         [NSManagedObject saveContext:childContext completion:^(NSError *error) {
             if (error) {
@@ -508,20 +505,20 @@
             }
             if (completion) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    completion(fetchedObjectsWithUidsInremoteIds, error);
+                    completion(resultObjects, error);
                 });
             }
         }];
     }];
 }
 
-+ (NSArray *)updatedWithObjects:(NSArray *)objects context:(NSManagedObjectContext *)context
++ (NSArray *)managedObjectsWithResponseObjects:(NSArray *)objects context:(NSManagedObjectContext *)context progress:(void(^)(CGFloat progress))progress
 {
     NSMutableArray *responseUids = [NSMutableArray arrayWithArray:[objects valueForKey:[self responseObjectUidKey]]];
     [responseUids removeObject:[NSNull null]];
     BOOL objectsHaveUidAttribute = responseUids.count == objects.count;
     if (objectsHaveUidAttribute) {
-        NSArray *sortedObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSArray *sortedResponseObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]]];
         }];
         NSMutableArray *upsertedObjects = [NSMutableArray array];
@@ -537,7 +534,7 @@
         NSArray *sortedManagedObjects = [context executeFetchRequest:fetchRequest error:&error];
         
         __block NSUInteger index = 0;
-        [sortedObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
+        [sortedResponseObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
             NSComparisonResult comparison;
             
 
@@ -596,17 +593,27 @@
                     [upsertedObjects addObject:[object mainContextObject]];
                 }
             }
+            
+            if (progress) {
+                float percent = (float)idx / (float)sortedResponseObjects.count;
+                progress(percent);
+            }
         }];
         
         return upsertedObjects;
     }
     
     NSMutableArray *newObjects = [NSMutableArray array];
-    for (NSDictionary *responseObject in objects) {
+    [objects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
         NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
         [object updateWithAndRemoveNullsFromDictionary:responseObject];
         [newObjects addObject:[object mainContextObject]];
-    }
+        
+        if (progress) {
+            float percent = (float)idx / (float)objects.count;
+            progress(percent);
+        }
+    }];
     
     return newObjects;
 }
