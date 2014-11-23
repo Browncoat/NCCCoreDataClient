@@ -21,11 +21,13 @@ Remove all of the boilerplate Core Data methods from your appDelegate class. The
 
 ### NSManagedObject Categories
 
+### Passing the request to an HTTP Client and adding Session Headers
+
 `NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides 
 
 `+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` 
 
-to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save. Here you can also set the 'session' headers globaly since you have access to the NSURLRequest object before it is sent.
+This allows you to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save. Here you can also set the 'session' headers globaly since you have access to the NSURLRequest object before it is sent.
 
 `NSManagedObject (RequestAdapter)`
 ```objective-c
@@ -115,9 +117,9 @@ If the relationship is an update/create (upsert) then you can use the method
 
 `[Address upsertObjectWithDictionary:dictionary uid:dictionary[@"id"] inManagedObjectContext:self.managedObjectContext];`
 
-The helper method `[NSManagedObject mainContext]` is alos available to alsways reach the main NSManagedObjectContext.
+The helper method `[NSManagedObject mainContext]` is also available to alsways reach the main NSManagedObjectContext.
 
-### Set BasePath and Default Headers
+### Set BasePath and Object Id Keys
 
 Each NSManagedObject Category can set it's own basePath, responseObjectUidKey and managedObjectUidKey by overriding `+ (void)initialize` Only properties that you expect not to change should be modified in the `+ (void)initialize` method. The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMutableURLRequest directly. These can also be modified in the `RequestAdapter` Category if they are the same for every NSManagedObject.
 
