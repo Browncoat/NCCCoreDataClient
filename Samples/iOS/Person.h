@@ -12,7 +12,7 @@
 
 @interface Person : NSManagedObject
 
-@property (nonatomic, retain) NSString * uid;
+@property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) NSString * displayName;
 @property (nonatomic, retain) NSString * url;
 

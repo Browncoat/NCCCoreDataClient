@@ -15,7 +15,7 @@ static NSDateFormatter *_dateFormatter;
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-    self.uid = dictionary[@"uid"];
+    self.id = dictionary[@"id"];
     self.text = dictionary[@"text"];
     
     if (!_dateFormatter) {

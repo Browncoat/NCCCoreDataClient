@@ -12,7 +12,7 @@
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-    self.uid = dictionary[@"id"];
+    self.id = dictionary[@"id"];
     self.bio = dictionary[@"bio"];
     self.profilePicturePath = dictionary[@"profile_picture"];
     self.userName = dictionary[@"username"];

@@ -16,8 +16,6 @@
     
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:ClientAuthTokenKey];
     [self setDefaultHeaders:@{@"Authorization":[NSString stringWithFormat:@"Bearer %@", token]}];
-    
-    [self setUniqueIdentifierKey:@"id"];
 }
 
 + (void)personWithId:(NSString *)uid completion:(void(^)(Person *person, NSError *error))completion

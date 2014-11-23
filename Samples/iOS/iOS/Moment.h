@@ -12,6 +12,7 @@
 
 @interface Moment : NSManagedObject
 
+@property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) NSString * kind;
 @property (nonatomic, retain) NSString * title;
 

@@ -11,7 +11,7 @@
 
 @implementation Person
 
-@dynamic uid;
+@dynamic id;
 @dynamic displayName;
 @dynamic url;
 

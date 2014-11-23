@@ -13,7 +13,7 @@
 
 @dynamic bio;
 @dynamic fullName;
-@dynamic uid;
+@dynamic id;
 @dynamic profilePicturePath;
 @dynamic userName;
 @dynamic website;

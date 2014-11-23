@@ -20,7 +20,7 @@
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"access_token"];
     
-    [self GET:[NSString stringWithFormat:@"search?q=%@&access_token=%@", name, token] uidKey:@"id" progress:^(CGFloat progress) {
+    [self GET:[NSString stringWithFormat:@"search?q=%@&access_token=%@", name, token] progress:^(CGFloat progress) {
         NSLog(@"progress:%f", progress);
     } withCompletion:^(NSArray *results, NSError *error) {
         NSLog(@"%@", results);

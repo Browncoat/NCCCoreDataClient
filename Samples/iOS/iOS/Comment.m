@@ -13,7 +13,7 @@
 @implementation Comment
 
 @dynamic text;
-@dynamic uid;
+@dynamic id;
 @dynamic createdTime;
 @dynamic from;
 

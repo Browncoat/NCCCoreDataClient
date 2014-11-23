@@ -43,20 +43,4 @@
     [[NSOperationQueue mainQueue] addOperation:op];
 }
 
-/*
-+ (void)makeRequest:(NSURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
-{
-    _HTTPClient = [NCCHTTPClient clientWithRequest:request];
-    [_HTTPClient GETWithCompletion:^(NSData *data, NSError *error) {
-        if (!error) {
-            NSError *error;
-            NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-            if (!error) {
-                completion(array, error);
-            }
-        }
-    }];
-}
-*/
-
 @end

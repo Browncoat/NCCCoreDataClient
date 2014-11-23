@@ -12,7 +12,7 @@
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-    self.uid = dictionary[@"id"]; // require uid
+    self.id = dictionary[@"id"]; // require id
     self.type = dictionary[@"type"];
     self.link = dictionary[@"link"];
 }

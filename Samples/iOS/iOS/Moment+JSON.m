@@ -12,7 +12,7 @@
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
 {
-    self.uid = dictionary[@"id"];
+    self.id = dictionary[@"id"];
     self.kind = dictionary[@"kind"];
     self.title = dictionary[@"title"];
 }

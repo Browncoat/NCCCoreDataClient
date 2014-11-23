@@ -11,6 +11,7 @@
 
 @implementation Media
 
+@dynamic id;
 @dynamic type;
 @dynamic link;
 
