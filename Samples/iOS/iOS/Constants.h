@@ -10,7 +10,7 @@
 #define CoreDataClientSample_Constants_h
 
 // Google+
-#define ClientId @"978903998184-8qvg7la2e6darpakv4gqsphd8p5lveuq.apps.googleusercontent.com"
+#define ClientId @""
 #define ClientAuthTokenKey @"auth_token"
 
 #endif
