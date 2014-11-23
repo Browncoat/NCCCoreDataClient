@@ -13,9 +13,6 @@
 + (void)initialize
 {
     [self setBasePath:@"https://www.googleapis.com/plus/v1/people/me/moments/vault/"];
-    
-    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:ClientAuthTokenKey];
-    [self setDefaultHeaders:@{@"Authorization":[NSString stringWithFormat:@"Bearer %@", token]}];
 }
 
 - (void)saveWithCompletion:(void(^)(Moment *moment, NSError *error))completion
