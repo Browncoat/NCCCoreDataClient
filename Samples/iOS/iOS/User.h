@@ -14,7 +14,7 @@
 
 @property (nonatomic, retain) NSString * bio;
 @property (nonatomic, retain) NSString * fullName;
-@property (nonatomic, retain) NSString * uid;
+@property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) NSString * profilePicturePath;
 @property (nonatomic, retain) NSString * userName;
 @property (nonatomic, retain) NSString * website;

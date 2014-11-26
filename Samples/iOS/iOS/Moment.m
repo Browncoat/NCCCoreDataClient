@@ -11,6 +11,7 @@
 
 @implementation Moment
 
+@dynamic id;
 @dynamic kind;
 @dynamic title;
 

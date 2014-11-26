@@ -14,7 +14,7 @@
 @interface Comment : NSManagedObject
 
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSString * uid;
+@property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) NSDate * createdTime;
 @property (nonatomic, retain) User *from;
 

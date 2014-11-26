@@ -12,6 +12,7 @@
 
 @interface Media : NSManagedObject
 
+@property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * link;
 

@@ -28,45 +28,36 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (NCCRequest)
 
-/*
-@property (nonatomic, strong) NSString *basePath;
-@property (nonatomic, strong) NSDictionary *defaultHeaders;
-@property (nonatomic, strong) NSString *uniqueIdentifierKey;
-*/
-
 + (void)setBasePath:(NSString *)basePath;
-+ (void)setDefaultHeaders:(NSDictionary *)headers;
-+ (void)setUniqueIdentifierKey:(NSString *)uniqueIdentifierKey;
++ (NSString *)basePath;
+
++ (void)setResponseObjectUidKey:(NSString *)uid;
++ (NSString *)responseObjectUidKey;
+
++ (void)setManagedObjectUidKey:(NSString *)uid;
++ (NSString *)managedObjectUidKey;
 
 // GET
-- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
-+ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
++ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
+
 - (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
+- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
 
 // POST
-- (void)POSTWithCompletion:(RequestCompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
+
 - (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
-- (BOOL)POSTWithError:(NSError **)error;
-- (BOOL)POST:(NSString *)resource withError:(NSError **)error;
-
 // PUT
-- (void)PUTWithCompletion:(RequestCompletionBlock)completionBlock;
 - (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-
-- (BOOL)PUTWithError:(NSError **)error;
-- (BOOL)PUT:(NSString *)enresourcetity withError:(NSError **)error;
-
-- (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
 
 // DELETE
 + (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
@@ -74,10 +65,11 @@ typedef void(^ProgressBlock)(CGFloat progress);
 - (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
 
-- (BOOL)DELETEWithError:(NSError **)error;
-- (BOOL)DELETE:(NSString *)resource withError:(NSError **)error;
+// KeyPath Mapping
+- (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
+- (NSDictionary *)dictionaryWithAttributeToKeyPathMappings:(NSDictionary *)keys;
 
-- (NSDictionary *)dictionaryForKeys:(NSArray *)keys;
-- (NSDictionary *)dictionaryOfKeyToKeyPathMappings:(NSDictionary *)keys;
+// Overrides
+- (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
 
 @end

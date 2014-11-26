@@ -29,8 +29,11 @@
  }
  */
 
-+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
+    NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:ClientAuthTokenKey];
+    [request setHeaders:@{@"Authorization":[NSString stringWithFormat:@"Bearer %@", token]}];
+    
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     op.responseSerializer = [AFJSONResponseSerializer serializer];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -42,21 +45,5 @@
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
 }
-
-/*
-+ (void)makeRequest:(NSURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
-{
-    _HTTPClient = [NCCHTTPClient clientWithRequest:request];
-    [_HTTPClient GETWithCompletion:^(NSData *data, NSError *error) {
-        if (!error) {
-            NSError *error;
-            NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
-            if (!error) {
-                completion(array, error);
-            }
-        }
-    }];
-}
-*/
 
 @end
