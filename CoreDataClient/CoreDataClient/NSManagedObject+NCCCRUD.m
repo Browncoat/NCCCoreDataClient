@@ -515,4 +515,123 @@
     }];
 }
 
++ (NSArray *)managedObjectsWithResponseObjects:(NSArray *)objects context:(NSManagedObjectContext *)context progress:(void(^)(CGFloat progress))progress
+{
+    NSMutableArray *responseUids = [NSMutableArray arrayWithArray:[objects valueForKey:[self responseObjectUidKey]]];
+    [responseUids removeObject:[NSNull null]];
+    BOOL objectsHaveUidAttribute = responseUids.count == objects.count;
+    if (objectsHaveUidAttribute) {
+        NSArray *sortedResponseObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            if ([obj1 isKindOfClass:[NSString class]] && [obj2 isKindOfClass:[NSString class]]) {
+                return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]] options:NSNumericSearch];
+            } else {
+                return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]]];
+            }
+        }];
+        NSMutableArray *upsertedObjects = [NSMutableArray array];
+        
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        [fetchRequest setEntity: [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context]];
+        //        [fetchRequest setPredicate: [NSPredicate predicateWithFormat:@"(%K IN %@)", uniqueIdentifierName, remoteUids]];
+        
+        // make sure the results are sorted as well
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self managedObjectUidKey] ascending:YES comparator:^NSComparisonResult(id obj1, id obj2) {
+            if ([obj1 isKindOfClass:[NSString class]] && [obj2 isKindOfClass:[NSString class]]) {
+                return [obj1 compare:obj2 options:NSNumericSearch];
+            } else {
+                return [obj1 compare:obj2];
+            }
+        }];
+        
+//        [fetchRequest setSortDescriptors:@[sortDescriptor]];
+        //request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:myEntity ascending:NO selector:@selector(localizedStandardCompare:)]];
+
+        
+        NSError *error;
+        NSArray *sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[sortDescriptor]];
+        
+        __block NSUInteger index = 0;
+        [sortedResponseObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
+            NSComparisonResult comparison;
+
+            NSString *remoteUid = [responseObject valueForKey:[self responseObjectUidKey]];
+            
+            if ([remoteUid isKindOfClass:[NSNumber class]]) {
+                remoteUid = [(NSNumber *)remoteUid stringValue];
+            }
+            
+            // reached end of sortedManagedObjects, the rest of the remoteUids from list should be added as new objects
+            if (sortedManagedObjects.count == 0 || index > sortedManagedObjects.count - 1) {
+                comparison = NSOrderedAscending;
+            } else {
+                NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
+                comparison = [remoteUid compare:localUid];
+                
+                // check for duplicates
+                if (index > 0 && [[sortedManagedObjects[index - 1] valueForKey:[self managedObjectUidKey]] compare:[sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]]] == NSOrderedSame) {
+                    NSLog(@"More than one %@ object with unique id not expected", self);
+                }
+            }
+            
+            if (comparison == NSOrderedSame) { // same uids from both lists, update
+                //update
+                NSManagedObject *object = sortedManagedObjects[index];
+                [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                [upsertedObjects addObject:[object mainContextObject]];
+                index++;
+            } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
+                // new
+                NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+                [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                [upsertedObjects addObject:[object mainContextObject]];
+            } else { // delete until next local object uid matches current remote uid
+                while (comparison == NSOrderedDescending && index < sortedManagedObjects.count) {
+                    [context deleteObject:sortedManagedObjects[index]];
+                    index++;
+                    if (index < sortedManagedObjects.count) {
+                        NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
+                        comparison = [remoteUid compare:localUid];
+                    } else {
+                        comparison = NSOrderedAscending;
+                    }
+                }
+                
+                if (comparison == NSOrderedSame) {
+                    NSManagedObject *object = sortedManagedObjects[index];
+                    [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                    [upsertedObjects addObject:[object mainContextObject]];
+                }
+                
+                if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
+                    // new
+                    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+                    [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                    [upsertedObjects addObject:[object mainContextObject]];
+                }
+            }
+            
+            if (progress) {
+                float percent = (float)idx / (float)sortedResponseObjects.count;
+                progress(percent);
+            }
+        }];
+        
+        return upsertedObjects;
+    }
+    
+    NSMutableArray *newObjects = [NSMutableArray array];
+    [objects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
+        NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+        [object updateWithAndRemoveNullsFromDictionary:responseObject];
+        [newObjects addObject:[object mainContextObject]];
+        
+        if (progress) {
+            float percent = (float)idx / (float)objects.count;
+            progress(percent);
+        }
+    }];
+    
+    return newObjects;
+}
+
 @end
