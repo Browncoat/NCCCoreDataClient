@@ -543,11 +543,11 @@
         
 //        [fetchRequest setSortDescriptors:@[sortDescriptor]];
         //request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:myEntity ascending:NO selector:@selector(localizedStandardCompare:)]];
+//        [fetchRequest setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:[self managedObjectUidKey] ascending:YES]]];
 
         
         NSError *error;
         NSArray *sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[sortDescriptor]];
-        [fetchRequest setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:[self managedObjectUidKey] ascending:YES]]];
         
         __block NSUInteger index = 0;
         [sortedResponseObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
