@@ -550,18 +550,28 @@
         [sortedResponseObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
             NSComparisonResult comparison;
 
+            // ids, make sure they are the same type for comparison (choosing string)
             NSString *remoteUid = [responseObject valueForKey:[self responseObjectUidKey]];
-            
             if ([remoteUid isKindOfClass:[NSNumber class]]) {
                 remoteUid = [(NSNumber *)remoteUid stringValue];
             }
+            
+            
             
             // reached end of sortedManagedObjects, the rest of the remoteUids from list should be added as new objects
             if (sortedManagedObjects.count == 0 || index > sortedManagedObjects.count - 1) {
                 comparison = NSOrderedAscending;
             } else {
                 NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
-                comparison = [remoteUid compare:localUid];
+                if ([localUid isKindOfClass:[NSNumber class]]) {
+                    localUid = [(NSNumber *)localUid stringValue];
+                }
+                BOOL bothObjectsIdsAreStrings = [remoteUid isKindOfClass:[NSString class]] && [localUid isKindOfClass:[NSString class]];
+                if (bothObjectsIdsAreStrings) {
+                    comparison = [remoteUid compare:localUid options:NSNumericSearch];
+                } else {
+                    comparison = [remoteUid compare:localUid];
+                }
                 
                 // check for duplicates
                 if (index > 0 && [[sortedManagedObjects[index - 1] valueForKey:[self managedObjectUidKey]] compare:[sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]]] == NSOrderedSame) {
@@ -585,7 +595,15 @@
                     index++;
                     if (index < sortedManagedObjects.count) {
                         NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
-                        comparison = [remoteUid compare:localUid];
+                        if ([localUid isKindOfClass:[NSNumber class]]) {
+                            localUid = [(NSNumber *)localUid stringValue];
+                        }
+                        BOOL bothObjectsIdsAreStrings = [remoteUid isKindOfClass:[NSString class]] && [localUid isKindOfClass:[NSString class]];
+                        if (bothObjectsIdsAreStrings) {
+                            comparison = [remoteUid compare:localUid options:NSNumericSearch];
+                        } else {
+                            comparison = [remoteUid compare:localUid];
+                        }
                     } else {
                         comparison = NSOrderedAscending;
                     }
