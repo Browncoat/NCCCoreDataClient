@@ -595,6 +595,7 @@
                     NSManagedObject *object = sortedManagedObjects[index];
                     [object updateWithAndRemoveNullsFromDictionary:responseObject];
                     [upsertedObjects addObject:[object mainContextObject]];
+                    index++;
                 }
                 
                 if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
