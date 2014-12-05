@@ -519,22 +519,25 @@
     BOOL objectsHaveUidAttribute = responseUids.count == objects.count;
     if (objectsHaveUidAttribute) {
         NSArray *sortedResponseObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            if ([obj1 isKindOfClass:[NSString class]] && [obj2 isKindOfClass:[NSString class]]) {
+            id id1 = [obj1 valueForKey:[self responseObjectUidKey]];
+            id id2 = [obj2 valueForKey:[self responseObjectUidKey]];
+            NSLog(@"%@ %@", NSStringFromClass([id1 class]), NSStringFromClass([id2 class]));
+            BOOL bothObjectsIdsAreStrings = [id1 isKindOfClass:[NSString class]] && [id2 isKindOfClass:[NSString class]];
+            if (bothObjectsIdsAreStrings) {
                 return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]] options:NSNumericSearch];
             } else {
                 return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]]];
             }
-            return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]]];
         }];
         NSMutableArray *upsertedObjects = [NSMutableArray array];
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         [fetchRequest setEntity: [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context]];
-        //        [fetchRequest setPredicate: [NSPredicate predicateWithFormat:@"(%K IN %@)", uniqueIdentifierName, remoteUids]];
         
         // make sure the results are sorted as well
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self managedObjectUidKey] ascending:YES comparator:^NSComparisonResult(id obj1, id obj2) {
-            if ([obj1 isKindOfClass:[NSString class]] && [obj2 isKindOfClass:[NSString class]]) {
+            BOOL bothObjectsIdsAreStrings = [obj1 isKindOfClass:[NSString class]] && [obj2 isKindOfClass:[NSString class]];
+            if (bothObjectsIdsAreStrings) {
                 return [obj1 compare:obj2 options:NSNumericSearch];
             } else {
                 return [obj1 compare:obj2];
@@ -544,7 +547,6 @@
 //        [fetchRequest setSortDescriptors:@[sortDescriptor]];
         //request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:myEntity ascending:NO selector:@selector(localizedStandardCompare:)]];
 //        [fetchRequest setSortDescriptors: @[[[NSSortDescriptor alloc] initWithKey:[self managedObjectUidKey] ascending:YES]]];
-
         
         NSError *error;
         NSArray *sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[sortDescriptor]];
