@@ -518,31 +518,26 @@
     [responseUids removeObject:[NSNull null]];
     BOOL objectsHaveUidAttribute = responseUids.count == objects.count;
     if (objectsHaveUidAttribute) {
+        NSMutableArray *upsertedObjects = [NSMutableArray array];
+        
         NSArray *sortedResponseObjects = [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             id id1 = [obj1 valueForKey:[self responseObjectUidKey]];
             id id2 = [obj2 valueForKey:[self responseObjectUidKey]];
-            BOOL bothObjectsIdsAreStrings = [id1 isKindOfClass:[NSString class]] && [id2 isKindOfClass:[NSString class]];
-            if (bothObjectsIdsAreStrings) {
-                return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]] options:NSNumericSearch];
-            } else {
-                return [[obj1 valueForKey:[self responseObjectUidKey]] compare:[obj2 valueForKey:[self responseObjectUidKey]]];
+            if ([id1 respondsToSelector:@selector(compare:options:)]) {
+                return [id1 compare:id2 options:NSNumericSearch]; // NSNumericSearch in case values are strings
             }
+            return [id1 compare:id2];
         }];
-        NSMutableArray *upsertedObjects = [NSMutableArray array];
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         [fetchRequest setEntity: [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context]];
-        
         // make sure the results are sorted as well
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self managedObjectUidKey] ascending:YES comparator:^NSComparisonResult(id obj1, id obj2) {
-            BOOL bothObjectsIdsAreStrings = [obj1 isKindOfClass:[NSString class]] && [obj2 isKindOfClass:[NSString class]];
-            if (bothObjectsIdsAreStrings) {
-                return [obj1 compare:obj2 options:NSNumericSearch];
-            } else {
-                return [obj1 compare:obj2];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self managedObjectUidKey] ascending:YES comparator:^NSComparisonResult(id id1, id id2) {
+            if ([id1 respondsToSelector:@selector(compare:options:)]) {
+                return [id1 compare:id2 options:NSNumericSearch]; // NSNumericSearch in case values are strings
             }
+            return [id1 compare:id2];
         }];
-        
         NSError *error;
         NSArray *sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[sortDescriptor]];
         
@@ -550,28 +545,20 @@
         [sortedResponseObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
             NSComparisonResult comparison;
 
-            // ids, make sure they are the same type for comparison (choosing string)
-            NSString *remoteUid = [responseObject valueForKey:[self responseObjectUidKey]];
-            if ([remoteUid isKindOfClass:[NSNumber class]]) {
-                remoteUid = [(NSNumber *)remoteUid stringValue];
-            }
-            
-            
-            
-            // reached end of sortedManagedObjects, the rest of the remoteUids from list should be added as new objects
-            if (sortedManagedObjects.count == 0 || index > sortedManagedObjects.count - 1) {
-                comparison = NSOrderedAscending;
+            BOOL reachedEndOfLocalManagedObjects = sortedManagedObjects.count == 0 || index > sortedManagedObjects.count - 1;
+            if (reachedEndOfLocalManagedObjects) {
+                comparison = NSOrderedAscending; // NEW Objects
             } else {
-                NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
+                // compare local and remote ids (make them the same type, NSString)
+                id remoteUid = [responseObject valueForKey:[self responseObjectUidKey]];
+                if ([remoteUid isKindOfClass:[NSNumber class]]) {
+                    remoteUid = [remoteUid stringValue];
+                }
+                id localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
                 if ([localUid isKindOfClass:[NSNumber class]]) {
-                    localUid = [(NSNumber *)localUid stringValue];
+                    localUid = [localUid stringValue];
                 }
-                BOOL bothObjectsIdsAreStrings = [remoteUid isKindOfClass:[NSString class]] && [localUid isKindOfClass:[NSString class]];
-                if (bothObjectsIdsAreStrings) {
-                    comparison = [remoteUid compare:localUid options:NSNumericSearch];
-                } else {
-                    comparison = [remoteUid compare:localUid];
-                }
+                comparison = [remoteUid compare:localUid options:NSNumericSearch]; // NSNumericSearch in case values are strings
                 
                 // check for duplicates
                 if (index > 0 && [[sortedManagedObjects[index - 1] valueForKey:[self managedObjectUidKey]] compare:[sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]]] == NSOrderedSame) {
@@ -594,16 +581,15 @@
                     [context deleteObject:sortedManagedObjects[index]];
                     index++;
                     if (index < sortedManagedObjects.count) {
-                        NSString *localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
+                        id remoteUid = [responseObject valueForKey:[self responseObjectUidKey]];
+                        if ([remoteUid isKindOfClass:[NSNumber class]]) {
+                            remoteUid = [remoteUid stringValue];
+                        }
+                        id localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
                         if ([localUid isKindOfClass:[NSNumber class]]) {
-                            localUid = [(NSNumber *)localUid stringValue];
+                            localUid = [localUid stringValue];
                         }
-                        BOOL bothObjectsIdsAreStrings = [remoteUid isKindOfClass:[NSString class]] && [localUid isKindOfClass:[NSString class]];
-                        if (bothObjectsIdsAreStrings) {
-                            comparison = [remoteUid compare:localUid options:NSNumericSearch];
-                        } else {
-                            comparison = [remoteUid compare:localUid];
-                        }
+                        comparison = [remoteUid compare:localUid options:NSNumericSearch]; // NSNumericSearch in case values are strings
                     } else {
                         comparison = NSOrderedAscending;
                     }
@@ -629,6 +615,15 @@
                 progress(percent);
             }
         }];
+        
+        // DELETE local objects that are beyond end of remote objects array
+        BOOL reachedEndOfRemoteObjects = sortedResponseObjects.count == 0 || index > sortedResponseObjects.count - 1;
+        if (reachedEndOfRemoteObjects) {
+            while (index < sortedManagedObjects.count) {
+                [context deleteObject:sortedManagedObjects[index]];
+                index++;
+            }
+        }
         
         return upsertedObjects;
     }
