@@ -569,18 +569,17 @@
                 }
             }
             
-            if (comparison == NSOrderedSame) { // same uids from both lists, update
-                //update
+            if (comparison == NSOrderedSame) { // same uids from both lists, UPDATE
                 NSManagedObject *object = sortedManagedObjects[index];
                 [object updateWithAndRemoveNullsFromDictionary:responseObject];
                 [upsertedObjects addObject:[object mainContextObject]];
                 index++;
-            } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
+            } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, NEW
                 // new
                 NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
                 [object updateWithAndRemoveNullsFromDictionary:responseObject];
                 [upsertedObjects addObject:[object mainContextObject]];
-            } else { // delete until next local object uid matches current remote uid
+            } else { // localUid not in remoteObjects, delete until next local object uid matches current remote uid, DELETE
                 while (comparison == NSOrderedDescending && index < sortedManagedObjects.count) {
                     [context deleteObject:sortedManagedObjects[index]];
                     index++;
