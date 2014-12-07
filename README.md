@@ -37,9 +37,9 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
  {
     // Session headers
     [request setHeaders:@{@"Authorization":###,
-                              @"x-api-key":###,
-                              @"x-app-id":###,
-                              @"x-device-id":###};];
+                          @"x-api-key":###,
+                          @"x-app-id":###,
+                          @"x-device-id":###};];
 
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         id results = nil;
@@ -66,9 +66,9 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 {
   // Session headers
     [request setHeaders:@{@"Authorization":###,
-                              @"x-api-key":###,
-                              @"x-app-id":###,
-                              @"x-device-id":###};];
+                          @"x-api-key":###,
+                          @"x-app-id":###,
+                          @"x-device-id":###};];
 
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     op.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -102,9 +102,9 @@ for each Core Data Model you that you wish to parse request responses to NSManag
     self.lastName = dictionary[@"last"];
 
     Address *address = [Address insertObjectWithDictionary:@{@"city":dictionary[@"city"],
-                                                                       @"state":dictionary[@"state"],
-                                                                       @"address":dictionary[@"address"],
-                                                                       @"zip":dictionary[@"zip"]}
+                                                             @"state":dictionary[@"state"],
+                                                             @"address":dictionary[@"address"],
+                                                             @"zip":dictionary[@"zip"]}
                                               inManagedObjectContext:self.managedObjectContext];
 
     self.address = address;
@@ -130,7 +130,7 @@ Each NSManagedObject Category can set it's own basePath, responseObjectUidKey an
 {
     [self setResponseObjectUidKey:@"id"];
     [self setManagedObjectUidKey:@"uid"];
-    [self setBasePath:PW_API_URL];
+    [self setBasePath:@"http://example.com/user/"];
 }
 ```
 
