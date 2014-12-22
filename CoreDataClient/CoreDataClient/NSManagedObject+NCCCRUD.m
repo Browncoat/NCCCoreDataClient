@@ -24,6 +24,14 @@
 #import "NSDictionary+NCCNullToNil.h"
 #import "AppDelegate+NCCCoreData.h"
 
+id (^if_let)(id value) = ^ id (id value) {
+    if (value == [NSNull null]) {
+        return nil;
+    } else {
+        return value;
+    }
+};
+
 @implementation NSManagedObject (NCCCRUD)
 
 // XML
@@ -87,7 +95,7 @@
         
         [context performBlockAndWait:^{
             // update object on child context
-            [object updateWithAndRemoveNullsFromDictionary:dictionary];
+            [object updateWithDictionary:dictionary];
         }];
     } else {
         object = [[self class] insertObjectWithDictionary:dictionary inManagedObjectContext:context];
@@ -104,19 +112,10 @@
         
         object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
         
-        [object updateWithAndRemoveNullsFromDictionary:dictionary];
+        [object updateWithDictionary:dictionary];
     }];
     
     return object;
-}
-
-- (void)updateWithAndRemoveNullsFromDictionary:(NSDictionary *)dictionary
-{
-    // Change NSNUll objects to nil
-    dictionary = [dictionary dictionaryByReplacingNullObjectswithNil];
-    
-    //    NSLog(@"Create / update Instance %@", NSStringFromClass([self class]));
-    [self updateWithDictionary:dictionary];
 }
 
 /*
@@ -568,13 +567,13 @@
             
             if (comparison == NSOrderedSame) { // same uids from both lists, UPDATE
                 NSManagedObject *object = sortedManagedObjects[index];
-                [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                [object updateWithDictionary:responseObject];
                 [upsertedObjects addObject:[object mainContextObject]];
                 index++;
             } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, NEW
                 // new
                 NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
-                [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                [object updateWithDictionary:responseObject];
                 [upsertedObjects addObject:[object mainContextObject]];
             } else { // localUid not in remoteObjects, delete until next local object uid matches current remote uid, DELETE
                 while (comparison == NSOrderedDescending && index < sortedManagedObjects.count) {
@@ -597,7 +596,7 @@
                 
                 if (comparison == NSOrderedSame) {
                     NSManagedObject *object = sortedManagedObjects[index];
-                    [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                    [object updateWithDictionary:responseObject];
                     [upsertedObjects addObject:[object mainContextObject]];
                     index++;
                 }
@@ -605,7 +604,7 @@
                 if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
                     // new
                     NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
-                    [object updateWithAndRemoveNullsFromDictionary:responseObject];
+                    [object updateWithDictionary:responseObject];
                     [upsertedObjects addObject:[object mainContextObject]];
                 }
             }
@@ -631,7 +630,7 @@
     NSMutableArray *newObjects = [NSMutableArray array];
     [objects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
         NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
-        [object updateWithAndRemoveNullsFromDictionary:responseObject];
+        [object updateWithDictionary:responseObject];
         [newObjects addObject:[object mainContextObject]];
         
         if (progress) {

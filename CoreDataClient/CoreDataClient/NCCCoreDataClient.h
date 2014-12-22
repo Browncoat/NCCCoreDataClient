@@ -24,7 +24,6 @@
 #define NCCCoreDataClient_NCCCoreDataClient_h
 
 #import "NSManagedObject+NCCCRUD.h"
-//#import "NSManagedObject+NCCRequestAdapter.h"
 #import "NSManagedObject+NCCRequest.h"
 #import "AppDelegate+NCCCoreData.h"
 #import "NSMutableURLRequest+NCCCreate.h"

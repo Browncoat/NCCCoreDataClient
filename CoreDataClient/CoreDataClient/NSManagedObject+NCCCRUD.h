@@ -24,6 +24,10 @@
 #import <CoreData/CoreData.h>
 @class RXMLElement;
 
+id (^if_let)(id value);
+
+//#define IF_LET(TARGET, VALUE) if(VALUE != [NSNull null]) { TARGET = VALUE; } else { TARGET = nil; };
+
 @interface NSManagedObject (NCCCRUD)
 
 // CREATING FROM XML
