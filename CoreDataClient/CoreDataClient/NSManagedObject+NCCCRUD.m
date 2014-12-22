@@ -24,7 +24,7 @@
 #import "NSDictionary+NCCNullToNil.h"
 #import "AppDelegate+NCCCoreData.h"
 
-id (^if_let)(id value) = ^ id (id value) {
+id (^if_value_else_nil)(id value) = ^ id (id value) {
     if (value == [NSNull null]) {
         return nil;
     } else {

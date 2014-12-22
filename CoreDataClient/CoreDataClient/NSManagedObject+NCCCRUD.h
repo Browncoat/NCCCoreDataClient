@@ -24,7 +24,7 @@
 #import <CoreData/CoreData.h>
 @class RXMLElement;
 
-id (^if_let)(id value);
+id (^if_value_else_nil)(id value);
 
 //#define IF_LET(TARGET, VALUE) if(VALUE != [NSNull null]) { TARGET = VALUE; } else { TARGET = nil; };
 
