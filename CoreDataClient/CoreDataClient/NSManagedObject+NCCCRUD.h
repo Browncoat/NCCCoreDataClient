@@ -37,12 +37,7 @@ id (^if_value_action_else_nil)(id value, SEL action);
 - (void)updateWithRXMLElement:(RXMLElement *)element;
 
 // CREATING FROM JSON
-+ (instancetype)PUT:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (instancetype)PUT:(NSDictionary *)dictionary;
 + (instancetype)upsertObjectWithDictionary:(NSDictionary *)dictionary uid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context;
-
-+ (instancetype)POST:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (instancetype)POST:(NSDictionary *)dictionary;
 + (instancetype)insertObjectWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)context;
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
@@ -65,13 +60,9 @@ id (^if_value_action_else_nil)(id value, SEL action);
 
 // SAVING
 + (BOOL)saveContextAndWait:(NSManagedObjectContext *)context error:(NSError **)saveError;
-
 + (void)saveContext:(NSManagedObjectContext *)context completion:(void(^)(NSError *error))completion;
 
 // FETCHING
-+ (instancetype)GET:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (instancetype)GET:(NSString *)uid;
-
 + (NSArray *)allObjects;
 
 + (NSArray *)allObjectsInManagedObjectContext:(NSManagedObjectContext *)context;
@@ -79,10 +70,6 @@ id (^if_value_action_else_nil)(id value, SEL action);
 + (instancetype)managedObjectWithId:(id)uid;
 
 + (instancetype)managedObjectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context;
-
-+ (instancetype)managedObjectWithName:(NSString *)name;
-
-+ (instancetype)managedObjectWithName:(NSString *)name inManagedObjectContext:(NSManagedObjectContext *)context;
 
 // Batch Updating
 + (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName error:(NSError **)outError;

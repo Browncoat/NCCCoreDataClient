@@ -190,30 +190,6 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     return nil;
 }
 
-+ (instancetype)managedObjectWithName:(NSString *)name
-{
-    return [[self class] managedObjectWithName:name inManagedObjectContext:[self mainContext]];
-}
-
-+ (instancetype)managedObjectsWith:(NSString *)name inManagedObjectContext:(NSManagedObjectContext *)context
-{
-    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@", name];
-    request.includesSubentities = NO;
-    request.entity = entity;
-    request.predicate = predicate;
-    
-    NSError *error;
-    NSArray *results = [context executeFetchRequest:request error:&error];
-    
-    if (!error) {
-        return [results lastObject];
-    }
-    
-    return nil;
-}
-
 + (NSArray *)managedObjectsWithId:(id)uid
 {
     return [self managedObjectsWithId:uid inManagedObjectContext:[self mainContext]];
