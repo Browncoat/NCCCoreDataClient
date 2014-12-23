@@ -28,7 +28,7 @@ id (^if_value_action_else_nil)(id value, SEL action) = ^ id (id value, SEL actio
         return nil;
     } else {
         if (action) {
-            return [value action];
+            return [value performSelector:action];
         }
         return value;
     }
