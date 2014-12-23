@@ -21,15 +21,21 @@
 // THE SOFTWARE.
 
 #import "NSManagedObject+NCCCRUD.h"
-#import "NSDictionary+NCCNullToNil.h"
 #import "AppDelegate+NCCCoreData.h"
 
-id (^if_value_else_nil)(id value) = ^ id (id value) {
+id (^if_value_action_else_nil)(id value, SEL action) = ^ id (id value, SEL action) {
     if (value == [NSNull null]) {
         return nil;
     } else {
+        if (action) {
+            return [value action];
+        }
         return value;
     }
+};
+
+id (^if_value_else_nil)(id value) = ^ id (id value) {
+    return if_value_action_else_nil(value, nil);
 };
 
 @implementation NSManagedObject (NCCCRUD)

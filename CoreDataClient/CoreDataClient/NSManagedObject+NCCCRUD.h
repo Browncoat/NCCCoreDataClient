@@ -25,8 +25,7 @@
 @class RXMLElement;
 
 id (^if_value_else_nil)(id value);
-
-//#define IF_LET(TARGET, VALUE) if(VALUE != [NSNull null]) { TARGET = VALUE; } else { TARGET = nil; };
+id (^if_value_action_else_nil)(id value, SEL action);
 
 @interface NSManagedObject (NCCCRUD)
 
