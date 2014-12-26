@@ -21,7 +21,8 @@
 // THE SOFTWARE.
 
 #import "NSManagedObject+NCCCRUD.h"
-#import "AppDelegate+NCCCoreData.h"
+#import "UIApplication+NCCCoreData.h"
+#import "NSManagedObject+NCCRequest.h"
 
 id (^if_value_action_else_nil)(id value, SEL action) = ^ id (id value, SEL action) {
     if (value == [NSNull null]) {
@@ -348,7 +349,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 
 + (NSManagedObjectContext *)mainContext
 {
-    return [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    return [[UIApplication sharedApplication] managedObjectContext];
 }
 
 - (instancetype)mainContextObject
@@ -358,7 +359,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 
 + (NSManagedObjectContext *)saveToDiskContext
 {
-    return [(AppDelegate *)[[UIApplication sharedApplication] delegate] privateSaveToDiskContext];
+    return [[UIApplication sharedApplication] privateSaveToDiskContext];
 }
 
 + (void)deleteObjects:(NSSet *)deleteSet inManagedObjectContext:(NSManagedObjectContext *)context
