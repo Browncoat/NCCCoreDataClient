@@ -43,7 +43,8 @@ id (^if_value_action_else_nil)(id value, SEL action);
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 // Temp Object
-+ (instancetype)objectInManagedObjectContext:(NSManagedObjectContext *)context;
++ (instancetype)createObject;
++ (instancetype)createObjectInManagedObjectContext:(NSManagedObjectContext *)context;
 
 //DELETING
 + (void)deleteObjects:(NSSet *)deleteSet;

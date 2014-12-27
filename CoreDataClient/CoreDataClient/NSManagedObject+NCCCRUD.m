@@ -163,7 +163,12 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                                  userInfo:nil];
 }
 
-+ (instancetype)objectInManagedObjectContext:(NSManagedObjectContext *)context
++ (instancetype)createObject
+{
+    return [self createObjectInManagedObjectContext:[self mainContext]];
+}
+
++ (instancetype)createObjectInManagedObjectContext:(NSManagedObjectContext *)context
 {
     return [[NSManagedObject alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:[self mainContext]] insertIntoManagedObjectContext:context];
 }
