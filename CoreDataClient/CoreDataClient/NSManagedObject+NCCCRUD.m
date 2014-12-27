@@ -73,11 +73,17 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 
 + (instancetype)insertObjectWithRXMLElement:(RXMLElement *)element inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    id object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+    id object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
     
     [object updateWithRXMLElement:element];
     
     return object;
+}
+
+//swift classes are namespaced
++ (NSString *)classNameWithoutNamespace
+{
+    return [[NSStringFromClass([self class]) componentsSeparatedByString:@"."] lastObject];
 }
 
 - (void)updateWithRXMLElement:(RXMLElement *)element
@@ -117,7 +123,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     
     [context performBlockAndWait:^{
         
-        object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+        object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
         
         [object updateWithDictionary:dictionary];
     }];
@@ -170,7 +176,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 
 + (instancetype)createObjectInManagedObjectContext:(NSManagedObjectContext *)context
 {
-    return [[NSManagedObject alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:[self mainContext]] insertIntoManagedObjectContext:context];
+    return [[NSManagedObject alloc] initWithEntity:[NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:[self mainContext]] insertIntoManagedObjectContext:context];
 }
 
 
@@ -181,7 +187,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 
 + (NSArray *)allObjectsInManagedObjectContext:(NSManagedObjectContext *)context
 {
-    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     request.includesSubentities = NO;
     request.entity = entity;
@@ -209,7 +215,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     [context performBlockAndWait:^{
         
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
         request.entity = entity;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@", [self managedObjectUidKey], uid];
         request.predicate = predicate;
@@ -244,7 +250,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 + (NSArray *)allUids
 {
     NSManagedObjectContext *context = [NSManagedObject mainContext];
-    NSEntityDescription *entity = [NSEntityDescription  entityForName:NSStringFromClass([self class]) inManagedObjectContext:[self mainContext]];
+    NSEntityDescription *entity = [NSEntityDescription  entityForName:self.classNameWithoutNamespace inManagedObjectContext:[self mainContext]];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entity];
     [request setResultType:NSDictionaryResultType];
@@ -401,7 +407,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 + (void)deleteAllObjectsInManagedObjectContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context]];
+    [request setEntity:[NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context]];
     [request setIncludesPropertyValues:NO];
     
     NSError *error = nil;
@@ -517,7 +523,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
         }];
         
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-        [fetchRequest setEntity: [NSEntityDescription entityForName:NSStringFromClass([self class]) inManagedObjectContext:context]];
+        [fetchRequest setEntity: [NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context]];
         // make sure the results are sorted as well
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:[self managedObjectUidKey] ascending:YES comparator:^NSComparisonResult(id id1, id id2) {
             if ([id1 respondsToSelector:@selector(compare:options:)]) {
@@ -560,7 +566,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                 index++;
             } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, NEW
                 // new
-                NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+                NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
                 [object updateWithDictionary:responseObject];
                 [upsertedObjects addObject:[object mainContextObject]];
             } else { // localUid not in remoteObjects, delete until next local object uid matches current remote uid, DELETE
@@ -591,7 +597,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                 
                 if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
                     // new
-                    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+                    NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
                     [object updateWithDictionary:responseObject];
                     [upsertedObjects addObject:[object mainContextObject]];
                 }
@@ -617,7 +623,7 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     
     NSMutableArray *newObjects = [NSMutableArray array];
     [objects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
-        NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([self class]) inManagedObjectContext:context];
+        NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
         [object updateWithDictionary:responseObject];
         [newObjects addObject:[object mainContextObject]];
         
