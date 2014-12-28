@@ -62,6 +62,8 @@ id (^if_value_action_else_nil)(id value, SEL action);
 // SAVING
 + (BOOL)saveContextAndWait:(NSManagedObjectContext *)context error:(NSError **)saveError;
 + (void)saveContext:(NSManagedObjectContext *)context completion:(void(^)(NSError *error))completion;
+- (void)saveWithError:(NSError **)saveError;
+- (void)saveWithCompletion:(void(^)(NSError *error))completion;
 
 // FETCHING
 + (NSArray *)allObjects;

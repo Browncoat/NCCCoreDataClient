@@ -325,7 +325,9 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                 NSLog(@"save done %@", [self class]);
             }
             dispatch_async(dispatch_get_main_queue(), ^{
-                completion(error);
+                if (completion) {
+                    completion(error);
+                }
             });
         };
         
@@ -344,16 +346,30 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                     }
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        completion(saveError);
+                        if (completion) {
+                            completion(saveError);
+                        }
                     });
                 }
             }];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                completion(nil);
+                if (completion) {
+                    completion(nil);
+                }
             });
         }
     }
+}
+
+- (void)saveWithError:(NSError **)saveError
+{
+    [[self class] saveContextAndWait:self.managedObjectContext error:saveError];
+}
+
+- (void)saveWithCompletion:(void(^)(NSError *error))completion
+{
+    [[self class] saveContext:self.managedObjectContext completion:completion];
 }
 
 // Helpers
