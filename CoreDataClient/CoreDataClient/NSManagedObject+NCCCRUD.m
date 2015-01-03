@@ -169,9 +169,9 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                                  userInfo:nil];
 }
 
-+ (instancetype)createObject
++ (instancetype)tempObject
 {
-    return [self createObjectInManagedObjectContext:[self mainContext]];
+    return [self createObjectInManagedObjectContext:[self tempContext]];
 }
 
 + (instancetype)createObjectInManagedObjectContext:(NSManagedObjectContext *)context
@@ -179,6 +179,13 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     return [[NSManagedObject alloc] initWithEntity:[NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:[self mainContext]] insertIntoManagedObjectContext:context];
 }
 
++ (NSManagedObjectContext *)tempContext
+{
+    NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    childContext.parentContext = [self mainContext];
+    
+    return childContext;
+}
 
 + (NSArray *)allObjects
 {
