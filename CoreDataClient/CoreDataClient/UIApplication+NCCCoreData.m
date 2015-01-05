@@ -21,13 +21,13 @@
 // THE SOFTWARE.
 
 #import <objc/runtime.h>
-#import "AppDelegate+NCCCoreData.h"
+#import "UIApplication+NCCCoreData.h"
 
-@implementation AppDelegate (NCCCoreData)
+@implementation UIApplication (NCCCoreData)
 
 + (NSManagedObjectContext *)mainContext
 {
-    return [(AppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    return [[UIApplication sharedApplication] managedObjectContext];
 }
 
 #pragma mark Getters/Setters (AssociatedObjects)

@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AppDelegate.h"
+#import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@interface AppDelegate (NCCCoreData)
+@interface UIApplication (NCCCoreData)
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *privateSaveToDiskContext;
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;

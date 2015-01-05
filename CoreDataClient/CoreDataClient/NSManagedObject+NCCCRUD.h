@@ -43,7 +43,11 @@ id (^if_value_action_else_nil)(id value, SEL action);
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 
 // Temp Object
-+ (instancetype)objectInManagedObjectContext:(NSManagedObjectContext *)context;
++ (instancetype)tempObject;
++ (instancetype)createObjectInManagedObjectContext:(NSManagedObjectContext *)context;
+
+// Temp Context
++ (NSManagedObjectContext *)tempContext;
 
 //DELETING
 + (void)deleteObjects:(NSSet *)deleteSet;
@@ -61,6 +65,8 @@ id (^if_value_action_else_nil)(id value, SEL action);
 // SAVING
 + (BOOL)saveContextAndWait:(NSManagedObjectContext *)context error:(NSError **)saveError;
 + (void)saveContext:(NSManagedObjectContext *)context completion:(void(^)(NSError *error))completion;
+- (void)saveWithError:(NSError **)saveError;
+- (void)saveWithCompletion:(void(^)(NSError *error))completion;
 
 // FETCHING
 + (NSArray *)allObjects;

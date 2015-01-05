@@ -25,7 +25,7 @@
 
 #import "NSManagedObject+NCCCRUD.h"
 #import "NSManagedObject+NCCRequest.h"
-#import "AppDelegate+NCCCoreData.h"
+#import "UIApplication+NCCCoreData.h"
 #import "NSMutableURLRequest+NCCCreate.h"
 
 #endif

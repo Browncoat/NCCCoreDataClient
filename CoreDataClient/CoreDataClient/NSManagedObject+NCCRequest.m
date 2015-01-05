@@ -23,6 +23,7 @@
 #import <objc/runtime.h>
 #import "NSManagedObject+NCCRequest.h"
 #import "NSMutableURLRequest+NCCCreate.h"
+#import "NSManagedObject+NCCCRUD.h"
 
 @implementation NSManagedObject (NCCRequest)
 
