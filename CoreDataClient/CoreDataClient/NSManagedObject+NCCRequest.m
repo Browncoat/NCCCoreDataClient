@@ -99,7 +99,7 @@
         requestBlock(request);
     }
     
-    [[self class] checkClassNameIncludedInRequestUrl:request.URL];
+    [self checkClassNameIncludedInRequestUrl:request.URL];
     
     [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock withCompletion:^(id responseObject, NSError *error) {
         if (responseObject) {
@@ -107,7 +107,7 @@
                 responseObject = @[responseObject];
             }
             
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+            [self batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -178,7 +178,7 @@
         requestBlock(request);
     }
     
-    [[self class] checkClassNameIncludedInRequestUrl:request.URL];
+    [self checkClassNameIncludedInRequestUrl:request.URL];
     
     [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock withCompletion:^(id responseObject, NSError *error) {
         if (responseObject) {
@@ -186,7 +186,7 @@
                 responseObject = @[responseObject];
             }
             
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+            [self batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -220,7 +220,7 @@
 
 #pragma mark - PUT
 
-- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)PUT:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
@@ -234,7 +234,32 @@
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    [self makeRequest:request progress:nil withCompletion:completionBlock];
+    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock withCompletion:^(id responseObject, NSError *error) {
+        if (responseObject) {
+            if (![responseObject isKindOfClass:[NSArray class]]) {
+                responseObject = @[responseObject];
+            }
+            
+            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[[self class] responseObjectUidKey] progress:^(CGFloat progress) {
+                if (progressBlock) {
+                    progressBlock(progress);
+                }
+            } completion:^(NSArray *results, NSError *error) {
+                if (completionBlock) {
+                    completionBlock(results, error);
+                }
+            }];
+        } else {
+            if (completionBlock) {
+                completionBlock(nil, error);
+            }
+        }
+    }];
+}
+
+- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self PUT:resource progress:nil request:requestBlock withCompletion:completionBlock];
 }
 
 #pragma mark - DELETE
