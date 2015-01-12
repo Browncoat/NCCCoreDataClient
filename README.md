@@ -17,15 +17,15 @@ iOS 5.1+
 
 ## Usage
 
-Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in Category `AppDelegate (NCCCoreData)`
+Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in Category `UIApplication (NCCCoreData)`
 
 ### NSManagedObject Categories
 
 ### Passing the request to an HTTP Client and adding Session Headers
 
-`NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides 
+`NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides
 
-`+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` 
+`+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;`
 
 This allows you to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save. Here you can also set the 'session' headers globaly since you have access to the NSURLRequest object before it is sent.
 
@@ -50,7 +50,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
                 NSLog(@"%@", error);
             }
         }
-        
+
         completion(results, connectionError);
     }];
  }
@@ -87,7 +87,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 
 NCCCoreDataClient also requires that that you add an NSManagedObject Category that overrides
 
-`- (void)updateWithDictionary:(NSDictionary *)dictionary` 
+`- (void)updateWithDictionary:(NSDictionary *)dictionary`
 
 for each Core Data Model you that you wish to parse request responses to NSManagedObject attributes and relationships.
 
@@ -199,7 +199,7 @@ You can also use several request helper methods such as `setJSON` and `setPNG`
     [self PUT:@"user" request:^(NSMutableURLRequest *request) {
         NSError *error;
         NSData *data = [NSJSONSerialization dataWithJSONObject:[self dictionaryWithAttributeToKeyPathMappings:keyMappings] options:0 error:&error];
-        
+
         if (!error) {
             [request setData:data ofContentType:postBodyContentTypeJSON];
         } else {
