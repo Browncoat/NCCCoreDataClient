@@ -42,12 +42,9 @@ id (^if_value_action_else_nil)(id value, SEL action);
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary;
 
-// Temp Object
-+ (instancetype)tempObject;
-+ (instancetype)createObjectInManagedObjectContext:(NSManagedObjectContext *)context;
-
-// Temp Context
-+ (NSManagedObjectContext *)tempContext;
+// Create
++ (instancetype)tempManagedObject;
++ (instancetype)managedObjectInManagedObjectContext:(NSManagedObjectContext *)context;
 
 //DELETING
 + (void)deleteObjects:(NSSet *)deleteSet;
@@ -73,9 +70,9 @@ id (^if_value_action_else_nil)(id value, SEL action);
 
 + (NSArray *)allObjectsInManagedObjectContext:(NSManagedObjectContext *)context;
 
-+ (instancetype)managedObjectWithId:(id)uid;
++ (instancetype)objectWithId:(id)uid;
 
-+ (instancetype)managedObjectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context;
++ (instancetype)objectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context;
 
 // Batch Updating
 + (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName error:(NSError **)outError;

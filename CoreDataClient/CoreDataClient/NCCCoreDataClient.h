@@ -25,6 +25,8 @@
 
 #import "NSManagedObject+NCCCRUD.h"
 #import "NSManagedObject+NCCRequest.h"
+#import "NSManagedObjectContext+Create.h"
+#import "NSManagedObjectContext+Edit.h"
 #import "UIApplication+NCCCoreData.h"
 #import "NSMutableURLRequest+NCCCreate.h"
 

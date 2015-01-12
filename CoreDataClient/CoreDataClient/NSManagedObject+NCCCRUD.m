@@ -48,11 +48,11 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     
     if (uid) {
         // look for object in child context
-        object = [[self class] managedObjectWithId:uid inManagedObjectContext:context];
+        object = [[self class] objectWithId:uid inManagedObjectContext:context];
         
         // look for object in main context
         if (!object) {
-            object = [[self class] managedObjectWithId:uid];
+            object = [[self class] objectWithId:uid];
         }
     }
     
@@ -70,6 +70,8 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     
     return object;
 }
+
+#pragma mark - Update XML
 
 + (instancetype)insertObjectWithRXMLElement:(RXMLElement *)element inManagedObjectContext:(NSManagedObjectContext *)context
 {
@@ -93,13 +95,14 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                                  userInfo:nil];
 }
 
-// JSON
+#pragma mark - Update JSON
+
 + (instancetype)upsertObjectWithDictionary:(NSDictionary *)dictionary uid:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
     id object = nil;
     
     if (uid) {
-        object = [[self class] managedObjectWithId:uid inManagedObjectContext:context];
+        object = [[self class] objectWithId:uid inManagedObjectContext:context];
     }
     
     if (object) {
@@ -169,12 +172,14 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
                                  userInfo:nil];
 }
 
-+ (instancetype)tempObject
+#pragma mark - Create
+
++ (instancetype)tempManagedObject
 {
-    return [self createObjectInManagedObjectContext:[self tempContext]];
+    return [self managedObjectInManagedObjectContext:nil];
 }
 
-+ (instancetype)createObjectInManagedObjectContext:(NSManagedObjectContext *)context
++ (instancetype)managedObjectInManagedObjectContext:(NSManagedObjectContext *)context;
 {
     return [[NSManagedObject alloc] initWithEntity:[NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:[self mainContext]] insertIntoManagedObjectContext:context];
 }
@@ -186,6 +191,8 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     
     return childContext;
 }
+
+#pragma mark - Fetch
 
 + (NSArray *)allObjects
 {
@@ -209,12 +216,12 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     return nil;
 }
 
-+ (NSArray *)managedObjectsWithId:(id)uid
++ (NSArray *)objectsWithId:(id)uid
 {
-    return [self managedObjectsWithId:uid inManagedObjectContext:[self mainContext]];
+    return [self objectsWithId:uid inManagedObjectContext:[self mainContext]];
 }
 
-+ (NSArray *)managedObjectsWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
++ (NSArray *)objectsWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
     __block NSArray *results;
     __block NSError *error;
@@ -238,17 +245,17 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     return nil;
 }
 
-+ (instancetype)managedObjectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
++ (instancetype)objectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    NSArray *results = [[self class] managedObjectsWithId:uid inManagedObjectContext:context];
+    NSArray *results = [[self class] objectsWithId:uid inManagedObjectContext:context];
     if (results.count > 1) NSLog(@"More than one %@ object with unique id not expected", self);
     
     return [results lastObject];
 }
 
-+ (id)managedObjectWithId:(id)uid
++ (id)objectWithId:(id)uid
 {
-    NSArray *results = [[self class] managedObjectsWithId:uid];
+    NSArray *results = [[self class] objectsWithId:uid];
     if (results.count > 1) NSLog(@"More than one %@ object with unique id not expected", self);
     
     return [results lastObject];
@@ -290,7 +297,9 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     NSArray *fetchedObjectsMatchingRemoteIds = [context executeFetchRequest:fetchRequest error:&error];
 }
 */
-// Saving
+
+#pragma mark - Save
+
 + (BOOL)saveContextAndWait:(NSManagedObjectContext *)context error:(NSError **)saveError
 {
     __block BOOL success = NO;
@@ -314,7 +323,11 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
             }
         }];
     } else {
-        success = YES;
+        success = (context != nil);
+        NSError *error;
+        if (!success) {
+            error = [NSError errorWithDomain:@"com.ncccoredataclient" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"%@: mangedObjectContext is nil, you must set it's managedObjectContext property in order to save", self]}];
+        }
     }
     
     return success;
@@ -361,8 +374,12 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
             }];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
+                NSError *error;
+                if (!context) {
+                    error = [NSError errorWithDomain:@"com.ncccoredataclient" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"%@: mangedObjectContext is nil, you must set it's managedObjectContext property in order to save", self]}];
+                }
                 if (completion) {
-                    completion(nil);
+                    completion(error);
                 }
             });
         }
@@ -395,6 +412,8 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 {
     return [[UIApplication sharedApplication] privateSaveToDiskContext];
 }
+
+#pragma mark - Delete
 
 + (void)deleteObjects:(NSSet *)deleteSet inManagedObjectContext:(NSManagedObjectContext *)context
 {
@@ -442,19 +461,19 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 
 + (void)deleteObjectWithId:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context
 {
-    id deleteObject = [self managedObjectWithId:uid inManagedObjectContext:context];
+    id deleteObject = [self objectWithId:uid inManagedObjectContext:context];
     [self deleteObject:deleteObject inManagedObjectContext:context];
 }
 
 + (void)deleteObjectWithId:(NSString *)uid
 {
-    id deleteObject = [self managedObjectWithId:uid inManagedObjectContext:[self mainContext]];
+    id deleteObject = [self objectWithId:uid inManagedObjectContext:[self mainContext]];
     [self deleteObject:deleteObject inManagedObjectContext:[self mainContext]];
 }
 
 + (NSSet *)duplicateManagedObjectsInMainContextForObject:(NSManagedObject *)object
 {
-    NSSet *duplicateObjects = [NSSet setWithArray:[[object class] managedObjectsWithId:[object valueForKey:[self managedObjectUidKey]]]];
+    NSSet *duplicateObjects = [NSSet setWithArray:[[object class] objectsWithId:[object valueForKey:[self managedObjectUidKey]]]];
     
     return duplicateObjects;
 }
@@ -472,6 +491,8 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
     if([dict objectForKey:key]){ val = [[dict objectForKey:key] boolValue]; }
     return val;
 }
+
+#pragma mark - Batch
 
 + (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName error:(NSError **)outError
 {
