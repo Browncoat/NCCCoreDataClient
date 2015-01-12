@@ -17,7 +17,9 @@ iOS 5.1+
 
 ## Usage
 
-Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in Category `UIApplication (NCCCoreData)`
+Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in the Category `UIApplication (NCCCoreData)`
+
+Add NCCCoreDataClient.h to your <Your-Product-Name>-Prefix.pch file.
 
 ### NSManagedObject Categories
 
