@@ -17,9 +17,15 @@ iOS 5.1+
 
 ## Usage
 
+## To use with Swift
+
+Add `<Product_Name>-Briding-Header.h to your project. Add `#import "NCCCoreDataClient.h"` to Bridging-Header. Make sure that each entity in your core data xcdatamodel `Class` field is prefixed with the module/product name. If your product name inlcudes spaces or dashes replace those with underscores.
+
+## Xcode Core Data boilerplate
+
 Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in the Category `UIApplication (NCCCoreData)`
 
-Add NCCCoreDataClient.h to your <Your-Product-Name>-Prefix.pch file.
+Add NCCCoreDataClient.h to your `<Your-Product-Name>-Prefix.pch` file.
 
 ### NSManagedObject Categories
 
@@ -119,7 +125,7 @@ If the relationship is an update/create (upsert) then you can use the method
 
 `[Address upsertObjectWithDictionary:dictionary uid:dictionary[@"id"] inManagedObjectContext:self.managedObjectContext];`
 
-The helper method `[NSManagedObject mainContext]` is also available to alsways reach the main NSManagedObjectContext.
+The helper method `[NSManagedObjectContext mainContext]` is also available to alsways reach the main NSManagedObjectContext.
 
 ### Set BasePath and Object Id Keys
 
