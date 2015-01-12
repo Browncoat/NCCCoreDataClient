@@ -14,5 +14,6 @@ id (^if_value_action_else_nil)(id value, SEL action);
 @interface NSManagedObject (Utilities)
 
 + (NSString *)classNameWithoutNamespace;
+- (NSManagedObjectContext *)mainContext;
 
 @end

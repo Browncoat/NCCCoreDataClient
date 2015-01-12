@@ -7,6 +7,7 @@
 //
 
 #import "NSManagedObject+Utilities.h"
+#import "NCCCoreDataClient.h"
 
 id (^if_value_action_else_nil)(id value, SEL action) = ^ id (id value, SEL action) {
     if (value == [NSNull null]) {
@@ -29,6 +30,11 @@ id (^if_value_else_nil)(id value) = ^ id (id value) {
 + (NSString *)classNameWithoutNamespace
 {
     return [[NSStringFromClass([self class]) componentsSeparatedByString:@"."] lastObject];
+}
+
+- (NSManagedObjectContext *)mainContext
+{
+    return [NSManagedObjectContext mainContext];
 }
 
 @end
