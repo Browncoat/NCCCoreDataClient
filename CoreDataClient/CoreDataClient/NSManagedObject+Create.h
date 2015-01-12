@@ -1,5 +1,5 @@
 //
-//  NSManagedObjectContext+Create.h
+//  NSManagedObject+Create.h
 //  Mind-Over-Mood
 //
 //  Created by Nathaniel Potter on 1/11/15.
@@ -8,10 +8,9 @@
 
 #import <CoreData/CoreData.h>
 
-@interface NSManagedObjectContext (Create)
+@interface NSManagedObject (Create)
 
-+ (NSManagedObjectContext *)mainContext;
-
-- (instancetype)childManagedObjectContext;
++ (instancetype)objectInManagedObjectContext:(NSManagedObjectContext *)context;
++ (instancetype)tempObject;
 
 @end

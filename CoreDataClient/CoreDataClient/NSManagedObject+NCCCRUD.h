@@ -22,72 +22,10 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-@class RXMLElement;
 
-id (^if_value_else_nil)(id value);
-id (^if_value_action_else_nil)(id value, SEL action);
 
 @interface NSManagedObject (NCCCRUD)
 
-// CREATING FROM XML
-+ (instancetype)upsertObjectWithRXMLElement:(RXMLElement *)element uid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context;
-
-+ (instancetype)insertObjectWithRXMLElement:(RXMLElement *)element inManagedObjectContext:(NSManagedObjectContext *)context;
-
-- (void)updateWithRXMLElement:(RXMLElement *)element;
-
-// CREATING FROM JSON
-+ (instancetype)upsertObjectWithDictionary:(NSDictionary *)dictionary uid:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context;
-+ (instancetype)insertObjectWithDictionary:(NSDictionary *)dictionary inManagedObjectContext:(NSManagedObjectContext *)context;
-
-- (void)updateWithDictionary:(NSDictionary *)dictionary;
-
-// Create
-+ (instancetype)tempManagedObject;
-+ (instancetype)managedObjectInManagedObjectContext:(NSManagedObjectContext *)context;
-
-//DELETING
-+ (void)deleteObjects:(NSSet *)deleteSet;
-+ (void)deleteObjects:(NSSet *)deleteSet inManagedObjectContext:(NSManagedObjectContext *)context;
-
-+ (void)deleteObject:(NSManagedObject *)object;
-+ (void)deleteObject:(NSManagedObject *)object inManagedObjectContext:(NSManagedObjectContext *)context;
-
-+ (void)deleteAllObjects;
-+ (void)deleteAllObjectsInManagedObjectContext:(NSManagedObjectContext *)context;
-
-+ (void)deleteObjectWithId:(NSString *)uid;
-+ (void)deleteObjectWithId:(NSString *)uid inManagedObjectContext:(NSManagedObjectContext *)context;
-
-// SAVING
-+ (BOOL)saveContextAndWait:(NSManagedObjectContext *)context error:(NSError **)saveError;
-+ (void)saveContext:(NSManagedObjectContext *)context completion:(void(^)(NSError *error))completion;
-- (void)saveWithError:(NSError **)saveError;
-- (void)saveWithCompletion:(void(^)(NSError *error))completion;
-
-// FETCHING
-+ (NSArray *)allObjects;
-
-+ (NSArray *)allObjectsInManagedObjectContext:(NSManagedObjectContext *)context;
-
-+ (instancetype)objectWithId:(id)uid;
-
-+ (instancetype)objectWithId:(id)uid inManagedObjectContext:(NSManagedObjectContext *)context;
-
-// Batch Updating
-+ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName error:(NSError **)outError;
-+ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName progress:(CGFloat *)outProgress error:(NSError **)error;
-
-+ (void)batchUpdateObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName completion:(void(^)(NSArray *results, NSError *error))completion;
-+ (void)batchUpdateObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
-
-// MAIN MANAGED OBJECT CONTEXT
-+ (NSManagedObjectContext *)mainContext;
-
-- (instancetype)mainContextObject;
-
-+ (NSSet *)duplicateManagedObjectsInMainContextForObject:(NSManagedObject *)object;
-- (NSString*)loadStringFromDictionary:(NSDictionary*)dict forKey:(NSString *)key;
-- (BOOL)loadBoolFromDictionary:(NSDictionary*)dict forKey:(NSString *)key;
+//- (instancetype)mainContextObject;
 
 @end

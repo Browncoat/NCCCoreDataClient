@@ -23,11 +23,18 @@
 #ifndef NCCCoreDataClient_NCCCoreDataClient_h
 #define NCCCoreDataClient_NCCCoreDataClient_h
 
-#import "NSManagedObject+NCCCRUD.h"
+#import "NSManagedObject+Save.h"
+#import "NSManagedObject+Delete.h"
+#import "NSManagedObject+Create.h"
+#import "NSManagedObject+Fetch.h"
+#import "NSManagedObject+Batch.h"
+#import "NSManagedObject+JSON.h"
+#import "NSManagedObject+XML.h"
 #import "NSManagedObject+NCCRequest.h"
 #import "NSManagedObjectContext+Create.h"
 #import "NSManagedObjectContext+Edit.h"
 #import "UIApplication+NCCCoreData.h"
 #import "NSMutableURLRequest+NCCCreate.h"
+#import "NSManagedObject+Utilities.h"
 
 #endif

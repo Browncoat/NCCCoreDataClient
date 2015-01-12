@@ -7,8 +7,14 @@
 //
 
 #import "NSManagedObjectContext+Create.h"
+#import "NCCCoreDataClient.h"
 
 @implementation NSManagedObjectContext (Create)
+
++ (NSManagedObjectContext *)mainContext
+{
+    return [[UIApplication sharedApplication] managedObjectContext];
+}
 
 - (instancetype)childManagedObjectContext
 {
