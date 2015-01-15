@@ -22,8 +22,7 @@
 
 #import <objc/runtime.h>
 #import "NSManagedObject+NCCRequest.h"
-#import "NSMutableURLRequest+NCCCreate.h"
-#import "NSManagedObject+NCCCRUD.h"
+#import "NCCCoreDataClient.h"
 
 @implementation NSManagedObject (NCCRequest)
 
@@ -277,7 +276,7 @@
 + (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
     [NSException raise:NSInternalInconsistencyException
-                format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+                format:@"You must override %@ in a subclass or category", NSStringFromSelector(_cmd)];
 }
 
 - (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
