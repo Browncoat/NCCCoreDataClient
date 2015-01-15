@@ -71,7 +71,7 @@ typedef void(^ProgressBlock)(CGFloat progress);
 - (NSDictionary *)dictionaryWithAttributeToKeyPathMappings:(NSDictionary *)keys;
 
 // Overrides
-- (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;
 - (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion;
 
 @end

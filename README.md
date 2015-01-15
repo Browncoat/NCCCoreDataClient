@@ -16,11 +16,11 @@ NCCCoreDataClient is a set of Categories to make working with Core Data and Rest
 iOS 5.1+
 
 ## Usage
-
+<!--
 #### To use with Swift
 
 Add `<Product_Name>-Bridging-Header.h` to your project. Add `#import "NCCCoreDataClient.h` to Bridging-Header. Make sure that each entity in your core data xcdatamodel `Class` field is prefixed with the module/product name. If your product name inlcudes spaces or dashes replace those with underscores.
-
+-->
 #### Xcode Core Data boilerplate
 
 Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in the Category `UIApplication (NCCCoreData)`

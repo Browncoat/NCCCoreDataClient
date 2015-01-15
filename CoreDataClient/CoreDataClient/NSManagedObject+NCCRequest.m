@@ -273,7 +273,8 @@
 
 #pragma mark - Override in RequestAdapter Category
 
-+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
+
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
     [NSException raise:NSInternalInconsistencyException
                 format:@"You must override %@ in a subclass or category", NSStringFromSelector(_cmd)];
