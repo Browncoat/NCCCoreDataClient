@@ -101,13 +101,9 @@
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    void (^requestCompletionBlock)(id responseObject, NSError *error) = ^(id responseObject, NSError *error) {
-        if (responseObject) {
-            if (![responseObject isKindOfClass:[NSArray class]]) {
-                responseObject = @[responseObject];
-            }
-            
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+    void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
+        if (results) {
+            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -192,13 +188,9 @@
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    void (^requestCompletionBlock)(id responseObject, NSError *error) = ^(id responseObject, NSError *error) {
-        if (responseObject) {
-            if (![responseObject isKindOfClass:[NSArray class]]) {
-                responseObject = @[responseObject];
-            }
-            
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+    void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
+        if (results) {
+            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
