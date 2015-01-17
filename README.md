@@ -41,7 +41,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
- + (void)makeRequest:(NSMutableURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
+ + (void)makeRequest:(NSMutableURLRequest *)request completion:(void(^)(NSArray *results, NSError *error))completion
  {
     // Session headers
     [request setHeaders:@{@"Authorization":###,
@@ -50,10 +50,11 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
                           @"x-device-id":###};];
 
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        id results = nil;
+        NSArray *results = nil;
         if (!connectionError) {
             NSError *error;
-            results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+            NSDictionary *responseOject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+            results = responseObject[@"result"];
             if (!error) {
                 NSLog(@"%@", error);
             }
@@ -70,7 +71,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
-+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock completion:(void(^)(NSArray *results, NSError *error))completion
 {
   // Session headers
     [request setHeaders:@{@"Authorization":###,
@@ -82,7 +83,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
     op.responseSerializer = [AFJSONResponseSerializer serializer];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-        completion(responseObject, nil);
+        completion(responseObject[@"result"], nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         completion(nil, error);
