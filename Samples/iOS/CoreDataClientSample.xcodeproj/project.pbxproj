@@ -709,7 +709,7 @@
 				INFOPLIST_FILE = iOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = CoreDataClientSampleTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoreDataClientSample.app/CoreDataClientSample";
 			};
 			name = Debug;
 		};
@@ -724,7 +724,7 @@
 				INFOPLIST_FILE = iOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = CoreDataClientSampleTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoreDataClientSample.app/CoreDataClientSample";
 			};
 			name = Release;
 		};
