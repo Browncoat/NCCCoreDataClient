@@ -7,14 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DC1B6FD11A088477001CC514 /* AppDelegate+NCCCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FC41A088477001CC514 /* AppDelegate+NCCCoreData.m */; };
-		DC1B6FD21A088477001CC514 /* NSDictionary+NCCNullToNil.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FC71A088477001CC514 /* NSDictionary+NCCNullToNil.m */; };
-		DC1B6FD31A088477001CC514 /* NSManagedObject+NCCCRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FC91A088477001CC514 /* NSManagedObject+NCCCRUD.m */; };
-		DC1B6FD41A088477001CC514 /* NSManagedObject+NCCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FCB1A088477001CC514 /* NSManagedObject+NCCRequest.m */; };
 		DC1B6FD51A088477001CC514 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC1B6FCC1A088477001CC514 /* Info.plist */; };
 		DC1B6FD61A088477001CC514 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FCD1A088477001CC514 /* main.m */; };
 		DC1B6FD71A088477001CC514 /* CoreDataClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FCF1A088477001CC514 /* CoreDataClientTests.m */; };
 		DC1B6FD81A088477001CC514 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC1B6FD01A088477001CC514 /* Info.plist */; };
+		DCC93F711A6BFB8600B8445A /* NSManagedObject+Batch.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F581A6BFB8600B8445A /* NSManagedObject+Batch.m */; };
+		DCC93F721A6BFB8600B8445A /* NSManagedObject+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F5A1A6BFB8600B8445A /* NSManagedObject+Create.m */; };
+		DCC93F731A6BFB8600B8445A /* NSManagedObject+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F5C1A6BFB8600B8445A /* NSManagedObject+Delete.m */; };
+		DCC93F741A6BFB8600B8445A /* NSManagedObject+Fetch.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F5E1A6BFB8600B8445A /* NSManagedObject+Fetch.m */; };
+		DCC93F751A6BFB8600B8445A /* NSManagedObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F601A6BFB8600B8445A /* NSManagedObject+JSON.m */; };
+		DCC93F761A6BFB8600B8445A /* NSManagedObject+NCCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F621A6BFB8600B8445A /* NSManagedObject+NCCRequest.m */; };
+		DCC93F771A6BFB8600B8445A /* NSManagedObject+Save.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F641A6BFB8600B8445A /* NSManagedObject+Save.m */; };
+		DCC93F781A6BFB8600B8445A /* NSManagedObject+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F661A6BFB8600B8445A /* NSManagedObject+Utilities.m */; };
+		DCC93F791A6BFB8600B8445A /* NSManagedObject+XML.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F681A6BFB8600B8445A /* NSManagedObject+XML.m */; };
+		DCC93F7A1A6BFB8600B8445A /* NSManagedObjectContext+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F6A1A6BFB8600B8445A /* NSManagedObjectContext+Create.m */; };
+		DCC93F7B1A6BFB8600B8445A /* NSManagedObjectContext+Edit.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F6C1A6BFB8600B8445A /* NSManagedObjectContext+Edit.m */; };
+		DCC93F7C1A6BFB8600B8445A /* NSMutableURLRequest+NCCCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F6E1A6BFB8600B8445A /* NSMutableURLRequest+NCCCreate.m */; };
+		DCC93F7D1A6BFB8600B8445A /* UIApplication+NCCCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F701A6BFB8600B8445A /* UIApplication+NCCCoreData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,21 +37,39 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		DC1B6FC31A088477001CC514 /* AppDelegate+NCCCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+NCCCoreData.h"; sourceTree = "<group>"; };
-		DC1B6FC41A088477001CC514 /* AppDelegate+NCCCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+NCCCoreData.m"; sourceTree = "<group>"; };
-		DC1B6FC51A088477001CC514 /* NCCCoreDataClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCCoreDataClient.h; sourceTree = "<group>"; };
-		DC1B6FC61A088477001CC514 /* NSDictionary+NCCNullToNil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+NCCNullToNil.h"; sourceTree = "<group>"; };
-		DC1B6FC71A088477001CC514 /* NSDictionary+NCCNullToNil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+NCCNullToNil.m"; sourceTree = "<group>"; };
-		DC1B6FC81A088477001CC514 /* NSManagedObject+NCCCRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+NCCCRUD.h"; sourceTree = "<group>"; };
-		DC1B6FC91A088477001CC514 /* NSManagedObject+NCCCRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+NCCCRUD.m"; sourceTree = "<group>"; };
-		DC1B6FCA1A088477001CC514 /* NSManagedObject+NCCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+NCCRequest.h"; sourceTree = "<group>"; };
-		DC1B6FCB1A088477001CC514 /* NSManagedObject+NCCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+NCCRequest.m"; sourceTree = "<group>"; };
 		DC1B6FCC1A088477001CC514 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC1B6FCD1A088477001CC514 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DC1B6FCF1A088477001CC514 /* CoreDataClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataClientTests.m; sourceTree = "<group>"; };
 		DC1B6FD01A088477001CC514 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCAC53101A01E83D00C23278 /* CoreDataClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCAC53291A01E83D00C23278 /* CoreDataClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreDataClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCC93F561A6BFB8600B8445A /* NCCCoreDataClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCCoreDataClient.h; sourceTree = "<group>"; };
+		DCC93F571A6BFB8600B8445A /* NSManagedObject+Batch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Batch.h"; sourceTree = "<group>"; };
+		DCC93F581A6BFB8600B8445A /* NSManagedObject+Batch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Batch.m"; sourceTree = "<group>"; };
+		DCC93F591A6BFB8600B8445A /* NSManagedObject+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Create.h"; sourceTree = "<group>"; };
+		DCC93F5A1A6BFB8600B8445A /* NSManagedObject+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Create.m"; sourceTree = "<group>"; };
+		DCC93F5B1A6BFB8600B8445A /* NSManagedObject+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Delete.h"; sourceTree = "<group>"; };
+		DCC93F5C1A6BFB8600B8445A /* NSManagedObject+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Delete.m"; sourceTree = "<group>"; };
+		DCC93F5D1A6BFB8600B8445A /* NSManagedObject+Fetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Fetch.h"; sourceTree = "<group>"; };
+		DCC93F5E1A6BFB8600B8445A /* NSManagedObject+Fetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Fetch.m"; sourceTree = "<group>"; };
+		DCC93F5F1A6BFB8600B8445A /* NSManagedObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+JSON.h"; sourceTree = "<group>"; };
+		DCC93F601A6BFB8600B8445A /* NSManagedObject+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+JSON.m"; sourceTree = "<group>"; };
+		DCC93F611A6BFB8600B8445A /* NSManagedObject+NCCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+NCCRequest.h"; sourceTree = "<group>"; };
+		DCC93F621A6BFB8600B8445A /* NSManagedObject+NCCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+NCCRequest.m"; sourceTree = "<group>"; };
+		DCC93F631A6BFB8600B8445A /* NSManagedObject+Save.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Save.h"; sourceTree = "<group>"; };
+		DCC93F641A6BFB8600B8445A /* NSManagedObject+Save.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Save.m"; sourceTree = "<group>"; };
+		DCC93F651A6BFB8600B8445A /* NSManagedObject+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Utilities.h"; sourceTree = "<group>"; };
+		DCC93F661A6BFB8600B8445A /* NSManagedObject+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Utilities.m"; sourceTree = "<group>"; };
+		DCC93F671A6BFB8600B8445A /* NSManagedObject+XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+XML.h"; sourceTree = "<group>"; };
+		DCC93F681A6BFB8600B8445A /* NSManagedObject+XML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+XML.m"; sourceTree = "<group>"; };
+		DCC93F691A6BFB8600B8445A /* NSManagedObjectContext+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Create.h"; sourceTree = "<group>"; };
+		DCC93F6A1A6BFB8600B8445A /* NSManagedObjectContext+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Create.m"; sourceTree = "<group>"; };
+		DCC93F6B1A6BFB8600B8445A /* NSManagedObjectContext+Edit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Edit.h"; sourceTree = "<group>"; };
+		DCC93F6C1A6BFB8600B8445A /* NSManagedObjectContext+Edit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Edit.m"; sourceTree = "<group>"; };
+		DCC93F6D1A6BFB8600B8445A /* NSMutableURLRequest+NCCCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+NCCCreate.h"; sourceTree = "<group>"; };
+		DCC93F6E1A6BFB8600B8445A /* NSMutableURLRequest+NCCCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+NCCCreate.m"; sourceTree = "<group>"; };
+		DCC93F6F1A6BFB8600B8445A /* UIApplication+NCCCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NCCCoreData.h"; sourceTree = "<group>"; };
+		DCC93F701A6BFB8600B8445A /* UIApplication+NCCCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NCCCoreData.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,15 +103,33 @@
 		DC1B6FC21A088477001CC514 /* CoreDataClient */ = {
 			isa = PBXGroup;
 			children = (
-				DC1B6FC51A088477001CC514 /* NCCCoreDataClient.h */,
-				DC1B6FC31A088477001CC514 /* AppDelegate+NCCCoreData.h */,
-				DC1B6FC41A088477001CC514 /* AppDelegate+NCCCoreData.m */,
-				DC1B6FC61A088477001CC514 /* NSDictionary+NCCNullToNil.h */,
-				DC1B6FC71A088477001CC514 /* NSDictionary+NCCNullToNil.m */,
-				DC1B6FC81A088477001CC514 /* NSManagedObject+NCCCRUD.h */,
-				DC1B6FC91A088477001CC514 /* NSManagedObject+NCCCRUD.m */,
-				DC1B6FCA1A088477001CC514 /* NSManagedObject+NCCRequest.h */,
-				DC1B6FCB1A088477001CC514 /* NSManagedObject+NCCRequest.m */,
+				DCC93F561A6BFB8600B8445A /* NCCCoreDataClient.h */,
+				DCC93F571A6BFB8600B8445A /* NSManagedObject+Batch.h */,
+				DCC93F581A6BFB8600B8445A /* NSManagedObject+Batch.m */,
+				DCC93F591A6BFB8600B8445A /* NSManagedObject+Create.h */,
+				DCC93F5A1A6BFB8600B8445A /* NSManagedObject+Create.m */,
+				DCC93F5B1A6BFB8600B8445A /* NSManagedObject+Delete.h */,
+				DCC93F5C1A6BFB8600B8445A /* NSManagedObject+Delete.m */,
+				DCC93F5D1A6BFB8600B8445A /* NSManagedObject+Fetch.h */,
+				DCC93F5E1A6BFB8600B8445A /* NSManagedObject+Fetch.m */,
+				DCC93F5F1A6BFB8600B8445A /* NSManagedObject+JSON.h */,
+				DCC93F601A6BFB8600B8445A /* NSManagedObject+JSON.m */,
+				DCC93F611A6BFB8600B8445A /* NSManagedObject+NCCRequest.h */,
+				DCC93F621A6BFB8600B8445A /* NSManagedObject+NCCRequest.m */,
+				DCC93F631A6BFB8600B8445A /* NSManagedObject+Save.h */,
+				DCC93F641A6BFB8600B8445A /* NSManagedObject+Save.m */,
+				DCC93F651A6BFB8600B8445A /* NSManagedObject+Utilities.h */,
+				DCC93F661A6BFB8600B8445A /* NSManagedObject+Utilities.m */,
+				DCC93F671A6BFB8600B8445A /* NSManagedObject+XML.h */,
+				DCC93F681A6BFB8600B8445A /* NSManagedObject+XML.m */,
+				DCC93F691A6BFB8600B8445A /* NSManagedObjectContext+Create.h */,
+				DCC93F6A1A6BFB8600B8445A /* NSManagedObjectContext+Create.m */,
+				DCC93F6B1A6BFB8600B8445A /* NSManagedObjectContext+Edit.h */,
+				DCC93F6C1A6BFB8600B8445A /* NSManagedObjectContext+Edit.m */,
+				DCC93F6D1A6BFB8600B8445A /* NSMutableURLRequest+NCCCreate.h */,
+				DCC93F6E1A6BFB8600B8445A /* NSMutableURLRequest+NCCCreate.m */,
+				DCC93F6F1A6BFB8600B8445A /* UIApplication+NCCCoreData.h */,
+				DCC93F701A6BFB8600B8445A /* UIApplication+NCCCoreData.m */,
 			);
 			path = CoreDataClient;
 			sourceTree = "<group>";
@@ -216,12 +261,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCC93F781A6BFB8600B8445A /* NSManagedObject+Utilities.m in Sources */,
+				DCC93F751A6BFB8600B8445A /* NSManagedObject+JSON.m in Sources */,
+				DCC93F731A6BFB8600B8445A /* NSManagedObject+Delete.m in Sources */,
+				DCC93F7D1A6BFB8600B8445A /* UIApplication+NCCCoreData.m in Sources */,
+				DCC93F791A6BFB8600B8445A /* NSManagedObject+XML.m in Sources */,
+				DCC93F771A6BFB8600B8445A /* NSManagedObject+Save.m in Sources */,
+				DCC93F711A6BFB8600B8445A /* NSManagedObject+Batch.m in Sources */,
 				DC1B6FD61A088477001CC514 /* main.m in Sources */,
+				DCC93F7A1A6BFB8600B8445A /* NSManagedObjectContext+Create.m in Sources */,
+				DCC93F761A6BFB8600B8445A /* NSManagedObject+NCCRequest.m in Sources */,
 				DC1B6FD71A088477001CC514 /* CoreDataClientTests.m in Sources */,
-				DC1B6FD41A088477001CC514 /* NSManagedObject+NCCRequest.m in Sources */,
-				DC1B6FD11A088477001CC514 /* AppDelegate+NCCCoreData.m in Sources */,
-				DC1B6FD31A088477001CC514 /* NSManagedObject+NCCCRUD.m in Sources */,
-				DC1B6FD21A088477001CC514 /* NSDictionary+NCCNullToNil.m in Sources */,
+				DCC93F7C1A6BFB8600B8445A /* NSMutableURLRequest+NCCCreate.m in Sources */,
+				DCC93F741A6BFB8600B8445A /* NSManagedObject+Fetch.m in Sources */,
+				DCC93F721A6BFB8600B8445A /* NSManagedObject+Create.m in Sources */,
+				DCC93F7B1A6BFB8600B8445A /* NSManagedObjectContext+Edit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

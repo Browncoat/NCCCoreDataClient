@@ -87,7 +87,7 @@
 
 - (IBAction)didPressPostMomentButton:(id)sender
 {
-    Moment *moment = [Moment objectInManagedObjectContext:[Moment mainContext]];
+    Moment *moment = [Moment objectInManagedObjectContext:[NSManagedObjectContext mainContext]];
     [moment saveWithCompletion:^(Moment *moment, NSError *error) {
         NSLog(@"Moment: %@", moment);
     }];

@@ -16,16 +16,24 @@ NCCCoreDataClient is a set of Categories to make working with Core Data and Rest
 iOS 5.1+
 
 ## Usage
+<!--
+#### To use with Swift
 
-Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in Category `AppDelegate (NCCCoreData)`
+Add `<Product_Name>-Bridging-Header.h` to your project. Add `#import "NCCCoreDataClient.h` to Bridging-Header. Make sure that each entity in your core data xcdatamodel `Class` field is prefixed with the module/product name. If your product name inlcudes spaces or dashes replace those with underscores.
+-->
+#### Xcode Core Data boilerplate
+
+Remove all of the boilerplate Core Data methods from your appDelegate class. These will be added for you in the Category `UIApplication (NCCCoreData)`
+
+Add NCCCoreDataClient.h to your `<Your-Product-Name>-Prefix.pch` file.
 
 ### NSManagedObject Categories
 
 ### Passing the request to an HTTP Client and adding Session Headers
 
-`NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides 
+`NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides
 
-`+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;` 
+`+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;`
 
 This allows you to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save. Here you can also set the 'session' headers globaly since you have access to the NSURLRequest object before it is sent.
 
@@ -33,7 +41,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
- + (void)makeRequest:(NSMutableURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
+ + (void)makeRequest:(NSMutableURLRequest *)request completion:(void(^)(NSArray *results, NSError *error))completion
  {
     // Session headers
     [request setHeaders:@{@"Authorization":###,
@@ -42,15 +50,16 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
                           @"x-device-id":###};];
 
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        id results = nil;
+        NSArray *results = nil;
         if (!connectionError) {
             NSError *error;
-            results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+            NSDictionary *responseOject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&error];
+            results = responseObject[@"result"];
             if (!error) {
                 NSLog(@"%@", error);
             }
         }
-        
+
         completion(results, connectionError);
     }];
  }
@@ -62,7 +71,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 ```objective-c
 @implementation NSManagedObject (RequestAdapter)
 
-+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock completion:(void(^)(NSArray *results, NSError *error))completion
 {
   // Session headers
     [request setHeaders:@{@"Authorization":###,
@@ -74,7 +83,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
     op.responseSerializer = [AFJSONResponseSerializer serializer];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
-        completion(responseObject, nil);
+        completion(responseObject[@"result"], nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         completion(nil, error);
@@ -87,7 +96,7 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 
 NCCCoreDataClient also requires that that you add an NSManagedObject Category that overrides
 
-`- (void)updateWithDictionary:(NSDictionary *)dictionary` 
+`- (void)updateWithDictionary:(NSDictionary *)dictionary`
 
 for each Core Data Model you that you wish to parse request responses to NSManagedObject attributes and relationships.
 
@@ -117,7 +126,7 @@ If the relationship is an update/create (upsert) then you can use the method
 
 `[Address upsertObjectWithDictionary:dictionary uid:dictionary[@"id"] inManagedObjectContext:self.managedObjectContext];`
 
-The helper method `[NSManagedObject mainContext]` is also available to alsways reach the main NSManagedObjectContext.
+The helper method `[NSManagedObjectContext mainContext]` is also available to alsways reach the main NSManagedObjectContext.
 
 ### Set BasePath and Object Id Keys
 
@@ -199,7 +208,7 @@ You can also use several request helper methods such as `setJSON` and `setPNG`
     [self PUT:@"user" request:^(NSMutableURLRequest *request) {
         NSError *error;
         NSData *data = [NSJSONSerialization dataWithJSONObject:[self dictionaryWithAttributeToKeyPathMappings:keyMappings] options:0 error:&error];
-        
+
         if (!error) {
             [request setData:data ofContentType:postBodyContentTypeJSON];
         } else {

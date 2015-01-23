@@ -12,7 +12,7 @@
 @implementation NSManagedObject (RequestAdapter)
 
 /*
- + (void)makeRequest:(NSURLRequest *)request withCompletion:(void(^)(id results, NSError *error))completion
+ + (void)makeRequest:(NSURLRequest *)request completion:(void(^)(NSArray *results, NSError *error))completion
  {
  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
  NSURLResponse *response;
@@ -29,7 +29,7 @@
  }
  */
 
-+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock completion:(void(^)(NSArray *results, NSError *error))completion
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:ClientAuthTokenKey];
     [request setHeaders:@{@"Authorization":[NSString stringWithFormat:@"Bearer %@", token]}];
@@ -38,6 +38,9 @@
     op.responseSerializer = [AFJSONResponseSerializer serializer];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"JSON: %@", responseObject);
+        if (![responseObject isKindOfClass:[NSArray class]]) {
+            responseObject = @[responseObject];
+        }
         completion(responseObject, nil);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

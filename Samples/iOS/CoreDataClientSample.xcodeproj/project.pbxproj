@@ -8,11 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4AA38C5A1C908067DB793F78 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C826B40D38B5D7D08BE67B55 /* libPods.a */; };
-		DC2D7C8D1A08895C0000464F /* AppDelegate+NCCCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C831A08895C0000464F /* AppDelegate+NCCCoreData.m */; };
-		DC2D7C8E1A08895C0000464F /* NSDictionary+NCCNullToNil.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C861A08895C0000464F /* NSDictionary+NCCNullToNil.m */; };
-		DC2D7C8F1A08895C0000464F /* NSManagedObject+NCCCRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C881A08895C0000464F /* NSManagedObject+NCCCRUD.m */; };
-		DC2D7C901A08895C0000464F /* NSManagedObject+NCCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C8A1A08895C0000464F /* NSManagedObject+NCCRequest.m */; };
-		DC2D7C911A08895C0000464F /* NSMutableURLRequest+NCCCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C8C1A08895C0000464F /* NSMutableURLRequest+NCCCreate.m */; };
 		DC2D7C941A089CB30000464F /* GooglePlusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C931A089CB30000464F /* GooglePlusViewController.m */; };
 		DC2D7C981A0916E10000464F /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7C951A0916E10000464F /* GoogleOpenSource.framework */; };
 		DC2D7C991A0916E10000464F /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DC2D7C961A0916E10000464F /* GooglePlus.bundle */; };
@@ -48,6 +43,19 @@
 		DCB1BD431A067CE100F1991D /* Comment.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB1BD421A067CE100F1991D /* Comment.m */; };
 		DCB1BD461A067CFC00F1991D /* Comment+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB1BD451A067CFC00F1991D /* Comment+JSON.m */; };
 		DCB1BD491A067D0B00F1991D /* Comment+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB1BD481A067D0B00F1991D /* Comment+Request.m */; };
+		DCC93F991A6C016700B8445A /* NSManagedObject+Batch.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F801A6C016700B8445A /* NSManagedObject+Batch.m */; };
+		DCC93F9A1A6C016700B8445A /* NSManagedObject+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F821A6C016700B8445A /* NSManagedObject+Create.m */; };
+		DCC93F9B1A6C016700B8445A /* NSManagedObject+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F841A6C016700B8445A /* NSManagedObject+Delete.m */; };
+		DCC93F9C1A6C016700B8445A /* NSManagedObject+Fetch.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F861A6C016700B8445A /* NSManagedObject+Fetch.m */; };
+		DCC93F9D1A6C016700B8445A /* NSManagedObject+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F881A6C016700B8445A /* NSManagedObject+JSON.m */; };
+		DCC93F9E1A6C016700B8445A /* NSManagedObject+NCCRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F8A1A6C016700B8445A /* NSManagedObject+NCCRequest.m */; };
+		DCC93F9F1A6C016700B8445A /* NSManagedObject+Save.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F8C1A6C016700B8445A /* NSManagedObject+Save.m */; };
+		DCC93FA01A6C016700B8445A /* NSManagedObject+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F8E1A6C016700B8445A /* NSManagedObject+Utilities.m */; };
+		DCC93FA11A6C016700B8445A /* NSManagedObject+XML.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F901A6C016700B8445A /* NSManagedObject+XML.m */; };
+		DCC93FA21A6C016700B8445A /* NSManagedObjectContext+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F921A6C016700B8445A /* NSManagedObjectContext+Create.m */; };
+		DCC93FA31A6C016700B8445A /* NSManagedObjectContext+Edit.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F941A6C016700B8445A /* NSManagedObjectContext+Edit.m */; };
+		DCC93FA41A6C016700B8445A /* NSMutableURLRequest+NCCCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F961A6C016700B8445A /* NSMutableURLRequest+NCCCreate.m */; };
+		DCC93FA51A6C016700B8445A /* UIApplication+NCCCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC93F981A6C016700B8445A /* UIApplication+NCCCoreData.m */; };
 		DCDAD4DC1A11E07700804617 /* CoreDataClientSample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DCDAD4DA1A11E07700804617 /* CoreDataClientSample.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -64,17 +72,6 @@
 /* Begin PBXFileReference section */
 		C826B40D38B5D7D08BE67B55 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB8DAF06A56E01DD3AE3F817 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		DC2D7C821A08895C0000464F /* AppDelegate+NCCCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+NCCCoreData.h"; sourceTree = "<group>"; };
-		DC2D7C831A08895C0000464F /* AppDelegate+NCCCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+NCCCoreData.m"; sourceTree = "<group>"; };
-		DC2D7C841A08895C0000464F /* NCCCoreDataClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCCoreDataClient.h; sourceTree = "<group>"; };
-		DC2D7C851A08895C0000464F /* NSDictionary+NCCNullToNil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+NCCNullToNil.h"; sourceTree = "<group>"; };
-		DC2D7C861A08895C0000464F /* NSDictionary+NCCNullToNil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+NCCNullToNil.m"; sourceTree = "<group>"; };
-		DC2D7C871A08895C0000464F /* NSManagedObject+NCCCRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+NCCCRUD.h"; sourceTree = "<group>"; };
-		DC2D7C881A08895C0000464F /* NSManagedObject+NCCCRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+NCCCRUD.m"; sourceTree = "<group>"; };
-		DC2D7C891A08895C0000464F /* NSManagedObject+NCCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+NCCRequest.h"; sourceTree = "<group>"; };
-		DC2D7C8A1A08895C0000464F /* NSManagedObject+NCCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+NCCRequest.m"; sourceTree = "<group>"; };
-		DC2D7C8B1A08895C0000464F /* NSMutableURLRequest+NCCCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+NCCCreate.h"; sourceTree = "<group>"; };
-		DC2D7C8C1A08895C0000464F /* NSMutableURLRequest+NCCCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+NCCCreate.m"; sourceTree = "<group>"; };
 		DC2D7C921A089CB30000464F /* GooglePlusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlusViewController.h; sourceTree = "<group>"; };
 		DC2D7C931A089CB30000464F /* GooglePlusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlusViewController.m; sourceTree = "<group>"; };
 		DC2D7C951A0916E10000464F /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = "google-plus-ios-sdk-1.7.1/GoogleOpenSource.framework"; sourceTree = "<group>"; };
@@ -135,6 +132,33 @@
 		DCB1BD451A067CFC00F1991D /* Comment+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Comment+JSON.m"; sourceTree = "<group>"; };
 		DCB1BD471A067D0B00F1991D /* Comment+Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Comment+Request.h"; sourceTree = "<group>"; };
 		DCB1BD481A067D0B00F1991D /* Comment+Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Comment+Request.m"; sourceTree = "<group>"; };
+		DCC93F7E1A6C016700B8445A /* NCCCoreDataClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCCoreDataClient.h; sourceTree = "<group>"; };
+		DCC93F7F1A6C016700B8445A /* NSManagedObject+Batch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Batch.h"; sourceTree = "<group>"; };
+		DCC93F801A6C016700B8445A /* NSManagedObject+Batch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Batch.m"; sourceTree = "<group>"; };
+		DCC93F811A6C016700B8445A /* NSManagedObject+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Create.h"; sourceTree = "<group>"; };
+		DCC93F821A6C016700B8445A /* NSManagedObject+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Create.m"; sourceTree = "<group>"; };
+		DCC93F831A6C016700B8445A /* NSManagedObject+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Delete.h"; sourceTree = "<group>"; };
+		DCC93F841A6C016700B8445A /* NSManagedObject+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Delete.m"; sourceTree = "<group>"; };
+		DCC93F851A6C016700B8445A /* NSManagedObject+Fetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Fetch.h"; sourceTree = "<group>"; };
+		DCC93F861A6C016700B8445A /* NSManagedObject+Fetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Fetch.m"; sourceTree = "<group>"; };
+		DCC93F871A6C016700B8445A /* NSManagedObject+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+JSON.h"; sourceTree = "<group>"; };
+		DCC93F881A6C016700B8445A /* NSManagedObject+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+JSON.m"; sourceTree = "<group>"; };
+		DCC93F891A6C016700B8445A /* NSManagedObject+NCCRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+NCCRequest.h"; sourceTree = "<group>"; };
+		DCC93F8A1A6C016700B8445A /* NSManagedObject+NCCRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+NCCRequest.m"; sourceTree = "<group>"; };
+		DCC93F8B1A6C016700B8445A /* NSManagedObject+Save.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Save.h"; sourceTree = "<group>"; };
+		DCC93F8C1A6C016700B8445A /* NSManagedObject+Save.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Save.m"; sourceTree = "<group>"; };
+		DCC93F8D1A6C016700B8445A /* NSManagedObject+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Utilities.h"; sourceTree = "<group>"; };
+		DCC93F8E1A6C016700B8445A /* NSManagedObject+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Utilities.m"; sourceTree = "<group>"; };
+		DCC93F8F1A6C016700B8445A /* NSManagedObject+XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+XML.h"; sourceTree = "<group>"; };
+		DCC93F901A6C016700B8445A /* NSManagedObject+XML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+XML.m"; sourceTree = "<group>"; };
+		DCC93F911A6C016700B8445A /* NSManagedObjectContext+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Create.h"; sourceTree = "<group>"; };
+		DCC93F921A6C016700B8445A /* NSManagedObjectContext+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Create.m"; sourceTree = "<group>"; };
+		DCC93F931A6C016700B8445A /* NSManagedObjectContext+Edit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+Edit.h"; sourceTree = "<group>"; };
+		DCC93F941A6C016700B8445A /* NSManagedObjectContext+Edit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+Edit.m"; sourceTree = "<group>"; };
+		DCC93F951A6C016700B8445A /* NSMutableURLRequest+NCCCreate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+NCCCreate.h"; sourceTree = "<group>"; };
+		DCC93F961A6C016700B8445A /* NSMutableURLRequest+NCCCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+NCCCreate.m"; sourceTree = "<group>"; };
+		DCC93F971A6C016700B8445A /* UIApplication+NCCCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NCCCoreData.h"; sourceTree = "<group>"; };
+		DCC93F981A6C016700B8445A /* UIApplication+NCCCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NCCCoreData.m"; sourceTree = "<group>"; };
 		DCDAD4DB1A11E07700804617 /* CoreDataClientSample.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataClientSample.xcdatamodel; sourceTree = "<group>"; };
 		E394D84CC91DBAFB7B3E3AB8 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -202,17 +226,33 @@
 		DC2D7C811A08895C0000464F /* CoreDataClient */ = {
 			isa = PBXGroup;
 			children = (
-				DC2D7C821A08895C0000464F /* AppDelegate+NCCCoreData.h */,
-				DC2D7C831A08895C0000464F /* AppDelegate+NCCCoreData.m */,
-				DC2D7C841A08895C0000464F /* NCCCoreDataClient.h */,
-				DC2D7C851A08895C0000464F /* NSDictionary+NCCNullToNil.h */,
-				DC2D7C861A08895C0000464F /* NSDictionary+NCCNullToNil.m */,
-				DC2D7C871A08895C0000464F /* NSManagedObject+NCCCRUD.h */,
-				DC2D7C881A08895C0000464F /* NSManagedObject+NCCCRUD.m */,
-				DC2D7C891A08895C0000464F /* NSManagedObject+NCCRequest.h */,
-				DC2D7C8A1A08895C0000464F /* NSManagedObject+NCCRequest.m */,
-				DC2D7C8B1A08895C0000464F /* NSMutableURLRequest+NCCCreate.h */,
-				DC2D7C8C1A08895C0000464F /* NSMutableURLRequest+NCCCreate.m */,
+				DCC93F7E1A6C016700B8445A /* NCCCoreDataClient.h */,
+				DCC93F7F1A6C016700B8445A /* NSManagedObject+Batch.h */,
+				DCC93F801A6C016700B8445A /* NSManagedObject+Batch.m */,
+				DCC93F811A6C016700B8445A /* NSManagedObject+Create.h */,
+				DCC93F821A6C016700B8445A /* NSManagedObject+Create.m */,
+				DCC93F831A6C016700B8445A /* NSManagedObject+Delete.h */,
+				DCC93F841A6C016700B8445A /* NSManagedObject+Delete.m */,
+				DCC93F851A6C016700B8445A /* NSManagedObject+Fetch.h */,
+				DCC93F861A6C016700B8445A /* NSManagedObject+Fetch.m */,
+				DCC93F871A6C016700B8445A /* NSManagedObject+JSON.h */,
+				DCC93F881A6C016700B8445A /* NSManagedObject+JSON.m */,
+				DCC93F891A6C016700B8445A /* NSManagedObject+NCCRequest.h */,
+				DCC93F8A1A6C016700B8445A /* NSManagedObject+NCCRequest.m */,
+				DCC93F8B1A6C016700B8445A /* NSManagedObject+Save.h */,
+				DCC93F8C1A6C016700B8445A /* NSManagedObject+Save.m */,
+				DCC93F8D1A6C016700B8445A /* NSManagedObject+Utilities.h */,
+				DCC93F8E1A6C016700B8445A /* NSManagedObject+Utilities.m */,
+				DCC93F8F1A6C016700B8445A /* NSManagedObject+XML.h */,
+				DCC93F901A6C016700B8445A /* NSManagedObject+XML.m */,
+				DCC93F911A6C016700B8445A /* NSManagedObjectContext+Create.h */,
+				DCC93F921A6C016700B8445A /* NSManagedObjectContext+Create.m */,
+				DCC93F931A6C016700B8445A /* NSManagedObjectContext+Edit.h */,
+				DCC93F941A6C016700B8445A /* NSManagedObjectContext+Edit.m */,
+				DCC93F951A6C016700B8445A /* NSMutableURLRequest+NCCCreate.h */,
+				DCC93F961A6C016700B8445A /* NSMutableURLRequest+NCCCreate.m */,
+				DCC93F971A6C016700B8445A /* UIApplication+NCCCoreData.h */,
+				DCC93F981A6C016700B8445A /* UIApplication+NCCCoreData.m */,
 			);
 			name = CoreDataClient;
 			path = ../../../CoreDataClient/CoreDataClient;
@@ -460,27 +500,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC2D7C901A08895C0000464F /* NSManagedObject+NCCRequest.m in Sources */,
 				DC2D7CB11A09D5190000464F /* Person.m in Sources */,
-				DC2D7C8E1A08895C0000464F /* NSDictionary+NCCNullToNil.m in Sources */,
 				DC2D7CC41A09E93D0000464F /* Moment.m in Sources */,
 				DCB1BD491A067D0B00F1991D /* Comment+Request.m in Sources */,
+				DCC93F9A1A6C016700B8445A /* NSManagedObject+Create.m in Sources */,
+				DCC93F9E1A6C016700B8445A /* NSManagedObject+NCCRequest.m in Sources */,
+				DCC93F9C1A6C016700B8445A /* NSManagedObject+Fetch.m in Sources */,
+				DCC93F9B1A6C016700B8445A /* NSManagedObject+Delete.m in Sources */,
 				DCB1BD401A05EC8100F1991D /* Media+Request.m in Sources */,
+				DCC93FA31A6C016700B8445A /* NSManagedObjectContext+Edit.m in Sources */,
+				DCC93FA11A6C016700B8445A /* NSManagedObject+XML.m in Sources */,
 				DCB1BD371A05C3EE00F1991D /* NSManagedObject+RequestAdapter.m in Sources */,
 				DCB1BD241A059A3600F1991D /* User+JSON.m in Sources */,
-				DC2D7C911A08895C0000464F /* NSMutableURLRequest+NCCCreate.m in Sources */,
 				DC2D7CB41A09D53B0000464F /* Person+Request.m in Sources */,
 				DC2D7CC11A09E8F70000464F /* Moment+Request.m in Sources */,
+				DCC93FA21A6C016700B8445A /* NSManagedObjectContext+Create.m in Sources */,
 				DC2D7CB71A09D63D0000464F /* Person+JSON.m in Sources */,
 				DC2D7C941A089CB30000464F /* GooglePlusViewController.m in Sources */,
 				DCAC53551A01F40300C23278 /* AppDelegate.m in Sources */,
+				DCC93FA51A6C016700B8445A /* UIApplication+NCCCoreData.m in Sources */,
 				DCDAD4DC1A11E07700804617 /* CoreDataClientSample.xcdatamodeld in Sources */,
-				DC2D7C8F1A08895C0000464F /* NSManagedObject+NCCCRUD.m in Sources */,
+				DCC93F991A6C016700B8445A /* NSManagedObject+Batch.m in Sources */,
+				DCC93FA41A6C016700B8445A /* NSMutableURLRequest+NCCCreate.m in Sources */,
+				DCC93F9D1A6C016700B8445A /* NSManagedObject+JSON.m in Sources */,
 				DCB1BD2B1A05B74500F1991D /* User.m in Sources */,
 				DCB1BD431A067CE100F1991D /* Comment.m in Sources */,
+				DCC93F9F1A6C016700B8445A /* NSManagedObject+Save.m in Sources */,
 				DCB1BD461A067CFC00F1991D /* Comment+JSON.m in Sources */,
+				DCC93FA01A6C016700B8445A /* NSManagedObject+Utilities.m in Sources */,
 				DCB1BD3A1A05EC5700F1991D /* Media.m in Sources */,
-				DC2D7C8D1A08895C0000464F /* AppDelegate+NCCCoreData.m in Sources */,
 				DCAC53D11A0542E700C23278 /* User+Request.m in Sources */,
 				DCAC53521A01F40300C23278 /* main.m in Sources */,
 				DCB1BD3D1A05EC6C00F1991D /* Media+JSON.m in Sources */,
@@ -661,7 +709,7 @@
 				INFOPLIST_FILE = iOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = CoreDataClientSampleTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoreDataClientSample.app/CoreDataClientSample";
 			};
 			name = Debug;
 		};
@@ -676,7 +724,7 @@
 				INFOPLIST_FILE = iOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = CoreDataClientSampleTests;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS.app/iOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CoreDataClientSample.app/CoreDataClientSample";
 			};
 			name = Release;
 		};

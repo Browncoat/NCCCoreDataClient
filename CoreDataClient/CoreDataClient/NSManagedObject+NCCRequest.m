@@ -22,8 +22,7 @@
 
 #import <objc/runtime.h>
 #import "NSManagedObject+NCCRequest.h"
-#import "NSMutableURLRequest+NCCCreate.h"
-#import "NSManagedObject+NCCCRUD.h"
+#import "NCCCoreDataClient.h"
 
 @implementation NSManagedObject (NCCRequest)
 
@@ -100,15 +99,11 @@
         requestBlock(request);
     }
     
-    [self checkClassNameIncludedInRequestUrl:request.URL];
+    [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock withCompletion:^(id responseObject, NSError *error) {
-        if (responseObject) {
-            if (![responseObject isKindOfClass:[NSArray class]]) {
-                responseObject = @[responseObject];
-            }
-            
-            [self batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+    void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
+        if (results) {
+            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -122,7 +117,19 @@
                 completionBlock(nil, error);
             }
         }
-    }];
+    };
+    
+    /*
+    NSMethodSignature * mySignature = [NSManagedObject instanceMethodSignatureForSelector:@selector(makeRequest:progress:completion:)];
+    NSInvocation * myInvocation = [NSInvocation invocationWithMethodSignature:mySignature];
+    [myInvocation setTarget:[self class]];
+    [myInvocation setSelector:@selector(makeRequest:progress:completion:)];
+    [myInvocation setArgument:&request atIndex:2];
+    [myInvocation setArgument:&progressBlock atIndex:3];
+    [myInvocation setArgument:&requestCompletionBlock atIndex:4];
+    [myInvocation invoke];
+    */
+    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock completion:requestCompletionBlock];
 }
 
 + (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
@@ -179,15 +186,11 @@
         requestBlock(request);
     }
     
-    [self checkClassNameIncludedInRequestUrl:request.URL];
+    [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock withCompletion:^(id responseObject, NSError *error) {
-        if (responseObject) {
-            if (![responseObject isKindOfClass:[NSArray class]]) {
-                responseObject = @[responseObject];
-            }
-            
-            [self batchUpdateObjects:responseObject uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+    void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
+        if (results) {
+            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -201,7 +204,19 @@
                 completionBlock(nil, error);
             }
         }
-    }];
+    };
+    
+    /*
+    NSMethodSignature * mySignature = [NSManagedObject instanceMethodSignatureForSelector:@selector(makeRequest:progress:completion:)];
+    NSInvocation * myInvocation = [NSInvocation invocationWithMethodSignature:mySignature];
+    [myInvocation setTarget:[self class]];
+    [myInvocation setSelector:@selector(makeRequest:progress:completion:)];
+    [myInvocation setArgument:&request atIndex:2];
+    [myInvocation setArgument:&progressBlock atIndex:3];
+    [myInvocation setArgument:&requestCompletionBlock atIndex:4];
+    [myInvocation invoke];
+     */
+    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock completion:requestCompletionBlock];
 }
 
 + (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
@@ -221,7 +236,7 @@
 
 #pragma mark - PUT
 
-- (void)PUT:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
@@ -235,32 +250,18 @@
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock withCompletion:^(id responseObject, NSError *error) {
-        if (responseObject) {
-            if (![responseObject isKindOfClass:[NSArray class]]) {
-                responseObject = @[responseObject];
-            }
-            
-            [[self class] batchUpdateObjects:responseObject uniqueIdentifierName:[[self class] responseObjectUidKey] progress:^(CGFloat progress) {
-                if (progressBlock) {
-                    progressBlock(progress);
-                }
-            } completion:^(NSArray *results, NSError *error) {
-                if (completionBlock) {
-                    completionBlock(results, error);
-                }
-            }];
-        } else {
-            if (completionBlock) {
-                completionBlock(nil, error);
-            }
-        }
-    }];
-}
-
-- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
-{
-    [self PUT:resource progress:nil request:requestBlock withCompletion:completionBlock];
+    /*
+    NSMethodSignature * mySignature = [NSManagedObject instanceMethodSignatureForSelector:@selector(makeRequest:progress:completion:)];
+    NSInvocation * myInvocation = [NSInvocation invocationWithMethodSignature:mySignature];
+    [myInvocation setTarget:[self class]];
+    [myInvocation setSelector:@selector(makeRequest:progress:completion:)];
+    [myInvocation setArgument:&request atIndex:2];
+    [myInvocation setArgument:nil atIndex:3];
+    [myInvocation setArgument:&completionBlock atIndex:4];
+    [myInvocation invoke];
+    */
+    
+    [self makeRequest:request progress:nil completion:completionBlock];
 }
 
 #pragma mark - DELETE
@@ -279,7 +280,17 @@
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    [self makeRequest:request progress:nil withCompletion:completionBlock];
+    /*
+    NSMethodSignature * mySignature = [NSManagedObject instanceMethodSignatureForSelector:@selector(makeRequest:progress:completion:)];
+    NSInvocation * myInvocation = [NSInvocation invocationWithMethodSignature:mySignature];
+    [myInvocation setTarget:[self class]];
+    [myInvocation setSelector:@selector(makeRequest:progress:completion:)];
+    [myInvocation setArgument:&request atIndex:2];
+    [myInvocation setArgument:nil atIndex:3];
+    [myInvocation setArgument:&completionBlock atIndex:4];
+    [myInvocation invoke];
+     */
+    [self makeRequest:request progress:nil completion:completionBlock];
 }
 
 - (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
@@ -297,18 +308,21 @@
     [self DELETE:nil request:nil withCompletion:completionBlock];
 }
 
+/*
 #pragma mark - Override in RequestAdapter Category
 
-+ (void)makeRequest:(NSURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
+
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
     [NSException raise:NSInternalInconsistencyException
-                format:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+                format:@"You must override %@ in a subclass or category", NSStringFromSelector(_cmd)];
 }
 
 - (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
 {
     [[self class] makeRequest:request progress:progressBlock withCompletion:completion];
 }
+*/
 
 #pragma mark - Dictionary Mapping
 
