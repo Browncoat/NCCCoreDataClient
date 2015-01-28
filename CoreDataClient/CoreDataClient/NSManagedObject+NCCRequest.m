@@ -261,7 +261,7 @@
     [myInvocation invoke];
     */
     
-    [self makeRequest:request progress:nil completion:completionBlock];
+    [[self class] makeRequest:request progress:nil completion:completionBlock];
 }
 
 #pragma mark - DELETE

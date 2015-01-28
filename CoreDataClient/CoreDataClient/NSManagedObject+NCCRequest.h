@@ -78,7 +78,6 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (RequestAdapter)
 
-- (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
 + (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
 
 @end
