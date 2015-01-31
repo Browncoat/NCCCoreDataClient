@@ -39,6 +39,8 @@
 		DCF256741A77E2AB0029C8A4 /* NSMutableURLRequest+NCCCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF256661A77E2AB0029C8A4 /* NSMutableURLRequest+NCCCreate.m */; };
 		DCF256751A77E2AB0029C8A4 /* UIApplication+NCCCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF256681A77E2AB0029C8A4 /* UIApplication+NCCCoreData.m */; };
 		DCF256771A7BD0B40029C8A4 /* Comment+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF256761A7BD0B30029C8A4 /* Comment+Request.swift */; };
+		DCF256791A7D2F660029C8A4 /* Moment+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF256781A7D2F660029C8A4 /* Moment+JSON.swift */; };
+		DCF2567B1A7D2F760029C8A4 /* Moment+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF2567A1A7D2F760029C8A4 /* Moment+Request.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +105,8 @@
 		DCF256671A77E2AB0029C8A4 /* UIApplication+NCCCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+NCCCoreData.h"; path = "../../../CoreDataClient/CoreDataClient/UIApplication+NCCCoreData.h"; sourceTree = "<group>"; };
 		DCF256681A77E2AB0029C8A4 /* UIApplication+NCCCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+NCCCoreData.m"; path = "../../../CoreDataClient/CoreDataClient/UIApplication+NCCCoreData.m"; sourceTree = "<group>"; };
 		DCF256761A7BD0B30029C8A4 /* Comment+Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+Request.swift"; sourceTree = "<group>"; };
+		DCF256781A7D2F660029C8A4 /* Moment+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Moment+JSON.swift"; sourceTree = "<group>"; };
+		DCF2567A1A7D2F760029C8A4 /* Moment+Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Moment+Request.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +211,8 @@
 				DCF256331A75CE630029C8A4 /* ItemScope.swift */,
 				DCF256311A75CE630029C8A4 /* Media.swift */,
 				DCF2562F1A75CE620029C8A4 /* Moment.swift */,
+				DCF256781A7D2F660029C8A4 /* Moment+JSON.swift */,
+				DCF2567A1A7D2F760029C8A4 /* Moment+Request.swift */,
 				DCF2562D1A75CDEF0029C8A4 /* RequestAdapter.swift */,
 			);
 			name = Models;
@@ -350,6 +356,7 @@
 				DCF256691A77E2AB0029C8A4 /* NSManagedObject+Batch.m in Sources */,
 				DCF2563A1A75CE640029C8A4 /* Person.swift in Sources */,
 				DCF2566F1A77E2AB0029C8A4 /* NSManagedObject+Save.m in Sources */,
+				DCF2567B1A7D2F760029C8A4 /* Moment+Request.swift in Sources */,
 				DCF256731A77E2AB0029C8A4 /* NSManagedObjectContext+Edit.m in Sources */,
 				DCF256701A77E2AB0029C8A4 /* NSManagedObject+Utilities.m in Sources */,
 				DCF2566E1A77E2AB0029C8A4 /* NSManagedObject+NCCRequest.m in Sources */,
@@ -364,6 +371,7 @@
 				DCF256301A75CE620029C8A4 /* Moment.swift in Sources */,
 				DCF2566A1A77E2AB0029C8A4 /* NSManagedObject+Create.m in Sources */,
 				DCF256711A77E2AB0029C8A4 /* NSManagedObject+XML.m in Sources */,
+				DCF256791A7D2F660029C8A4 /* Moment+JSON.swift in Sources */,
 				DCF2563C1A77DA800029C8A4 /* Comment+JSON.swift in Sources */,
 				DCF256751A77E2AB0029C8A4 /* UIApplication+NCCCoreData.m in Sources */,
 				DCF256771A7BD0B40029C8A4 /* Comment+Request.swift in Sources */,

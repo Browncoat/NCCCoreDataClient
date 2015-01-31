@@ -87,7 +87,7 @@
 
 #pragma mark - GET
 
-+ (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)GET:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
@@ -95,13 +95,13 @@
     }
     request.HTTPMethod = @"GET";
     
-    if (requestBlock) {
-        requestBlock(request);
+    if (requestModifyBlock) {
+        requestModifyBlock(request);
     }
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
+    RequestCompletionBlock requestCompletionBlock = ^(NSArray *results, NSError *error) {
         if (results) {
             [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
@@ -129,52 +129,52 @@
     [myInvocation setArgument:&requestCompletionBlock atIndex:4];
     [myInvocation invoke];
     */
-    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock completion:requestCompletionBlock];
+    [self makeRequest:request progress:(ProgressBlock)progressBlock completion:requestCompletionBlock];
 }
 
-+ (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)GET:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
-    [self GET:resource progress:nil request:requestBlock withCompletion:completionBlock];
+    [self GET:resource progress:nil request:requestModifyBlock withCompletion:completionBlock];
 }
 
-+ (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)GET:(NSString *)resource progress:(ProgressBlock)progressBlock withCompletion:(CompletionBlock)completionBlock
 {
     [self GET:resource progress:progressBlock request:nil withCompletion:completionBlock];
 }
 
-+ (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock
++ (void)GET:(NSString *)resource withCompletion:(CompletionBlock)completionBlock
 {
    [self GET:resource progress:nil request:nil withCompletion:completionBlock];
 }
 
-+ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
++ (void)GETWithCompletion:(CompletionBlock)completionBlock
 {
     [self GET:nil progress:nil request:nil withCompletion:completionBlock];
 }
 
-- (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)GET:(NSString *)resource progress:(ProgressBlock)progressBlock withCompletion:(CompletionBlock)completionBlock
 {
     [[self class] GET:resource progress:progressBlock request:nil withCompletion:completionBlock];
 }
 
-- (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)GET:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
-    [[self class] GET:resource progress:nil request:requestBlock withCompletion:completionBlock];
+    [[self class] GET:resource progress:nil request:requestModifyBlock withCompletion:completionBlock];
 }
 
-- (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock
+- (void)GET:(NSString *)resource withCompletion:(CompletionBlock)completionBlock
 {
     [[self class] GET:resource progress:nil request:nil withCompletion:completionBlock];
 }
 
-- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock
+- (void)GETWithCompletion:(CompletionBlock)completionBlock
 {
     [[self class] GETWithCompletion:completionBlock];
 }
 
 #pragma mark - POST
 
-+ (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[self basePath]]];
     if (resource.length) {
@@ -182,13 +182,13 @@
     }
     request.HTTPMethod = @"POST";
     
-    if (requestBlock) {
-        requestBlock(request);
+    if (requestModifyBlock) {
+        requestModifyBlock(request);
     }
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
-    void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
+    RequestCompletionBlock requestCompletionBlock = ^(NSArray *results, NSError *error) {
         if (results) {
             [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
                 if (progressBlock) {
@@ -216,27 +216,27 @@
     [myInvocation setArgument:&requestCompletionBlock atIndex:4];
     [myInvocation invoke];
      */
-    [self makeRequest:request progress:(void(^)(CGFloat progress))progressBlock completion:requestCompletionBlock];
+    [self makeRequest:request progress:(ProgressBlock)progressBlock completion:requestCompletionBlock];
 }
 
-+ (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)POST:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
-    [self POST:resource progress:nil request:requestBlock withCompletion:completionBlock];
+    [self POST:resource progress:nil request:requestModifyBlock withCompletion:completionBlock];
 }
 
-- (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
-    [[self class] POST:resource progress:progressBlock request:requestBlock withCompletion:completionBlock];
+    [[self class] POST:resource progress:progressBlock request:requestModifyBlock withCompletion:completionBlock];
 }
 
-- (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)POST:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
-    [self POST:resource progress:nil request:requestBlock withCompletion:completionBlock];
+    [self POST:resource progress:nil request:requestModifyBlock withCompletion:completionBlock];
 }
 
 #pragma mark - PUT
 
-- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)PUT:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
@@ -244,8 +244,8 @@
     }
     request.HTTPMethod = @"PUT";
     
-    if (requestBlock) {
-        requestBlock(request);
+    if (requestModifyBlock) {
+        requestModifyBlock(request);
     }
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
@@ -266,7 +266,7 @@
 
 #pragma mark - DELETE
 
-+ (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
++ (void)DELETE:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
@@ -274,8 +274,8 @@
     }
     request.HTTPMethod = @"DELETE";
     
-    if (requestBlock) {
-        requestBlock(request);
+    if (requestModifyBlock) {
+        requestModifyBlock(request);
     }
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
@@ -293,17 +293,17 @@
     [self makeRequest:request progress:nil completion:completionBlock];
 }
 
-- (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)DELETE:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock
 {
-    [[self class] DELETE:resource request:requestBlock withCompletion:completionBlock];
+    [[self class] DELETE:resource request:requestModifyBlock withCompletion:completionBlock];
 }
 
-- (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock
+- (void)DELETE:(NSString *)resource withCompletion:(CompletionBlock)completionBlock
 {
     [self DELETE:resource request:nil withCompletion:completionBlock];
 }
 
-- (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock
+- (void)DELETEWithCompletion:(CompletionBlock)completionBlock
 {
     [self DELETE:nil request:nil withCompletion:completionBlock];
 }

@@ -23,9 +23,10 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+typedef void(^ProgressBlock)(CGFloat progress);
+typedef void(^RequestModifyBlock)(NSMutableURLRequest *request);
 typedef void(^RequestCompletionBlock)(NSArray *results, NSError *error);
 typedef void(^CompletionBlock)(NSArray *results, NSError *error);
-typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (NCCRequest)
 
@@ -39,32 +40,32 @@ typedef void(^ProgressBlock)(CGFloat progress);
 + (NSString *)managedObjectUidKey;
 
 // GET
-+ (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-+ (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-+ (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock;
-+ (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
-+ (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
++ (void)GET:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
++ (void)GET:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
++ (void)GET:(NSString *)resource progress:(ProgressBlock)progressBlock withCompletion:(CompletionBlock)completionBlock;
++ (void)GET:(NSString *)resource withCompletion:(CompletionBlock)completionBlock;
++ (void)GETWithCompletion:(CompletionBlock)completionBlock;
 
-- (void)GET:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock withCompletion:(RequestCompletionBlock)completionBlock;
-- (void)GET:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-- (void)GET:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
-- (void)GETWithCompletion:(RequestCompletionBlock)completionBlock;
+- (void)GET:(NSString *)resource progress:(ProgressBlock)progressBlock withCompletion:(CompletionBlock)completionBlock;
+- (void)GET:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
+- (void)GET:(NSString *)resource withCompletion:(CompletionBlock)completionBlock;
+- (void)GETWithCompletion:(CompletionBlock)completionBlock;
 
 // POST
-+ (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-+ (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
++ (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
++ (void)POST:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
 
-- (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-- (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
+- (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
+- (void)POST:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
 
 // PUT
-- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
+- (void)PUT:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
 
 // DELETE
-+ (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-- (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
-- (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
-- (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
++ (void)DELETE:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
+- (void)DELETE:(NSString *)resource withCompletion:(CompletionBlock)completionBlock;
+- (void)DELETE:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
+- (void)DELETEWithCompletion:(CompletionBlock)completionBlock;
 
 // KeyPath Mapping
 - (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
@@ -77,7 +78,7 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (RequestAdapter)
 
-- (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
-+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
+- (void)makeRequest:(NSMutableURLRequest *)request progress:(ProgressBlock)progress completion:(RequestCompletionBlock)completion;
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(ProgressBlock)progress completion:(RequestCompletionBlock)completion;
 
 @end

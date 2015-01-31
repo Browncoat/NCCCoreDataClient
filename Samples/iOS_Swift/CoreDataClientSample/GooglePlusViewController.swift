@@ -17,7 +17,7 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     
     @IBOutlet var signInButton: GPPSignInButton!
     
-    let clientId = "978903998184-mh9ot989abn0iv95qvti8oianos9ttfn.apps.googleusercontent.com"
+    let clientId = ""
     let clientAuthTokenKey = "auth_token"
 
     override func viewDidLoad() {
