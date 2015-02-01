@@ -9,6 +9,7 @@
 import Foundation
 
 extension Comment {
+    /*
     struct Initialize {
         static var basePath: String = "https://api.instagram.com/v1/media/"
         static var managedObjectUidKey: String = "id"
@@ -45,6 +46,7 @@ extension Comment {
                 //
         }
     }
+*/
 }
 
 /*

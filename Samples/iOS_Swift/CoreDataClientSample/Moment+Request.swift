@@ -28,18 +28,16 @@ extension Moment {
         return Initialize.responseObjectUidKey
     }
     
-    func saveMomentWithCompletion(completion: (results: NSArray?, error: NSError?)->()) {
-        
-//        self.POST(<#resource: String!#>, request: <#((NSMutableURLRequest!) -> Void)!##(NSMutableURLRequest!) -> Void#>, withCompletion: <#RequestCompletionBlock!##([AnyObject]!, NSError!) -> Void#>)
+    func saveMomentWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
         
         self.POST("vault", request: { (request: NSMutableURLRequest!) -> Void in
-//            request.setJSON(self.momentDictionary())
-        }) { (results: NSArray!, error: NSError!) -> Void in
-//            completion(results, error)
+            request.setJSON(self.momentDictionary())
+        }) { (results: Array!, error: NSError!) -> Void in
+            completion(results: results, error: error)
         }
     }
     
-    func momentDictionary() -> NSDictionary {
+    func momentDictionary() -> [String:AnyObject] {
         
         struct DateFormatter {
             static var dateFormatter: NSDateFormatter = {
