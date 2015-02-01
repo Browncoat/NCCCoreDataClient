@@ -37,7 +37,7 @@ extension Moment {
         }
     }
     
-    func momentDictionary() -> [String:AnyObject] {
+    func momentDictionary() -> [NSObject : AnyObject] {
         
         struct DateFormatter {
             static var dateFormatter: NSDateFormatter = {

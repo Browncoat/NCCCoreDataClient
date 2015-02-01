@@ -41,6 +41,8 @@
 		DCF256771A7BD0B40029C8A4 /* Comment+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF256761A7BD0B30029C8A4 /* Comment+Request.swift */; };
 		DCF256791A7D2F660029C8A4 /* Moment+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF256781A7D2F660029C8A4 /* Moment+JSON.swift */; };
 		DCF2567B1A7D2F760029C8A4 /* Moment+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF2567A1A7D2F760029C8A4 /* Moment+Request.swift */; };
+		DCF2567D1A7DB6ED0029C8A4 /* Person+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF2567C1A7DB6ED0029C8A4 /* Person+JSON.swift */; };
+		DCF2567F1A7DB7000029C8A4 /* Person+Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCF2567E1A7DB7000029C8A4 /* Person+Request.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +109,8 @@
 		DCF256761A7BD0B30029C8A4 /* Comment+Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Comment+Request.swift"; sourceTree = "<group>"; };
 		DCF256781A7D2F660029C8A4 /* Moment+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Moment+JSON.swift"; sourceTree = "<group>"; };
 		DCF2567A1A7D2F760029C8A4 /* Moment+Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Moment+Request.swift"; sourceTree = "<group>"; };
+		DCF2567C1A7DB6ED0029C8A4 /* Person+JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+JSON.swift"; sourceTree = "<group>"; };
+		DCF2567E1A7DB7000029C8A4 /* Person+Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Person+Request.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +208,8 @@
 			children = (
 				DCF2562A1A7565FA0029C8A4 /* CoreDataClientSample.xcdatamodeld */,
 				DCF256391A75CE640029C8A4 /* Person.swift */,
+				DCF2567C1A7DB6ED0029C8A4 /* Person+JSON.swift */,
+				DCF2567E1A7DB7000029C8A4 /* Person+Request.swift */,
 				DCF256371A75CE630029C8A4 /* Comment.swift */,
 				DCF2563B1A77DA800029C8A4 /* Comment+JSON.swift */,
 				DCF256761A7BD0B30029C8A4 /* Comment+Request.swift */,
@@ -357,6 +363,7 @@
 				DCF2563A1A75CE640029C8A4 /* Person.swift in Sources */,
 				DCF2566F1A77E2AB0029C8A4 /* NSManagedObject+Save.m in Sources */,
 				DCF2567B1A7D2F760029C8A4 /* Moment+Request.swift in Sources */,
+				DCF2567D1A7DB6ED0029C8A4 /* Person+JSON.swift in Sources */,
 				DCF256731A77E2AB0029C8A4 /* NSManagedObjectContext+Edit.m in Sources */,
 				DCF256701A77E2AB0029C8A4 /* NSManagedObject+Utilities.m in Sources */,
 				DCF2566E1A77E2AB0029C8A4 /* NSManagedObject+NCCRequest.m in Sources */,
@@ -375,6 +382,7 @@
 				DCF2563C1A77DA800029C8A4 /* Comment+JSON.swift in Sources */,
 				DCF256751A77E2AB0029C8A4 /* UIApplication+NCCCoreData.m in Sources */,
 				DCF256771A7BD0B40029C8A4 /* Comment+Request.swift in Sources */,
+				DCF2567F1A7DB7000029C8A4 /* Person+Request.swift in Sources */,
 				DCF2566D1A77E2AB0029C8A4 /* NSManagedObject+JSON.m in Sources */,
 				DCF256341A75CE630029C8A4 /* ItemScope.swift in Sources */,
 				DCF256381A75CE630029C8A4 /* Comment.swift in Sources */,
