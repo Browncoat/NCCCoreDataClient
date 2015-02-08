@@ -11,8 +11,8 @@ import Foundation
 extension Person {
    
     override func updateWithDictionary(dictionary: [NSObject : AnyObject]!) {
-        self.id = dictionary["id"] as String;
-        self.displayName = dictionary["displayName"] as String;
-        self.url = dictionary["url"] as String;
+        self.id = dictionary["id"] as? String;
+        self.displayName = dictionary["displayName"] as? String;
+        self.url = dictionary["url"] as? String;
     }
 }

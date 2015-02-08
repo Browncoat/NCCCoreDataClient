@@ -28,9 +28,10 @@ extension Person {
         return Initialize.responseObjectUidKey
     }
     
-    func person(id: String, completion:(person: Person?, error: NSError?)->()) {
+    class func personWithId(id: String, completion:(person: Person?, error: NSError?)->()) {
         self.GET(id, withCompletion: { (results: Array!, error: NSError!) -> Void in
-            //
+            let person = results[0] as Person
+            completion(person: person, error: error)
         })
     }
 }

@@ -13,13 +13,15 @@ import AssetsLibrary
 import CoreLocation
 import CoreMotion
 
+struct Authentication {
+    static var clientId = "978903998184-7osqgspcvqkdjqj7fngjgg756cbkhl6h.apps.googleusercontent.com"
+    static var clientAuthTokenKey = "auth_token"
+}
+
 class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     
     @IBOutlet var signInButton: GPPSignInButton!
     
-    let clientId = ""
-    let clientAuthTokenKey = "auth_token"
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -29,7 +31,7 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
         //signIn.shouldFetchGoogleUserEmail = YES;  // Uncomment to get the user's email
         
         // You previously set kClientId in the "Initialize the Google+ client" step
-        signIn.clientID = clientId;
+        signIn.clientID = Authentication.clientId;
         
         // Uncomment one of these two statements for the scope you chose in the previous step
         signIn.scopes = [ kGTLAuthScopePlusLogin, kGTLAuthScopePlusMe ];  // "https://www.googleapis.com/auth/plus.login" scope
@@ -61,8 +63,8 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
         println("Received error \(error) and auth object \(auth)");
         let oauthToken: NSString = auth.accessToken;
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setValue(oauthToken, forKey: clientAuthTokenKey)
-        println("AccessToken: \(userDefaults.valueForKey(clientAuthTokenKey))")
+        userDefaults.setValue(oauthToken, forKey: Authentication.clientAuthTokenKey)
+        println("AccessToken: \(userDefaults.valueForKey(Authentication.clientAuthTokenKey))")
     }
     
     func didDisconnectWithError(error: NSError?) {
@@ -72,7 +74,11 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     //Mark: Actions
     
     @IBAction func didPressGetPersonButton(sender: AnyObject) {
-        
+        Person.personWithId("me", completion: { (person, error) -> () in
+            if let thePerson = person {
+                println("Person: \(thePerson)")
+            }
+        })
     }
     
     @IBAction func didPressPostMomentButton(sender: AnyObject) {
