@@ -75,14 +75,22 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     
     @IBAction func didPressGetPersonButton(sender: AnyObject) {
         Person.personWithId("me", completion: { (person, error) -> () in
-            if let thePerson = person {
-                println("Person: \(thePerson)")
+            if error != nil {
+                let alert = UIAlertController(title: "Network Error", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                if let thePerson = person {
+                    println("Person: \(thePerson)")
+                }
             }
         })
     }
     
     @IBAction func didPressPostMomentButton(sender: AnyObject) {
-        
+        let moment: Moment = Moment(inManagedObjectContext: NSManagedObjectContext.mainContext())
+        moment.saveMomentWithCompletion { (results, error) -> () in
+            //
+        }
     }
     /*
     - (IBAction)didPressGetPersonButton:(id)sender

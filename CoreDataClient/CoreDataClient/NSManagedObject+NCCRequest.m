@@ -114,7 +114,7 @@
             }];
         } else {
             if (completionBlock) {
-                completionBlock(nil, error);
+                completionBlock(@[], error);
             }
         }
     };
@@ -201,7 +201,7 @@
             }];
         } else {
             if (completionBlock) {
-                completionBlock(nil, error);
+                completionBlock(@[], error);
             }
         }
     };

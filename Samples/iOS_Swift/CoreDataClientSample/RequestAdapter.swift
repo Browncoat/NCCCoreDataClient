@@ -15,9 +15,13 @@ extension NSManagedObject {
             let headers = ["Authorization":"Bearer \(token)"]
             request.setHeaders(headers)
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                var error: NSError?
-                if let responseObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
-                    completion([responseObject], error?)
+                if ((error) != nil) {
+                    completion(nil, error)
+                } else {
+                    var error: NSError?
+                    if let responseObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
+                        completion([responseObject], error?)
+                    }
                 }
             }
         }
