@@ -103,7 +103,7 @@
     
     void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
         if (results) {
-            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+            [[self class] batchUpdateObjects:results destinationContext:[NSManagedObjectContext mainContext] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -190,7 +190,7 @@
     
     void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
         if (results) {
-            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+            [[self class] batchUpdateObjects:results destinationContext:[NSManagedObjectContext mainContext] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -252,7 +252,7 @@
     
     void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
         if (results) {
-            [[self class] batchUpdateObjects:results uniqueIdentifierName:[[self class] responseObjectUidKey] progress:^(CGFloat progress) {
+            [[self class] batchUpdateObjects:results destinationContext:[NSManagedObjectContext mainContext] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
