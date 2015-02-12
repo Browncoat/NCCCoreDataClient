@@ -62,6 +62,7 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 // DELETE
 + (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
++ (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;

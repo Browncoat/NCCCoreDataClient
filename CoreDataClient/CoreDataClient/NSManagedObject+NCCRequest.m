@@ -315,6 +315,11 @@
     [self makeRequest:request progress:nil completion:completionBlock];
 }
 
++ (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self DELETE:nil request:nil withCompletion:completionBlock];
+}
+
 - (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
     [[self class] DELETE:resource request:requestBlock withCompletion:completionBlock];
