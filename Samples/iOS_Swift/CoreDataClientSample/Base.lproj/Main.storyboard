@@ -41,16 +41,34 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="DisplayName" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfK-q3-sD9">
+                                <rect key="frame" x="16" y="317" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cP8-tF-Z7F">
+                                <rect key="frame" x="114" y="400" width="373" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="JFa-mP-bjv" secondAttribute="centerX" id="021-rI-swS"/>
+                            <constraint firstItem="tfK-q3-sD9" firstAttribute="top" secondItem="JFa-mP-bjv" secondAttribute="bottom" constant="8" id="38b-N3-fil"/>
+                            <constraint firstAttribute="centerX" secondItem="cP8-tF-Z7F" secondAttribute="centerX" id="HcI-uM-emF"/>
+                            <constraint firstAttribute="centerX" secondItem="tfK-q3-sD9" secondAttribute="centerX" id="MZ2-2U-4LS"/>
+                            <constraint firstItem="cP8-tF-Z7F" firstAttribute="top" secondItem="fyg-xk-ovx" secondAttribute="bottom" constant="8" id="Xgi-Ph-F4L"/>
                             <constraint firstAttribute="centerX" secondItem="fyg-xk-ovx" secondAttribute="centerX" id="Xi2-Od-phF"/>
                             <constraint firstItem="Ui9-LU-ojd" firstAttribute="top" secondItem="skv-F8-i0I" secondAttribute="bottom" constant="171" id="aIS-IQ-Et8"/>
                             <constraint firstItem="Ui9-LU-ojd" firstAttribute="centerX" secondItem="EWu-uD-XcO" secondAttribute="centerX" id="eif-2E-zYZ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="displayNameLabel" destination="tfK-q3-sD9" id="CxO-Oz-MVc"/>
+                        <outlet property="postConfirmationLabel" destination="cP8-tF-Z7F" id="O1g-i8-lYW"/>
                         <outlet property="signInButton" destination="Ui9-LU-ojd" id="2hB-Mi-9P5"/>
                     </connections>
                 </viewController>

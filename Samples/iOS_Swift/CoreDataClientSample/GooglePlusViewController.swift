@@ -14,13 +14,15 @@ import CoreLocation
 import CoreMotion
 
 struct Authentication {
-    static var clientId = "978903998184-7osqgspcvqkdjqj7fngjgg756cbkhl6h.apps.googleusercontent.com"
+    static var clientId = ""
     static var clientAuthTokenKey = "auth_token"
 }
 
 class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     
-    @IBOutlet var signInButton: GPPSignInButton!
+    @IBOutlet weak var signInButton: GPPSignInButton!
+    @IBOutlet weak var displayNameLabel: UILabel!
+    @IBOutlet weak var postConfirmationLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +82,7 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
                 self.presentViewController(alert, animated: true, completion: nil)
             } else {
                 if let thePerson = person {
+                    self.displayNameLabel.text = thePerson.displayName
                     println("Person: \(thePerson)")
                 }
             }
@@ -89,7 +92,11 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     @IBAction func didPressPostMomentButton(sender: AnyObject) {
         let moment: Moment = Moment(inManagedObjectContext: NSManagedObjectContext.mainContext())
         moment.saveMomentWithCompletion { (results, error) -> () in
-            //
+            if (error == nil) {
+                self.postConfirmationLabel.text = "View your posts at https://plus.google.com/apps"
+            } else {
+                self.postConfirmationLabel.text = "Oops, didn't work."
+            }
         }
     }
     /*

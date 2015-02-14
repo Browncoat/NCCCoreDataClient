@@ -56,7 +56,7 @@ extension Moment {
         let moment: Dictionary = [  "type":"http://schema.org/AddAction",
                                     "startDate":dateString,
                                     "object":[  "id":"target-id-1",
-                                                "image":"http://www.google.com/s2/static/images/GoogleyEyes.png",
+                                                "image":"http://www.fillmurray.com/50/50",
                                                 "type":"http://schema.org/AddAction",
                                                 "description":"The description for the activity",
                                                 "name":"An example of AddActivity"
