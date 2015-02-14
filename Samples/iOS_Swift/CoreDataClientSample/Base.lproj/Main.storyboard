@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="uC3-0c-6I6">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Google Plus View Controller-->
@@ -47,28 +48,34 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cP8-tF-Z7F">
-                                <rect key="frame" x="114" y="400" width="373" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qsm-6A-vcR">
+                                <rect key="frame" x="16" y="400" width="568" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressPostLinkButton:" destination="uC3-0c-6I6" eventType="touchUpInside" id="WYZ-B2-vjf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="JFa-mP-bjv" secondAttribute="centerX" id="021-rI-swS"/>
                             <constraint firstItem="tfK-q3-sD9" firstAttribute="top" secondItem="JFa-mP-bjv" secondAttribute="bottom" constant="8" id="38b-N3-fil"/>
-                            <constraint firstAttribute="centerX" secondItem="cP8-tF-Z7F" secondAttribute="centerX" id="HcI-uM-emF"/>
+                            <constraint firstAttribute="centerX" secondItem="Qsm-6A-vcR" secondAttribute="centerX" id="DYe-cl-f8a"/>
                             <constraint firstAttribute="centerX" secondItem="tfK-q3-sD9" secondAttribute="centerX" id="MZ2-2U-4LS"/>
-                            <constraint firstItem="cP8-tF-Z7F" firstAttribute="top" secondItem="fyg-xk-ovx" secondAttribute="bottom" constant="8" id="Xgi-Ph-F4L"/>
+                            <constraint firstItem="Qsm-6A-vcR" firstAttribute="top" secondItem="fyg-xk-ovx" secondAttribute="bottom" constant="8" id="RFJ-H7-6P0"/>
                             <constraint firstAttribute="centerX" secondItem="fyg-xk-ovx" secondAttribute="centerX" id="Xi2-Od-phF"/>
+                            <constraint firstItem="Qsm-6A-vcR" firstAttribute="trailing" secondItem="EWu-uD-XcO" secondAttribute="trailingMargin" id="aFm-ac-15c"/>
                             <constraint firstItem="Ui9-LU-ojd" firstAttribute="top" secondItem="skv-F8-i0I" secondAttribute="bottom" constant="171" id="aIS-IQ-Et8"/>
                             <constraint firstItem="Ui9-LU-ojd" firstAttribute="centerX" secondItem="EWu-uD-XcO" secondAttribute="centerX" id="eif-2E-zYZ"/>
+                            <constraint firstItem="Qsm-6A-vcR" firstAttribute="leading" secondItem="EWu-uD-XcO" secondAttribute="leadingMargin" id="jGN-72-XbW"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="displayNameLabel" destination="tfK-q3-sD9" id="CxO-Oz-MVc"/>
-                        <outlet property="postConfirmationLabel" destination="cP8-tF-Z7F" id="O1g-i8-lYW"/>
+                        <outlet property="postLinkButton" destination="Qsm-6A-vcR" id="14k-iU-tmP"/>
                         <outlet property="signInButton" destination="Ui9-LU-ojd" id="2hB-Mi-9P5"/>
                     </connections>
                 </viewController>

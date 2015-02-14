@@ -22,7 +22,7 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     
     @IBOutlet weak var signInButton: GPPSignInButton!
     @IBOutlet weak var displayNameLabel: UILabel!
-    @IBOutlet weak var postConfirmationLabel: UILabel!
+    @IBOutlet weak var postLinkButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,26 +93,15 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
         let moment: Moment = Moment(inManagedObjectContext: NSManagedObjectContext.mainContext())
         moment.saveMomentWithCompletion { (results, error) -> () in
             if (error == nil) {
-                self.postConfirmationLabel.text = "View your posts at https://plus.google.com/apps"
+                self.postLinkButton.enabled = true
+                self.postLinkButton.setTitle("View your posts at https://plus.google.com/apps", forState: UIControlState.Normal)
             } else {
-                self.postConfirmationLabel.text = "Oops, didn't work."
+                self.postLinkButton.setTitle("\(error?.localizedDescription)", forState: UIControlState.Normal)
             }
         }
     }
-    /*
-    - (IBAction)didPressGetPersonButton:(id)sender
-    {
-    [Person personWithId:@"me" completion:^(Person *person, NSError *error) {
-    NSLog(@"Person: %@", person);
-    }];
-    }
     
-    - (IBAction)didPressPostMomentButton:(id)sender
-    {
-    Moment *moment = [Moment objectInManagedObjectContext:[NSManagedObjectContext mainContext]];
-    [moment saveWithCompletion:^(Moment *moment, NSError *error) {
-    NSLog(@"Moment: %@", moment);
-    }];
+    @IBAction func didPressPostLinkButton(sender: AnyObject) {
+        UIApplication.sharedApplication().openURL(NSURL(string: "https://plus.google.com/apps")!)
     }
-*/
 }
