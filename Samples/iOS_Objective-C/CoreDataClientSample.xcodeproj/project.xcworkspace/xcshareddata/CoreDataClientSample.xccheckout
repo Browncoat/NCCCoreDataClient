@@ -5,7 +5,7 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>6E3FFDF8-9D16-4FB5-BBAB-2C81A0AA8C3C</string>
+	<string>F8E2CB7B-B6BE-4C68-A2FD-0FEFAE9E5F31</string>
 	<key>IDESourceControlProjectName</key>
 	<string>CoreDataClientSample</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
@@ -14,11 +14,11 @@
 		<string>github.com:Browncoat/NCCCoreDataClient.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Samples/iOS/CoreDataClientSample.xcworkspace</string>
+	<string>Samples/iOS_Objective-C/CoreDataClientSample.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>775F0B4C7D395866DFD45E02FED5DD150F1FFD02</key>
-		<string>../../..</string>
+		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:Browncoat/NCCCoreDataClient.git</string>

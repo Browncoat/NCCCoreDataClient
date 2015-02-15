@@ -20,6 +20,7 @@
 		DC2173ED1A9112350061D082 /* NSManagedObjectContext+Edit.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173DE1A9112350061D082 /* NSManagedObjectContext+Edit.m */; };
 		DC2173EE1A9112350061D082 /* NSMutableURLRequest+NCCCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173E01A9112350061D082 /* NSMutableURLRequest+NCCCreate.m */; };
 		DC2173EF1A9112350061D082 /* UIApplication+NCCCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173E21A9112350061D082 /* UIApplication+NCCCoreData.m */; };
+		DC2173F21A91236E0061D082 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173F11A91236E0061D082 /* Person.m */; };
 		DC2D7C941A089CB30000464F /* GooglePlusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C931A089CB30000464F /* GooglePlusViewController.m */; };
 		DC2D7C981A0916E10000464F /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7C951A0916E10000464F /* GoogleOpenSource.framework */; };
 		DC2D7C991A0916E10000464F /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DC2D7C961A0916E10000464F /* GooglePlus.bundle */; };
@@ -33,7 +34,6 @@
 		DC2D7CAA1A09198B0000464F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7CA91A09198B0000464F /* MediaPlayer.framework */; };
 		DC2D7CAC1A0919910000464F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7CAB1A0919910000464F /* Security.framework */; };
 		DC2D7CAE1A09199E0000464F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7CAD1A09199E0000464F /* SystemConfiguration.framework */; };
-		DC2D7CB11A09D5190000464F /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7CB01A09D5190000464F /* Person.m */; };
 		DC2D7CB41A09D53B0000464F /* Person+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7CB31A09D53B0000464F /* Person+Request.m */; };
 		DC2D7CB71A09D63D0000464F /* Person+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7CB61A09D63D0000464F /* Person+JSON.m */; };
 		DC2D7CBE1A09E8EA0000464F /* Moment+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7CBD1A09E8EA0000464F /* Moment+JSON.m */; };
@@ -96,6 +96,8 @@
 		DC2173E01A9112350061D082 /* NSMutableURLRequest+NCCCreate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+NCCCreate.m"; sourceTree = "<group>"; };
 		DC2173E11A9112350061D082 /* UIApplication+NCCCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+NCCCoreData.h"; sourceTree = "<group>"; };
 		DC2173E21A9112350061D082 /* UIApplication+NCCCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NCCCoreData.m"; sourceTree = "<group>"; };
+		DC2173F01A91236E0061D082 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		DC2173F11A91236E0061D082 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		DC2D7C921A089CB30000464F /* GooglePlusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlusViewController.h; sourceTree = "<group>"; };
 		DC2D7C931A089CB30000464F /* GooglePlusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlusViewController.m; sourceTree = "<group>"; };
 		DC2D7C951A0916E10000464F /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = "google-plus-ios-sdk-1.7.1/GoogleOpenSource.framework"; sourceTree = "<group>"; };
@@ -111,8 +113,6 @@
 		DC2D7CA91A09198B0000464F /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		DC2D7CAB1A0919910000464F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DC2D7CAD1A09199E0000464F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		DC2D7CAF1A09D5190000464F /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Person.h; path = ../Person.h; sourceTree = "<group>"; };
-		DC2D7CB01A09D5190000464F /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Person.m; path = ../Person.m; sourceTree = "<group>"; };
 		DC2D7CB21A09D53B0000464F /* Person+Request.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Person+Request.h"; sourceTree = "<group>"; };
 		DC2D7CB31A09D53B0000464F /* Person+Request.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Person+Request.m"; sourceTree = "<group>"; };
 		DC2D7CB51A09D63D0000464F /* Person+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Person+JSON.h"; sourceTree = "<group>"; };
@@ -332,8 +332,8 @@
 				DCB1BD231A059A3600F1991D /* User+JSON.m */,
 				DCAC53CF1A0542E700C23278 /* User+Request.h */,
 				DCAC53D01A0542E700C23278 /* User+Request.m */,
-				DC2D7CAF1A09D5190000464F /* Person.h */,
-				DC2D7CB01A09D5190000464F /* Person.m */,
+				DC2173F01A91236E0061D082 /* Person.h */,
+				DC2173F11A91236E0061D082 /* Person.m */,
 				DC2D7CB51A09D63D0000464F /* Person+JSON.h */,
 				DC2D7CB61A09D63D0000464F /* Person+JSON.m */,
 				DC2D7CB21A09D53B0000464F /* Person+Request.h */,
@@ -449,10 +449,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DC2D7CB11A09D5190000464F /* Person.m in Sources */,
 				DC2D7CC41A09E93D0000464F /* Moment.m in Sources */,
 				DCB1BD491A067D0B00F1991D /* Comment+Request.m in Sources */,
 				DC2173E41A9112350061D082 /* NSManagedObject+Create.m in Sources */,
+				DC2173F21A91236E0061D082 /* Person.m in Sources */,
 				DC2173E81A9112350061D082 /* NSManagedObject+NCCRequest.m in Sources */,
 				DC2173E61A9112350061D082 /* NSManagedObject+Fetch.m in Sources */,
 				DC2173E51A9112350061D082 /* NSManagedObject+Delete.m in Sources */,
