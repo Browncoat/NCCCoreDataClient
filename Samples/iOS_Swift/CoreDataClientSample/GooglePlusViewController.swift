@@ -92,11 +92,11 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     @IBAction func didPressPostMomentButton(sender: AnyObject) {
         let moment: Moment = Moment(inManagedObjectContext: NSManagedObjectContext.mainContext())
         moment.saveMomentWithCompletion { (results, error) -> () in
-            if (error == nil) {
+            if error != nil {
+                self.postLinkButton.setTitle("\(error?.localizedDescription)", forState: UIControlState.Normal)
+            } else {
                 self.postLinkButton.enabled = true
                 self.postLinkButton.setTitle("View your posts at https://plus.google.com/apps", forState: UIControlState.Normal)
-            } else {
-                self.postLinkButton.setTitle("\(error?.localizedDescription)", forState: UIControlState.Normal)
             }
         }
     }
