@@ -54,14 +54,15 @@ typedef void(^ProgressBlock)(CGFloat progress);
 + (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
-- (void)POST:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
 // PUT
+- (void)PUT:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
 // DELETE
 + (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
++ (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
@@ -77,7 +78,6 @@ typedef void(^ProgressBlock)(CGFloat progress);
 
 @interface NSManagedObject (RequestAdapter)
 
-- (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
 + (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
 
 @end

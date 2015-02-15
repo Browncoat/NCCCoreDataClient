@@ -103,7 +103,7 @@
     
     void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
         if (results) {
-            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+            [[self class] batchUpdateObjects:results destinationContext:[NSManagedObjectContext mainContext] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -190,7 +190,7 @@
     
     void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
         if (results) {
-            [[self class] batchUpdateObjects:results uniqueIdentifierName:[self responseObjectUidKey] progress:^(CGFloat progress) {
+            [[self class] batchUpdateObjects:results destinationContext:[NSManagedObjectContext mainContext] progress:^(CGFloat progress) {
                 if (progressBlock) {
                     progressBlock(progress);
                 }
@@ -236,7 +236,7 @@
 
 #pragma mark - PUT
 
-- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+- (void)PUT:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[[self class] basePath]]];
     if (resource.length) {
@@ -250,18 +250,40 @@
     
     [[self class] checkClassNameIncludedInRequestUrl:request.URL];
     
+    void (^requestCompletionBlock)(NSArray *results, NSError *error) = ^(NSArray *results, NSError *error) {
+        if (results) {
+            [[self class] batchUpdateObjects:results destinationContext:[NSManagedObjectContext mainContext] progress:^(CGFloat progress) {
+                if (progressBlock) {
+                    progressBlock(progress);
+                }
+            } completion:^(NSArray *results, NSError *error) {
+                if (completionBlock) {
+                    completionBlock(results, error);
+                }
+            }];
+        } else {
+            if (completionBlock) {
+                completionBlock(nil, error);
+            }
+        }
+    };
     /*
-    NSMethodSignature * mySignature = [NSManagedObject instanceMethodSignatureForSelector:@selector(makeRequest:progress:completion:)];
-    NSInvocation * myInvocation = [NSInvocation invocationWithMethodSignature:mySignature];
-    [myInvocation setTarget:[self class]];
-    [myInvocation setSelector:@selector(makeRequest:progress:completion:)];
-    [myInvocation setArgument:&request atIndex:2];
-    [myInvocation setArgument:nil atIndex:3];
-    [myInvocation setArgument:&completionBlock atIndex:4];
-    [myInvocation invoke];
-    */
+     NSMethodSignature * mySignature = [NSManagedObject instanceMethodSignatureForSelector:@selector(makeRequest:progress:completion:)];
+     NSInvocation * myInvocation = [NSInvocation invocationWithMethodSignature:mySignature];
+     [myInvocation setTarget:[self class]];
+     [myInvocation setSelector:@selector(makeRequest:progress:completion:)];
+     [myInvocation setArgument:&request atIndex:2];
+     [myInvocation setArgument:nil atIndex:3];
+     [myInvocation setArgument:&completionBlock atIndex:4];
+     [myInvocation invoke];
+     */
     
-    [self makeRequest:request progress:nil completion:completionBlock];
+    [[self class] makeRequest:request progress:nil completion:requestCompletionBlock];
+}
+
+- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self PUT:resource progress:nil request:requestBlock withCompletion:completionBlock];
 }
 
 #pragma mark - DELETE
@@ -291,6 +313,11 @@
     [myInvocation invoke];
      */
     [self makeRequest:request progress:nil completion:completionBlock];
+}
+
++ (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock
+{
+    [self DELETE:nil request:nil withCompletion:completionBlock];
 }
 
 - (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestBlock withCompletion:(RequestCompletionBlock)completionBlock

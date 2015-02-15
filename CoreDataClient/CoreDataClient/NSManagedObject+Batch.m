@@ -11,16 +11,16 @@
 
 @implementation NSManagedObject (Batch)
 
-+ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName error:(NSError **)outError
++ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects destinationContext:(NSManagedObjectContext *)context error:(NSError **)outError
 {
     CGFloat progress = 0;
-    return [self batchUpdateAndWaitObjects:objects uniqueIdentifierName:uniqueIdentifierName progress:&progress error:outError];
+    return [self batchUpdateAndWaitObjects:objects destinationContext:context progress:&progress error:outError];
 }
 
-+ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName progress:(CGFloat *)outProgress error:(NSError **)outError
++ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects  destinationContext:(NSManagedObjectContext *)context progress:(CGFloat *)outProgress error:(NSError **)outError
 {
     NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    childContext.parentContext = [NSManagedObjectContext mainContext];
+    childContext.parentContext = context;
     
     __block NSArray *resultObjects;
     
@@ -39,15 +39,15 @@
     return resultObjects;
 }
 
-+ (void)batchUpdateObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName completion:(void(^)(NSArray *results, NSError *error))completion
++ (void)batchUpdateObjects:(NSArray *)objects destinationContext:(NSManagedObjectContext *)context completion:(void(^)(NSArray *results, NSError *error))completion
 {
-    return [self batchUpdateObjects:objects uniqueIdentifierName:uniqueIdentifierName progress:nil completion:completion];
+    return [self batchUpdateObjects:objects destinationContext:context progress:nil completion:completion];
 }
 
-+ (void)batchUpdateObjects:(NSArray *)objects uniqueIdentifierName:(NSString *)uniqueIdentifierName progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion
++ (void)batchUpdateObjects:(NSArray *)objects destinationContext:(NSManagedObjectContext *)context progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion
 {
     NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    childContext.parentContext = [NSManagedObjectContext mainContext];
+    childContext.parentContext = context;
     
     [childContext performBlock:^{
         
@@ -123,13 +123,13 @@
             if (comparison == NSOrderedSame) { // same uids from both lists, UPDATE
                 NSManagedObject *object = sortedManagedObjects[index];
                 [object updateWithDictionary:responseObject];
-                [upsertedObjects addObject:[object mainContextObject]];
+                [upsertedObjects addObject:[context.parentContext objectWithID:object.objectID]];
                 index++;
             } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, NEW
                 // new
                 NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
                 [object updateWithDictionary:responseObject];
-                [upsertedObjects addObject:[object mainContextObject]];
+                [upsertedObjects addObject:[context.parentContext objectWithID:object.objectID]];
             } else { // localUid not in remoteObjects, delete until next local object uid matches current remote uid, DELETE
                 while (comparison == NSOrderedDescending && index < sortedManagedObjects.count) {
                     [context deleteObject:sortedManagedObjects[index]];
@@ -152,7 +152,7 @@
                 if (comparison == NSOrderedSame) {
                     NSManagedObject *object = sortedManagedObjects[index];
                     [object updateWithDictionary:responseObject];
-                    [upsertedObjects addObject:[object mainContextObject]];
+                    [upsertedObjects addObject:[context.parentContext objectWithID:object.objectID]];
                     index++;
                 }
                 
@@ -160,7 +160,7 @@
                     // new
                     NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
                     [object updateWithDictionary:responseObject];
-                    [upsertedObjects addObject:[object mainContextObject]];
+                    [upsertedObjects addObject:[context.parentContext objectWithID:object.objectID]];
                 }
             }
             
@@ -186,7 +186,7 @@
     [objects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
         NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
         [object updateWithDictionary:responseObject];
-        [newObjects addObject:[object mainContextObject]];
+        [newObjects addObject:[context.parentContext objectWithID:object.objectID]];
         
         if (progress) {
             float percent = (float)idx / (float)objects.count;
