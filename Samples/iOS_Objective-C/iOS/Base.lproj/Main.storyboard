@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7GP-Yb-Xbo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7GP-Yb-Xbo">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Google Plus View Controller-->
@@ -28,6 +29,7 @@
                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n8C-lI-jAD">
                                 <rect key="frame" x="244" y="362" width="112" height="30"/>
                                 <state key="normal" title="POST MOMENT">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -41,16 +43,47 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Display Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Zu-Mb-W83">
+                                <rect key="frame" x="16" y="309" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ihU-6X-5Sm">
+                                <rect key="frame" x="16" y="400" width="568" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="BBM-g5-UgX"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Sre-hb-Smp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressPostLinkButton:" destination="7GP-Yb-Xbo" eventType="touchUpInside" id="wFl-SW-Bp2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="MtL-xQ-c6k" secondAttribute="centerX" id="66R-Qw-fk3"/>
+                            <constraint firstItem="5Zu-Mb-W83" firstAttribute="trailing" secondItem="xfb-hf-LD2" secondAttribute="trailingMargin" id="7pz-3B-lTj"/>
                             <constraint firstItem="vRc-3y-JNY" firstAttribute="centerX" secondItem="xfb-hf-LD2" secondAttribute="centerX" id="BKI-Vs-buL"/>
+                            <constraint firstItem="5Zu-Mb-W83" firstAttribute="leading" secondItem="xfb-hf-LD2" secondAttribute="leadingMargin" id="BMh-He-14g"/>
+                            <constraint firstItem="ihU-6X-5Sm" firstAttribute="leading" secondItem="xfb-hf-LD2" secondAttribute="leadingMargin" id="D0Y-HE-Bt8"/>
                             <constraint firstItem="vRc-3y-JNY" firstAttribute="top" secondItem="xoq-pV-SG8" secondAttribute="bottom" constant="171" id="NUc-P2-AhW"/>
+                            <constraint firstItem="ihU-6X-5Sm" firstAttribute="trailing" secondItem="xfb-hf-LD2" secondAttribute="trailingMargin" id="QxW-G1-9sy"/>
+                            <constraint firstItem="5Zu-Mb-W83" firstAttribute="top" secondItem="MtL-xQ-c6k" secondAttribute="bottom" id="RVb-8e-8WK"/>
                             <constraint firstAttribute="centerX" secondItem="n8C-lI-jAD" secondAttribute="centerX" id="loR-Nn-k1P"/>
+                            <constraint firstAttribute="centerX" secondItem="ihU-6X-5Sm" secondAttribute="centerX" id="mWq-St-bKM"/>
+                            <constraint firstItem="ihU-6X-5Sm" firstAttribute="top" secondItem="n8C-lI-jAD" secondAttribute="bottom" constant="8" id="ofp-b6-lOp"/>
+                            <constraint firstAttribute="centerX" secondItem="5Zu-Mb-W83" secondAttribute="centerX" id="wm5-4V-Zyl"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="displayNameLabel" destination="5Zu-Mb-W83" id="53g-oS-5X8"/>
+                        <outlet property="postLinkButton" destination="ihU-6X-5Sm" id="myo-WS-0zk"/>
                         <outlet property="signInButton" destination="vRc-3y-JNY" id="LL8-Zn-Lrr"/>
                     </connections>
                 </viewController>

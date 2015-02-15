@@ -12,6 +12,8 @@
 #import "Moment+Request.m"
 
 @interface GooglePlusViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *postLinkButton;
 
 @end
 
@@ -46,6 +48,13 @@
     signIn.delegate = self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (ClientId.length == 0) {
+        [[[UIAlertView alloc] initWithTitle:@"Client Id Missing" message:@"Please obtain a clientId from\nhttps://console.developers.google.com" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -71,6 +80,11 @@
     NSLog(@"AccessToken: %@", [[NSUserDefaults standardUserDefaults] valueForKey:ClientAuthTokenKey]);
 }
 
+- (void)didDisconnectWithError:(NSError *)error
+{
+    [[[UIAlertView alloc] initWithTitle:@"Sign In Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
 - (void)presentSignInViewController:(UIViewController *)viewController {
     // This is an example of how you can implement it if your app is navigation-based.
     [[self navigationController] pushViewController:viewController animated:YES];
@@ -81,15 +95,32 @@
 - (IBAction)didPressGetPersonButton:(id)sender
 {
     [Person personWithId:@"me" completion:^(Person *person, NSError *error) {
-        NSLog(@"Person: %@", person);
+        if (error) {
+            self.displayNameLabel.text = error.localizedDescription;
+        } else {
+            self.displayNameLabel.text = person.displayName;
+            NSLog(@"Person: %@", person);
+        }
     }];
 }
 
 - (IBAction)didPressPostMomentButton:(id)sender
 {
-    Moment *moment = [Moment objectInManagedObjectContext:[Moment mainContext]];
+    Moment *moment = [Moment objectInManagedObjectContext:[NSManagedObjectContext mainContext]];
     [moment saveWithCompletion:^(Moment *moment, NSError *error) {
-        NSLog(@"Moment: %@", moment);
+        if (error) {
+            [self.postLinkButton setTitle:error.localizedDescription forState:UIControlStateNormal];
+        } else {
+            self.postLinkButton.enabled = YES;
+            [self.postLinkButton setTitle:@"View your posts at https://plus.google.com/apps" forState:UIControlStateNormal];
+            NSLog(@"Moment: %@", moment);
+        }
     }];
 }
+
+- (IBAction)didPressPostLinkButton:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://plus.google.com/apps"]];
+}
+
 @end

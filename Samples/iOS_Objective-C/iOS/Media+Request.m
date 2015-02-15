@@ -22,7 +22,7 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Token" message:@"No Access Token" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     }
-    [self GET:[NSString stringWithFormat:@"popular?&access_token=%@", token] uidKey:@"id" progress:^(CGFloat progress) {
+    [self GET:[NSString stringWithFormat:@"popular?&access_token=%@", token] progress:^(CGFloat progress) {
         NSLog(@"progress:%f", progress);
     } withCompletion:^(NSArray *results, NSError *error) {
         NSLog(@"%@", results);
@@ -34,7 +34,7 @@
 {
     NSString *instagramClientId = [[NSUserDefaults standardUserDefaults] valueForKey:@"instagram_client_id"];
     
-    [self GET:[NSString stringWithFormat:@"%@/media/recent/?client_id=%@", userId, instagramClientId] uidKey:@"id" progress:^(CGFloat progress) {
+    [self GET:[NSString stringWithFormat:@"%@/media/recent/?client_id=%@", userId, instagramClientId] progress:^(CGFloat progress) {
         NSLog(@"progress:%f", progress);
     } withCompletion:^(NSArray *results, NSError *error) {
         NSLog(@"%@", results);
