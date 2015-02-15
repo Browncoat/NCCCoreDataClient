@@ -55,17 +55,18 @@ typedef void(^CompletionBlock)(NSArray *results, NSError *error);
 + (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
 
-- (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
-- (void)POST:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
+- (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestModifyBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
 // PUT
-- (void)PUT:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
+- (void)PUT:(NSString *)resource progress:(void(^)(CGFloat progress))progressBlock request:(void(^)(NSMutableURLRequest *request))requestModifyBlock withCompletion:(RequestCompletionBlock)completionBlock;
+- (void)PUT:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestModifyBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
 // DELETE
-+ (void)DELETE:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
-- (void)DELETE:(NSString *)resource withCompletion:(CompletionBlock)completionBlock;
-- (void)DELETE:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
-- (void)DELETEWithCompletion:(CompletionBlock)completionBlock;
++ (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestModifyBlock withCompletion:(RequestCompletionBlock)completionBlock;
++ (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
+- (void)DELETE:(NSString *)resource withCompletion:(RequestCompletionBlock)completionBlock;
+- (void)DELETE:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestModifyBlock withCompletion:(RequestCompletionBlock)completionBlock;
+- (void)DELETEWithCompletion:(RequestCompletionBlock)completionBlock;
 
 // KeyPath Mapping
 - (NSDictionary *)dictionaryWithValuesForKeys:(NSArray *)keys;
@@ -78,7 +79,6 @@ typedef void(^CompletionBlock)(NSArray *results, NSError *error);
 
 @interface NSManagedObject (RequestAdapter)
 
-- (void)makeRequest:(NSMutableURLRequest *)request progress:(ProgressBlock)progress completion:(RequestCompletionBlock)completion;
-+ (void)makeRequest:(NSMutableURLRequest *)request progress:(ProgressBlock)progress completion:(RequestCompletionBlock)completion;
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progress completion:(void(^)(NSArray *results, NSError *error))completion;
 
 @end

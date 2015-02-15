@@ -53,6 +53,15 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
         
         signIn.delegate = self;
     }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if Authentication.clientId.isEmpty {
+            let alert = UIAlertController(title: "Client Id Missing", message: "Please obtain a clientId from\nhttps://console.developers.google.com", preferredStyle: UIAlertControllerStyle.Alert)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -70,7 +79,10 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     }
     
     func didDisconnectWithError(error: NSError?) {
-        //println(\(error))
+        if error != nil {
+            let alert = UIAlertController(title: "Sign In Error", message: error?.localizedDescription, preferredStyle: UIAlertControllerStyle.Alert)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     //Mark: Actions
