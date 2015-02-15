@@ -55,6 +55,7 @@ typedef void(^CompletionBlock)(NSArray *results, NSError *error);
 + (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
 + (void)POST:(NSString *)resource request:(RequestModifyBlock)requestModifyBlock withCompletion:(CompletionBlock)completionBlock;
 
+- (void)POST:(NSString *)resource progress:(ProgressBlock)progressBlock request:(void(^)(NSMutableURLRequest *request))requestModifyBlock withCompletion:(RequestCompletionBlock)completionBlock;
 - (void)POST:(NSString *)resource request:(void(^)(NSMutableURLRequest *request))requestModifyBlock withCompletion:(RequestCompletionBlock)completionBlock;
 
 // PUT
