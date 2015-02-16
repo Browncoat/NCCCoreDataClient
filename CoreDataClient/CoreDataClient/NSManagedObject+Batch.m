@@ -68,9 +68,12 @@
 
 + (NSArray *)managedObjectsWithResponseObjects:(NSArray *)objects context:(NSManagedObjectContext *)context progress:(void(^)(CGFloat progress))progress
 {
-    NSMutableArray *responseUids = [NSMutableArray arrayWithArray:[objects valueForKey:[self responseObjectUidKey]]];
-    [responseUids removeObject:[NSNull null]];
-    BOOL objectsHaveUidAttribute = responseUids.count == objects.count;
+    BOOL objectsHaveUidAttribute = NO;
+    if (objects.count) {
+        NSMutableArray *responseUids = [NSMutableArray arrayWithArray:[objects valueForKey:[self responseObjectUidKey]]];
+        [responseUids removeObject:[NSNull null]];
+        objectsHaveUidAttribute = responseUids.count == objects.count;
+    }
     if (objectsHaveUidAttribute) {
         NSMutableArray *upsertedObjects = [NSMutableArray array];
         
