@@ -21,10 +21,12 @@
 		DC2173EE1A9112350061D082 /* NSMutableURLRequest+NCCCreate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173E01A9112350061D082 /* NSMutableURLRequest+NCCCreate.m */; };
 		DC2173EF1A9112350061D082 /* UIApplication+NCCCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173E21A9112350061D082 /* UIApplication+NCCCoreData.m */; };
 		DC2173F21A91236E0061D082 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173F11A91236E0061D082 /* Person.m */; };
+		DC2173F61A9126ED0061D082 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2173F31A9126ED0061D082 /* GoogleOpenSource.framework */; };
+		DC2173F71A9126ED0061D082 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DC2173F41A9126ED0061D082 /* GooglePlus.bundle */; };
+		DC2173F81A9126ED0061D082 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2173F51A9126ED0061D082 /* GooglePlus.framework */; };
+		DC2173F91A9182890061D082 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7CA71A09197C0000464F /* Foundation.framework */; };
+		DC2173FB1A9182950061D082 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2173FA1A9182950061D082 /* UIKit.framework */; };
 		DC2D7C941A089CB30000464F /* GooglePlusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2D7C931A089CB30000464F /* GooglePlusViewController.m */; };
-		DC2D7C981A0916E10000464F /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7C951A0916E10000464F /* GoogleOpenSource.framework */; };
-		DC2D7C991A0916E10000464F /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DC2D7C961A0916E10000464F /* GooglePlus.bundle */; };
-		DC2D7C9A1A0916E10000464F /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7C971A0916E10000464F /* GooglePlus.framework */; };
 		DC2D7C9C1A09194D0000464F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7C9B1A09194D0000464F /* AddressBook.framework */; };
 		DC2D7C9E1A0919520000464F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7C9D1A0919520000464F /* AssetsLibrary.framework */; };
 		DC2D7CA01A09195E0000464F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC2D7C9F1A09195D0000464F /* CoreLocation.framework */; };
@@ -98,11 +100,12 @@
 		DC2173E21A9112350061D082 /* UIApplication+NCCCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+NCCCoreData.m"; sourceTree = "<group>"; };
 		DC2173F01A91236E0061D082 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		DC2173F11A91236E0061D082 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		DC2173F31A9126ED0061D082 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = iOS/GoogleOpenSource.framework; sourceTree = "<group>"; };
+		DC2173F41A9126ED0061D082 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = iOS/GooglePlus.bundle; sourceTree = "<group>"; };
+		DC2173F51A9126ED0061D082 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = iOS/GooglePlus.framework; sourceTree = "<group>"; };
+		DC2173FA1A9182950061D082 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DC2D7C921A089CB30000464F /* GooglePlusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePlusViewController.h; sourceTree = "<group>"; };
 		DC2D7C931A089CB30000464F /* GooglePlusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePlusViewController.m; sourceTree = "<group>"; };
-		DC2D7C951A0916E10000464F /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleOpenSource.framework; path = "google-plus-ios-sdk-1.7.1/GoogleOpenSource.framework"; sourceTree = "<group>"; };
-		DC2D7C961A0916E10000464F /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GooglePlus.bundle; path = "google-plus-ios-sdk-1.7.1/GooglePlus.bundle"; sourceTree = "<group>"; };
-		DC2D7C971A0916E10000464F /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GooglePlus.framework; path = "google-plus-ios-sdk-1.7.1/GooglePlus.framework"; sourceTree = "<group>"; };
 		DC2D7C9B1A09194D0000464F /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		DC2D7C9D1A0919520000464F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		DC2D7C9F1A09195D0000464F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -164,17 +167,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC2173FB1A9182950061D082 /* UIKit.framework in Frameworks */,
+				DC2173F91A9182890061D082 /* Foundation.framework in Frameworks */,
 				DC2D7CAE1A09199E0000464F /* SystemConfiguration.framework in Frameworks */,
 				DC2D7CAC1A0919910000464F /* Security.framework in Frameworks */,
 				DC2D7CAA1A09198B0000464F /* MediaPlayer.framework in Frameworks */,
 				DC2D7CA61A0919760000464F /* CoreText.framework in Frameworks */,
 				DC2D7CA41A0919700000464F /* CoreGraphics.framework in Frameworks */,
+				DC2173F81A9126ED0061D082 /* GooglePlus.framework in Frameworks */,
 				DC2D7CA21A0919640000464F /* CoreMotion.framework in Frameworks */,
 				DC2D7CA01A09195E0000464F /* CoreLocation.framework in Frameworks */,
 				DC2D7C9E1A0919520000464F /* AssetsLibrary.framework in Frameworks */,
 				DC2D7C9C1A09194D0000464F /* AddressBook.framework in Frameworks */,
-				DC2D7C981A0916E10000464F /* GoogleOpenSource.framework in Frameworks */,
-				DC2D7C9A1A0916E10000464F /* GooglePlus.framework in Frameworks */,
+				DC2173F61A9126ED0061D082 /* GoogleOpenSource.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,9 +196,10 @@
 		A5D843D9175309F810581D97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DC2D7C951A0916E10000464F /* GoogleOpenSource.framework */,
-				DC2D7C961A0916E10000464F /* GooglePlus.bundle */,
-				DC2D7C971A0916E10000464F /* GooglePlus.framework */,
+				DC2173FA1A9182950061D082 /* UIKit.framework */,
+				DC2173F31A9126ED0061D082 /* GoogleOpenSource.framework */,
+				DC2173F41A9126ED0061D082 /* GooglePlus.bundle */,
+				DC2173F51A9126ED0061D082 /* GooglePlus.framework */,
 				DC2D7CAD1A09199E0000464F /* SystemConfiguration.framework */,
 				DC2D7CAB1A0919910000464F /* Security.framework */,
 				DC2D7CA91A09198B0000464F /* MediaPlayer.framework */,
@@ -429,8 +435,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCAC535B1A01F40300C23278 /* Main.storyboard in Resources */,
+				DC2173F71A9126ED0061D082 /* GooglePlus.bundle in Resources */,
 				DCAC53601A01F40300C23278 /* LaunchScreen.xib in Resources */,
-				DC2D7C991A0916E10000464F /* GooglePlus.bundle in Resources */,
 				DCAC535D1A01F40300C23278 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,9 +626,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/google-plus-ios-sdk-1.7.1",
+					"$(PROJECT_DIR)/iOS",
 				);
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = CoreDataClientSample;
 			};
 			name = Debug;
@@ -634,9 +642,11 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/google-plus-ios-sdk-1.7.1",
+					"$(PROJECT_DIR)/iOS",
 				);
 				INFOPLIST_FILE = iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = CoreDataClientSample;
 			};
 			name = Release;
