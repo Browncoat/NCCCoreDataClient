@@ -10,7 +10,8 @@ import Foundation
 import CoreData
 
 extension NSManagedObject {
-    class func makeRequest(request: NSMutableURLRequest!, progress: ((CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!) {
+    class func makeRequest(request: NSMutableURLRequest!, progress: ((progress: CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!) {
+        println("progress:\(progress)")
         if let token = NSUserDefaults.standardUserDefaults().stringForKey(Authentication.clientAuthTokenKey) {
             let headers = ["Authorization":"Bearer \(token)"]
             request.setHeaders(headers)
