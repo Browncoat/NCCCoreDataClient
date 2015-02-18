@@ -129,7 +129,7 @@ extension NSManagedObject {
 NCCCoreDataClient also requires that that you add an NSManagedObject Model Category or Swift Extension that overrides
 
 ```swift
-//Swift
+// Swift
 override func updateWithDictionary(dictionary: [NSObject : AnyObject]!)
 ```
 
@@ -211,9 +211,30 @@ NSManagedObjectContext.mainContext()
 
 Each NSManagedObject Category can set it's own basePath, responseObjectUidKey and managedObjectUidKey by overriding `+ (void)initialize` Only properties that you expect not to change should be modified in the `+ (void)initialize` method. The path and headers can also be modified in the `POST`, `PUT`, `GET`, and `DELETE` request block by modifying the NSMutableURLRequest directly. These can also be modified in the `RequestAdapter` Category if they are the same for every NSManagedObject.
 
-`User (Request)`
+```swift
+// Swift
+struct Initialize {
+        static var basePath: String = "http://example.com/user/"
+        static var managedObjectUidKey: String = "uid"
+        static var responseObjectUidKey: String = "id"
+    }
+    
+    class var basePath: String {
+        return Initialize.basePath
+    }
+    
+    class var managedObjectUidKey: String {
+        return Initialize.managedObjectUidKey
+    }
+    
+    class var responseObjectUidKey: String {
+        return Initialize.responseObjectUidKey
+    }
+```
 
 ```objective-c
+// Objective-C
+// User (Request)
 + (void)initialize
 {
     [self setResponseObjectUidKey:@"id"];
@@ -226,7 +247,17 @@ The Core data objects are upserted based on their `objectUidKey`. The `objectUid
 
 #### `GET` Request
 
+```swift
+// Swift
+class func userForUid(id: String, completion:(user: User?, error: NSError?)->()) {
+        self.GET(id, withCompletion: { (results: Array!, error: NSError!) -> Void in
+            completion(user: results, error: error)
+        })
+    }
+```
+
 ```objective-c
+// Objective-C
 - (void)userForUid:(NSString *)uid withCompletion:(CompletionBlock)completion
 {
     [User GET:uid progress:nil request:nil withCompletion:^(NSArray *results, NSError *error) {
@@ -239,8 +270,21 @@ The Core data objects are upserted based on their `objectUidKey`. The `objectUid
 
 You can modify the NSMutableURLRequest directly in the request block to add additional headers or post body data
 
-`User.h (Request)``
+```swift
+// Swift
+func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
+        
+        self.POST("", request: { (request: NSMutableURLRequest!) -> Void in
+            request.setJSON(self.userDictionary())
+        }) { (results: Array!, error: NSError!) -> Void in
+            completion(results: results, error: error)
+        }
+    }
+```
+
 ```objective-c
+// Objective-C
+// User.h (Request)
 - (void)saveUserWithCompletion:(CompletionBlock)completion
 {
     [self POST:@"" request:^(NSMutableURLRequest *request) {
