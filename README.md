@@ -214,22 +214,22 @@ Each NSManagedObject Category can set it's own basePath, responseObjectUidKey an
 ```swift
 // Swift
 struct Initialize {
-        static var basePath: String = "http://example.com/user/"
-        static var managedObjectUidKey: String = "uid"
-        static var responseObjectUidKey: String = "id"
-    }
+    static var basePath: String = "http://example.com/user/"
+    static var managedObjectUidKey: String = "uid"
+    static var responseObjectUidKey: String = "id"
+}
     
-    class var basePath: String {
-        return Initialize.basePath
-    }
-    
-    class var managedObjectUidKey: String {
-        return Initialize.managedObjectUidKey
-    }
-    
-    class var responseObjectUidKey: String {
-        return Initialize.responseObjectUidKey
-    }
+class var basePath: String {
+    return Initialize.basePath
+}
+
+class var managedObjectUidKey: String {
+    return Initialize.managedObjectUidKey
+}
+
+class var responseObjectUidKey: String {
+    return Initialize.responseObjectUidKey
+}
 ```
 
 ```objective-c
@@ -272,8 +272,7 @@ You can modify the NSMutableURLRequest directly in the request block to add addi
 
 ```swift
 // Swift
-func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
-        
+func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {      
         self.POST("", request: { (request: NSMutableURLRequest!) -> Void in
             request.setJSON(self.userDictionary())
         }) { (results: Array!, error: NSError!) -> Void in
@@ -284,12 +283,12 @@ func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)
 
 ```objective-c
 // Objective-C
-// User.h (Request)
+// User+Request.h
 - (void)saveUserWithCompletion:(CompletionBlock)completion
 {
     [self POST:@"" request:^(NSMutableURLRequest *request) {
         NSError *error;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:[user dictionaryWithAttributeToKeyValuePathMappings:@{@"email":@"email",
+        NSData *data = [NSJSONSerialization dataWithJSONObject:[user dictionaryWithAttributeToKeyPathMappings:@{@"email":@"email",
                                                   @"first":@"firstName",
                                                   @"last":@"lastName",
                                                   @"address":@"address.street",
@@ -312,11 +311,22 @@ func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)
 
 You can also use several request helper methods such as `setJSON` and `setPNG`
 
+```swift
+// Swift
+func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, error: NSError?)->()) {
+        self.PUT(user.uid, request: { (request: NSMutableURLRequest!) -> Void in
+            request.setJSON(self.dictionaryWithValuesForKeys(keys))
+            }) { (results: Array!, error: NSError!) -> Void in
+                completion(results: results, error: error)
+        }
+    }
+```
+
 ```objective-c
 - (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion
 {
-    [self PUT:@"user" request:^(NSMutableURLRequest *request) {
-       [request setJSON:[self dictionaryForKeys:keys]];
+    [self PUT:user.uid request:^(NSMutableURLRequest *request) {
+       [request setJSON:[self dictionaryWithValuesForKeys:keys]];
     } withCompletion:^(NSArray *results, NSError *error) {
         User *user = results.lastObject;
         completion(results, error);
@@ -331,7 +341,6 @@ You can also use several request helper methods such as `setJSON` and `setPNG`
     [self PUT:@"user" request:^(NSMutableURLRequest *request) {
         NSError *error;
         NSData *data = [NSJSONSerialization dataWithJSONObject:[self dictionaryWithAttributeToKeyPathMappings:keyMappings] options:0 error:&error];
-
         if (!error) {
             [request setData:data ofContentType:postBodyContentTypeJSON];
         } else {

@@ -37,6 +37,17 @@ extension Moment {
         }
     }
     
+    /*
+    func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, error: NSError?)->()) {
+    
+        self.PUT(user.uid, request: { (request: NSMutableURLRequest!) -> Void in
+            request.setJSON(self.dictionaryWithValuesForKeys(keys))
+            }) { (results: Array!, error: NSError!) -> Void in
+                completion(results: results, error: error)
+        }
+    }
+*/
+    
     func momentDictionary() -> [NSObject : AnyObject] {
         
         struct DateFormatter {
