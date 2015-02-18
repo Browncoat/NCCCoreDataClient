@@ -33,16 +33,20 @@ Add NCCCoreDataClient.h to your `<Your-Product-Name>-Prefix.pch` file.
 
 `NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides
 
+```swift
 // Swift
-`class func makeRequest(request: NSMutableURLRequest!, progress: ((progress: CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!)`
+class func makeRequest(request: NSMutableURLRequest!, progress: ((progress: CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!)
+```
 
+```swift
 // Objective-C
-`+ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion;`
++ (void)makeRequest:(NSMutableURLRequest *)request progress:(void(^)(CGFloat progress))progressBlock withCompletion:(void(^)(id results, NSError *error))completion
+```
 
 This allows you to pass the final NSURLRequest object to the HTTP Client of your choice and then pass the parsed JSON response to the completion block for core data to save. Here you can also set the 'session' headers globaly since you have access to the NSURLRequest object before it is sent.
 
-// Swift
 ```swift
+// Swift
 extension NSManagedObject {
     class func makeRequest(request: NSMutableURLRequest!, progress: ((CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!) {
         if let token = NSUserDefaults.standardUserDefaults().stringForKey(Authentication.clientAuthTokenKey) {
@@ -62,9 +66,11 @@ extension NSManagedObject {
     }
 }
 ```
-// Objective-C
+
+
 `NSManagedObject (RequestAdapter)`
-```objective-c
+```objc
+// Objective-C
 @implementation NSManagedObject (RequestAdapter)
 
  + (void)makeRequest:(NSMutableURLRequest *)request completion:(void(^)(NSArray *results, NSError *error))completion
@@ -122,16 +128,20 @@ extension NSManagedObject {
 
 NCCCoreDataClient also requires that that you add an NSManagedObject Model Category or Swift Extension that overrides
 
+```swift
 //Swift
-`override func updateWithDictionary(dictionary: [NSObject : AnyObject]!)`
+override func updateWithDictionary(dictionary: [NSObject : AnyObject]!)
+```
 
+```objc
 // Objective-C
-`- (void)updateWithDictionary:(NSDictionary *)dictionary`
+- (void)updateWithDictionary:(NSDictionary *)dictionary
+```
 
 for each Core Data Model you that you wish to parse request responses to NSManagedObject attributes and relationships.
 
-// Swift
 ```swift
+// Swift
 extension User {
     override func updateWithDictionary(dictionary: [NSObject : AnyObject]!) {
         self.email = dictionary["email"] as? String
@@ -150,9 +160,9 @@ extension User {
 }
 ```
 
-// Objective-C
 `User (JSON)`
-```objective-c
+```objc
+// Objective-C
 @implementation User (JSON)
 
 - (void)updateWithDictionary:(NSDictionary *)dictionary
@@ -175,19 +185,27 @@ extension User {
 
 If the relationship is an update/create (upsert) then you can use the method
 
+```swift
 // Swift
-`Address.upsertObjectWithDictionary(address, uid: address["id"] as NSString, inManagedObjectContext: self.managedObjectContext)`
+Address.upsertObjectWithDictionary(address, uid: address["id"] as NSString, inManagedObjectContext: self.managedObjectContext)
+```
 
+```objc
 // Objective-C
-`[Address upsertObjectWithDictionary:dictionary uid:dictionary[@"id"] inManagedObjectContext:self.managedObjectContext];`
+[Address upsertObjectWithDictionary:dictionary uid:dictionary[@"id"] inManagedObjectContext:self.managedObjectContext];
+```
 
 The following helper method is also available to alsways reach the main NSManagedObjectContext.
 
+```swift
 // Swift
-`NSManagedObjectContext.mainContext()`
+NSManagedObjectContext.mainContext()
+```
 
+```objc
 // Objective-C
-`[NSManagedObjectContext mainContext]` 
+[NSManagedObjectContext mainContext]
+```
 
 ### Set BasePath and Object Id Keys
 
