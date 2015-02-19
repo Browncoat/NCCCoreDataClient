@@ -92,14 +92,13 @@
     NSArray *sortedResponseObjects = [objects sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self responseObjectUidKey]]]];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    SEL selector = NSSelectorFromString([self managedObjectUidKey]);
-    if([self instancesRespondToSelector:selector]) {
+    NSArray *keys = [[[NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context] attributesByName] allKeys];
+    if([keys containsObject:[self managedObjectUidKey]]) {
         fetchRequest.predicate = [self predicateOnExistenceOfProperty:[self managedObjectUidKey]];
     }
     [fetchRequest setEntity: [NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context]];
 
     NSError *error;
-//    NSArray *filteredManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] filteredArrayUsingPredicate:[self predicateOnExistenceOfProperty:[self managedObjectUidKey]]];
     NSArray *sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self managedObjectUidKey]]]];
     
     __block NSUInteger index = 0;
