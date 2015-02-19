@@ -8,7 +8,6 @@
 
 #import "NSManagedObject+Batch.h"
 #import "NCCCoreDataClient.h"
-#import "NSArray+ObjectsHaveAttribute.h"
 
 @implementation NSManagedObject (Batch)
 
