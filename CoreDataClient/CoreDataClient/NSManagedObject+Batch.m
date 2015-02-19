@@ -65,7 +65,7 @@
         }];
     }];
 }
-
+//
 + (NSArray *)managedObjectsWithResponseObjects:(NSArray *)objects context:(NSManagedObjectContext *)context progress:(void(^)(CGFloat progress))progress
 {
     BOOL objectsHaveUidAttribute = NO;
