@@ -90,7 +90,7 @@
     NSArray *filteredResponseObjects = [objects filteredArrayUsingPredicate:[self predicateOnExistenceOfProperty:[self responseObjectUidKey]]];
     NSArray *sortedResponseObjects = [filteredResponseObjects sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self responseObjectUidKey]]]];
     
-    NSArray *sortedManagedObjects = nil;
+    NSArray *sortedManagedObjects = @[];
     NSArray *keys = [[[NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context] attributesByName] allKeys];
     if([keys containsObject:[self managedObjectUidKey]]) {
         NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
