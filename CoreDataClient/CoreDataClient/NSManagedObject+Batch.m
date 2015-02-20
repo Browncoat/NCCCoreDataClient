@@ -88,17 +88,18 @@
     NSMutableArray *upsertedObjects = [NSMutableArray array];
     
     NSArray *filteredResponseObjects = [objects filteredArrayUsingPredicate:[self predicateOnExistenceOfProperty:[self responseObjectUidKey]]];
-    NSArray *sortedResponseObjects = [objects sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self responseObjectUidKey]]]];
+    NSArray *sortedResponseObjects = [filteredResponseObjects sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self responseObjectUidKey]]]];
     
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSArray *sortedManagedObjects = nil;
     NSArray *keys = [[[NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context] attributesByName] allKeys];
     if([keys containsObject:[self managedObjectUidKey]]) {
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
         fetchRequest.predicate = [self predicateOnExistenceOfProperty:[self managedObjectUidKey]];
+        [fetchRequest setEntity: [NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context]];
+        
+        NSError *error;
+        sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self managedObjectUidKey]]]];
     }
-    [fetchRequest setEntity: [NSEntityDescription entityForName:self.classNameWithoutNamespace inManagedObjectContext:context]];
-
-    NSError *error;
-    NSArray *sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self managedObjectUidKey]]]];
     
     __block NSUInteger index = 0;
     [sortedResponseObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
