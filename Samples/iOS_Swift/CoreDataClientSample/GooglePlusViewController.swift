@@ -14,7 +14,7 @@ import CoreLocation
 import CoreMotion
 
 struct Authentication {
-    static var clientId = ""
+    static var clientId = "978903998184-7osqgspcvqkdjqj7fngjgg756cbkhl6h.apps.googleusercontent.com"
     static var clientAuthTokenKey = "auth_token"
 }
 
@@ -23,6 +23,9 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
     @IBOutlet weak var signInButton: GPPSignInButton!
     @IBOutlet weak var displayNameLabel: UILabel!
     @IBOutlet weak var postLinkButton: UIButton!
+    @IBOutlet weak var deleteMomentButton: UIButton!
+    
+    var moment: Moment?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,10 +110,28 @@ class GooglePlusViewController: UIViewController, GPPSignInDelegate {
             if error != nil {
                 self.postLinkButton.setTitle("\(error?.localizedDescription)", forState: UIControlState.Normal)
             } else {
+                if let savedMoment = results?[0] as? Moment {
+                    self.moment = savedMoment
+                }
                 self.postLinkButton.enabled = true
                 self.postLinkButton.setTitle("View your posts at https://plus.google.com/apps", forState: UIControlState.Normal)
+                self.deleteMomentButton.enabled = true
             }
         }
+    }
+    
+    @IBAction func didPressDeleteMomentButton(sender: AnyObject) {
+//        if let currentMoment = self.moment {
+            self.moment!.deleteMomentWithCompletion { (results, error) -> () in
+                if error != nil {
+                    self.postLinkButton.setTitle("\(error!.localizedDescription)", forState: UIControlState.Normal)
+                } else {
+                    self.postLinkButton.enabled = false
+                    self.postLinkButton.setTitle("", forState: UIControlState.Normal)
+                    self.deleteMomentButton.enabled = false
+                }
+            }
+//        }
     }
     
     @IBAction func didPressPostLinkButton(sender: AnyObject) {

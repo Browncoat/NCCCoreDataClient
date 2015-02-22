@@ -10,7 +10,7 @@ import Foundation
 
 extension Moment {
     override func updateWithDictionary(dictionary: [NSObject : AnyObject]!) {
-        self.id = dictionary["id"] as? String
+        self.uid = dictionary["id"] as? String
         self.kind = dictionary["kind"] as? String
         self.title = dictionary["title"] as? String
     }

@@ -1,4 +1,4 @@
-NCCCoreDataClient is a set of Categories to make working with Core Data and Restful API's composable, loosely coupled and easier. Each NSManagedObject should take care of it's own request and data parsing from the web. It has been designed so that you have direct access to the NSMutableURLRequest from the NSManagedObject model and you can send that request with any HTTP Client you choose.
+NCCCoreDataClient is a set of Categories to make working with Core Data and Restful API's composable, loosely coupled and easier based on the MVVM pattern. Each NSManagedObject should take care of it's own request and data parsing from the web. It has been designed so that you have direct access to the NSMutableURLRequest from the NSManagedObject model and you can send that request with any HTTP Client you choose.
 
 ## How To Get Started
 
@@ -31,7 +31,7 @@ Add NCCCoreDataClient.h to your `<Your-Product-Name>-Prefix.pch` file.
 
 ### Passing the request to an HTTP Client and adding Session Headers
 
-`NCCCoreDataClient` requires that you add an NSManagedObject Category that overrides
+`NCCCoreDataClient` requires that you add a Swift Extension or an NSManagedObject Category that overrides
 
 ```swift
 // Swift
@@ -50,7 +50,10 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 extension NSManagedObject {
     class func makeRequest(request: NSMutableURLRequest!, progress: ((CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!) {
         if let token = NSUserDefaults.standardUserDefaults().stringForKey(Authentication.clientAuthTokenKey) {
-            let headers = ["Authorization":"Bearer \(token)"]
+            let headers: NSDictionary = ["Authorization":"###",
+                                         "x-api-key":"###",
+                                         "x-app-id":"###",
+                                         "x-device-id":"###"]
             request.setHeaders(headers)
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
                 if ((error) != nil) {
@@ -67,8 +70,6 @@ extension NSManagedObject {
 }
 ```
 
-
-`NSManagedObject (RequestAdapter)`
 ```objc
 // Objective-C
 @implementation NSManagedObject (RequestAdapter)
@@ -126,7 +127,7 @@ extension NSManagedObject {
 @end
 ```
 
-NCCCoreDataClient also requires that that you add an NSManagedObject Model Category or Swift Extension that overrides
+NCCCoreDataClient also requires that that you add a Swift Extension or an NSManagedObject Model Category that overrides
 
 ```swift
 // Swift
@@ -160,7 +161,6 @@ extension User {
 }
 ```
 
-`User (JSON)`
 ```objc
 // Objective-C
 @implementation User (JSON)
@@ -353,10 +353,20 @@ func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, err
 ```
 
 #### `DELETE` Request
-```objective-c
+```swift
+// Swift
+func deleteUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
+        self.DELETE(self.uid, withCompletion: { (results: Array!, error: NSError!) -> Void in
+            completion(results: results, error: error)
+        })
+    }
+```
+
+```objc
+// Objective-C
 - (void)deleteUserWithCompletion:(CompletionBlock)completion
 {
-    [self DELETE:@"" request:nil withCompletion:^(NSArray *results, NSError *error) {
+    [self DELETE:self.uid request:nil withCompletion:^(NSArray *results, NSError *error) {
         completion(results, error);
     }
 }

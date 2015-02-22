@@ -11,8 +11,8 @@ import Foundation
 extension Moment {
     
     struct Initialize {
-        static var basePath: String = "https://www.googleapis.com/plus/v1/people/me/moments/"
-        static var managedObjectUidKey: String = "id"
+        static var basePath: String = "https://www.googleapis.com/plus/v1/"
+        static var managedObjectUidKey: String = "uid"
         static var responseObjectUidKey: String = "id"
     }
     
@@ -30,10 +30,19 @@ extension Moment {
     
     func saveMomentWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
         
-        self.POST("vault", request: { (request: NSMutableURLRequest!) -> Void in
+        self.POST("people/me/moments/vault", request: { (request: NSMutableURLRequest!) -> Void in
             request.setJSON(self.momentDictionary())
         }) { (results: Array!, error: NSError!) -> Void in
             completion(results: results, error: error)
+        }
+    }
+    
+    func deleteMomentWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
+        if let uid = self.uid {
+            let path = "moments/\(uid)"
+            self.DELETE(path, withCompletion: { (results: Array!, error: NSError!) -> Void in
+                completion(results: results, error: error)
+            })
         }
     }
     

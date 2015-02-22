@@ -58,6 +58,15 @@
                                     <action selector="didPressPostLinkButton:" destination="uC3-0c-6I6" eventType="touchUpInside" id="WYZ-B2-vjf"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mqu-k2-rYi">
+                                <rect key="frame" x="236" y="462" width="128" height="30"/>
+                                <state key="normal" title="DELETE MOMENT">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressDeleteMomentButton:" destination="uC3-0c-6I6" eventType="touchUpInside" id="Df0-5q-auS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -65,15 +74,17 @@
                             <constraint firstItem="tfK-q3-sD9" firstAttribute="top" secondItem="JFa-mP-bjv" secondAttribute="bottom" constant="8" id="38b-N3-fil"/>
                             <constraint firstAttribute="centerX" secondItem="Qsm-6A-vcR" secondAttribute="centerX" id="DYe-cl-f8a"/>
                             <constraint firstAttribute="centerX" secondItem="tfK-q3-sD9" secondAttribute="centerX" id="MZ2-2U-4LS"/>
-                            <constraint firstItem="Qsm-6A-vcR" firstAttribute="top" secondItem="fyg-xk-ovx" secondAttribute="bottom" constant="8" id="RFJ-H7-6P0"/>
                             <constraint firstAttribute="centerX" secondItem="fyg-xk-ovx" secondAttribute="centerX" id="Xi2-Od-phF"/>
                             <constraint firstItem="Qsm-6A-vcR" firstAttribute="trailing" secondItem="EWu-uD-XcO" secondAttribute="trailingMargin" id="aFm-ac-15c"/>
                             <constraint firstItem="Ui9-LU-ojd" firstAttribute="top" secondItem="skv-F8-i0I" secondAttribute="bottom" constant="171" id="aIS-IQ-Et8"/>
                             <constraint firstItem="Ui9-LU-ojd" firstAttribute="centerX" secondItem="EWu-uD-XcO" secondAttribute="centerX" id="eif-2E-zYZ"/>
                             <constraint firstItem="Qsm-6A-vcR" firstAttribute="leading" secondItem="EWu-uD-XcO" secondAttribute="leadingMargin" id="jGN-72-XbW"/>
+                            <constraint firstAttribute="centerX" secondItem="Mqu-k2-rYi" secondAttribute="centerX" id="vdL-43-v7V"/>
+                            <constraint firstItem="Mqu-k2-rYi" firstAttribute="top" secondItem="Qsm-6A-vcR" secondAttribute="bottom" constant="32" id="wdr-iD-83N"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="deleteMomentButton" destination="Mqu-k2-rYi" id="Dpe-MY-Kcb"/>
                         <outlet property="displayNameLabel" destination="tfK-q3-sD9" id="CxO-Oz-MVc"/>
                         <outlet property="postLinkButton" destination="Qsm-6A-vcR" id="14k-iU-tmP"/>
                         <outlet property="signInButton" destination="Ui9-LU-ojd" id="2hB-Mi-9P5"/>
