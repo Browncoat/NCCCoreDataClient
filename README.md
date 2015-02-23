@@ -49,20 +49,18 @@ This allows you to pass the final NSURLRequest object to the HTTP Client of your
 // Swift
 extension NSManagedObject {
     class func makeRequest(request: NSMutableURLRequest!, progress: ((CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!) {
-        if let token = NSUserDefaults.standardUserDefaults().stringForKey(Authentication.clientAuthTokenKey) {
-            let headers: NSDictionary = ["Authorization":"###",
-                                         "x-api-key":"###",
-                                         "x-app-id":"###",
-                                         "x-device-id":"###"]
-            request.setHeaders(headers)
-            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                if ((error) != nil) {
-                    completion(nil, error)
-                } else {
-                    var error: NSError?
-                    if let responseObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
-                        completion([responseObject], error?)
-                    }
+        let headers: NSDictionary = ["Authorization":"###",
+                                     "x-api-key":"###",
+                                     "x-app-id":"###",
+                                     "x-device-id":"###"]
+        request.setHeaders(headers)
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            if ((error) != nil) {
+                completion(nil, error)
+            } else {
+                var error: NSError?
+                if let responseObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
+                    completion([responseObject], error?)
                 }
             }
         }
@@ -255,7 +253,7 @@ The Core data objects are upserted based on their `objectUidKey`. The `objectUid
 // Swift
 extension User {
     class func userForUid(id: String, completion:(user: User?, error: NSError?)->()) {
-            self.GET(id, withCompletion: { (results: Array!, error: NSError!) -> Void in
+        self.GET(id, withCompletion: { (results: Array!, error: NSError!) -> Void in
                 completion(user: results, error: error)
             })
         }
@@ -284,7 +282,7 @@ You can modify the NSMutableURLRequest directly in the request block to add addi
 // Swift
 extension User {
     func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {      
-            self.POST("", request: { (request: NSMutableURLRequest!) -> Void in
+        self.POST("", request: { (request: NSMutableURLRequest!) -> Void in
                 request.setJSON(self.userDictionary())
             }) { (results: Array!, error: NSError!) -> Void in
                 completion(results: results, error: error)
@@ -330,7 +328,7 @@ You can also use several request helper methods such as `setJSON` and `setPNG`
 // Swift
 extension User {
     func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, error: NSError?)->()) {
-            self.PUT(user.uid, request: { (request: NSMutableURLRequest!) -> Void in
+        self.PUT(user.uid, request: { (request: NSMutableURLRequest!) -> Void in
                 request.setJSON(self.dictionaryWithValuesForKeys(keys))
                 }) { (results: Array!, error: NSError!) -> Void in
                     completion(results: results, error: error)
@@ -382,10 +380,10 @@ extension User {
 // Swift
 extension User {
     func deleteUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
-            self.DELETE(self.uid, withCompletion: { (results: Array!, error: NSError!) -> Void in
+        self.DELETE(self.uid, withCompletion: { (results: Array!, error: NSError!) -> Void in
                 completion(results: results, error: error)
             })
-        }
+    }
 }
 ```
 
