@@ -12,7 +12,7 @@ extension Moment {
     
     struct Initialize {
         static var basePath: String = "https://www.googleapis.com/plus/v1/"
-        static var managedObjectUidKey: String = "uid"
+        static var managedObjectUidKey: String = "id"
         static var responseObjectUidKey: String = "id"
     }
     
@@ -38,8 +38,8 @@ extension Moment {
     }
     
     func deleteMomentWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
-        if let uid = self.uid {
-            let path = "moments/\(uid)"
+        if let id = self.id {
+            let path = "moments/\(id)"
             self.DELETE(path, withCompletion: { (results: Array!, error: NSError!) -> Void in
                 completion(results: results, error: error)
             })

@@ -19,11 +19,11 @@
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Moment" representedClassName="CoreDataClientSample.Moment" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="kind" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="startdate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uid" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="object" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="ItemScope" syncable="YES"/>
     </entity>
     <entity name="Person" representedClassName="CoreDataClientSample.Person" syncable="YES">

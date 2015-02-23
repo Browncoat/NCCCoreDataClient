@@ -11,7 +11,7 @@ import CoreData
 
 class Moment: NSManagedObject {
 
-    @NSManaged var uid: String?
+    @NSManaged var id: String?
     @NSManaged var kind: String?
     @NSManaged var startdate: NSDate?
     @NSManaged var title: String?
