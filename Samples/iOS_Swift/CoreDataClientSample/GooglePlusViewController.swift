@@ -14,7 +14,7 @@ import CoreLocation
 import CoreMotion
 
 struct Authentication {
-    static var clientId = "978903998184-7osqgspcvqkdjqj7fngjgg756cbkhl6h.apps.googleusercontent.com"
+    static var clientId = ""
     static var clientAuthTokenKey = "auth_token"
 }
 

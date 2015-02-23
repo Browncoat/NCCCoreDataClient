@@ -14,6 +14,8 @@
 @interface GooglePlusViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *postLinkButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteMomentButton;
+@property (strong, nonatomic) Moment *moment;
 
 @end
 
@@ -96,9 +98,23 @@
         if (error) {
             [self.postLinkButton setTitle:error.localizedDescription forState:UIControlStateNormal];
         } else {
+            self.moment = moment;
             self.postLinkButton.enabled = YES;
             [self.postLinkButton setTitle:@"View your posts at https://plus.google.com/apps" forState:UIControlStateNormal];
+            self.deleteMomentButton.enabled = YES;
             NSLog(@"Moment: %@", moment);
+        }
+    }];
+}
+
+- (IBAction)didPressDeleteMomentButton:(id)sender
+{
+    [self.moment deleteMomentWithCompletion:^(NSError *error) {
+        if (error) {
+            [[[UIAlertView alloc] initWithTitle:@"Delete Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        } else {
+            self.deleteMomentButton.enabled = NO;
+            [self.postLinkButton setTitle:@"" forState:UIControlStateNormal];
         }
     }];
 }

@@ -15,8 +15,6 @@
     self.id = dictionary[@"id"]; // require id
     self.type = dictionary[@"type"];
     self.link = dictionary[@"link"];
-    
-    [self dictionaryWithAttributeToKeyPathMappings:<#(NSDictionary *)#>]
 }
 
 @end

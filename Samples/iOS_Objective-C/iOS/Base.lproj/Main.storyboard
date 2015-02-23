@@ -64,6 +64,16 @@
                                     <action selector="didPressPostLinkButton:" destination="7GP-Yb-Xbo" eventType="touchUpInside" id="wFl-SW-Bp2"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oSm-Tj-7Nt">
+                                <rect key="frame" x="236" y="462" width="128" height="30"/>
+                                <state key="normal" title="DELETE MOMENT">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPressDeleteMomentButton:" destination="7GP-Yb-Xbo" eventType="touchUpInside" id="zq4-7D-Rgp"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -72,7 +82,9 @@
                             <constraint firstItem="vRc-3y-JNY" firstAttribute="centerX" secondItem="xfb-hf-LD2" secondAttribute="centerX" id="BKI-Vs-buL"/>
                             <constraint firstItem="5Zu-Mb-W83" firstAttribute="leading" secondItem="xfb-hf-LD2" secondAttribute="leadingMargin" id="BMh-He-14g"/>
                             <constraint firstItem="ihU-6X-5Sm" firstAttribute="leading" secondItem="xfb-hf-LD2" secondAttribute="leadingMargin" id="D0Y-HE-Bt8"/>
+                            <constraint firstItem="oSm-Tj-7Nt" firstAttribute="top" secondItem="ihU-6X-5Sm" secondAttribute="bottom" constant="32" id="JZy-hT-hEN"/>
                             <constraint firstItem="vRc-3y-JNY" firstAttribute="top" secondItem="xoq-pV-SG8" secondAttribute="bottom" constant="171" id="NUc-P2-AhW"/>
+                            <constraint firstAttribute="centerX" secondItem="oSm-Tj-7Nt" secondAttribute="centerX" id="Q4e-Bv-RKe"/>
                             <constraint firstItem="ihU-6X-5Sm" firstAttribute="trailing" secondItem="xfb-hf-LD2" secondAttribute="trailingMargin" id="QxW-G1-9sy"/>
                             <constraint firstItem="5Zu-Mb-W83" firstAttribute="top" secondItem="MtL-xQ-c6k" secondAttribute="bottom" id="RVb-8e-8WK"/>
                             <constraint firstAttribute="centerX" secondItem="n8C-lI-jAD" secondAttribute="centerX" id="loR-Nn-k1P"/>
@@ -82,6 +94,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="deleteMomentButton" destination="oSm-Tj-7Nt" id="4Br-C9-EjM"/>
                         <outlet property="displayNameLabel" destination="5Zu-Mb-W83" id="53g-oS-5X8"/>
                         <outlet property="postLinkButton" destination="ihU-6X-5Sm" id="myo-WS-0zk"/>
                         <outlet property="signInButton" destination="vRc-3y-JNY" id="LL8-Zn-Lrr"/>
