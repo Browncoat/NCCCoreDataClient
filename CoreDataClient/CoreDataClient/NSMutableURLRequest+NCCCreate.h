@@ -38,6 +38,6 @@ extern NSString * const postBodyContentTypeJSON;
 - (void)setParams:(NSString *)params;
 - (void)setData:(NSData *)data ofContentType:(NSString *)postBodyContentType;
 - (void)setPNG:(NSData *)image filename:(NSString *)filename;
-- (void)setJSON:(NSDictionary *)dictionary;
+- (void)setJSON:(id)object;
 
 @end
