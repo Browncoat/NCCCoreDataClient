@@ -111,10 +111,10 @@ NSString * const ContentTypeImagePNG = @"image/png";
     }
 }
 
-- (void)setJSON:(NSDictionary *)dictionary
+- (void)setJSON:(id)object
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:&error];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object options:0 error:&error];
     if (!error) {
         [self setValue:@"application/json; charset=UTF-8" forHTTPHeaderField:@"Content-Type"];
         NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[jsonData length]];
@@ -144,7 +144,7 @@ NSString * const ContentTypeImagePNG = @"image/png";
 
 + (NSData *)postBodyFromString:(NSString *)string
 {
-    return (NSMutableData *)[string dataUsingEncoding:NSASCIIStringEncoding];
+    return (NSMutableData *)[string dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 + (NSData *)postBodyFromDictionary:(NSDictionary *)dictionary
