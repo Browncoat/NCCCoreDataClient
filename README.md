@@ -213,34 +213,38 @@ Each NSManagedObject Category can set it's own basePath, responseObjectUidKey an
 
 ```swift
 // Swift
-struct Initialize {
-    static var basePath: String = "http://example.com/user/"
-    static var managedObjectUidKey: String = "uid"
-    static var responseObjectUidKey: String = "id"
-}
-    
-class var basePath: String {
-    return Initialize.basePath
-}
+extension User {
+    struct Initialize {
+        static var basePath: String = "http://example.com/user/"
+        static var managedObjectUidKey: String = "uid"
+        static var responseObjectUidKey: String = "id"
+    }
+        
+    class var basePath: String {
+        return Initialize.basePath
+    }
 
-class var managedObjectUidKey: String {
-    return Initialize.managedObjectUidKey
-}
+    class var managedObjectUidKey: String {
+        return Initialize.managedObjectUidKey
+    }
 
-class var responseObjectUidKey: String {
-    return Initialize.responseObjectUidKey
+    class var responseObjectUidKey: String {
+        return Initialize.responseObjectUidKey
+    }
 }
 ```
 
 ```objective-c
-// Objective-C
-// User (Request)
+@implementation User (Request)
+
 + (void)initialize
 {
     [self setResponseObjectUidKey:@"id"];
     [self setManagedObjectUidKey:@"uid"];
     [self setBasePath:@"http://example.com/user/"];
 }
+
+@end
 ```
 
 The Core data objects are upserted based on their `objectUidKey`. The `objectUidKey` defaults to "id" but can be modified `[self setResponseObjectUidKey:@"id"];` and `[self setManagedObjectUidKey:@"uid"];` for the response dictionary and managedObject model respectively.
@@ -249,21 +253,27 @@ The Core data objects are upserted based on their `objectUidKey`. The `objectUid
 
 ```swift
 // Swift
-class func userForUid(id: String, completion:(user: User?, error: NSError?)->()) {
-        self.GET(id, withCompletion: { (results: Array!, error: NSError!) -> Void in
-            completion(user: results, error: error)
-        })
-    }
+extension User {
+    class func userForUid(id: String, completion:(user: User?, error: NSError?)->()) {
+            self.GET(id, withCompletion: { (results: Array!, error: NSError!) -> Void in
+                completion(user: results, error: error)
+            })
+        }
+}
 ```
 
 ```objective-c
 // Objective-C
+@implementation User (Request)
+
 - (void)userForUid:(NSString *)uid withCompletion:(CompletionBlock)completion
 {
     [User GET:uid progress:nil request:nil withCompletion:^(NSArray *results, NSError *error) {
         completion(results, error);
     }];
 }
+
+@end
 ```
 
 #### `POST` Request
@@ -272,18 +282,21 @@ You can modify the NSMutableURLRequest directly in the request block to add addi
 
 ```swift
 // Swift
-func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {      
-        self.POST("", request: { (request: NSMutableURLRequest!) -> Void in
-            request.setJSON(self.userDictionary())
-        }) { (results: Array!, error: NSError!) -> Void in
-            completion(results: results, error: error)
+extension User {
+    func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {      
+            self.POST("", request: { (request: NSMutableURLRequest!) -> Void in
+                request.setJSON(self.userDictionary())
+            }) { (results: Array!, error: NSError!) -> Void in
+                completion(results: results, error: error)
+            }
         }
-    }
+}
 ```
 
 ```objective-c
 // Objective-C
-// User+Request.h
+@implementation User (Request)
+
 - (void)saveUserWithCompletion:(CompletionBlock)completion
 {
     [self POST:@"" request:^(NSMutableURLRequest *request) {
@@ -305,6 +318,8 @@ func saveUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)
         completion(user, error);
     }];
 }
+
+@end
 ```
 
 #### `PUT` Request
@@ -313,16 +328,20 @@ You can also use several request helper methods such as `setJSON` and `setPNG`
 
 ```swift
 // Swift
-func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, error: NSError?)->()) {
-        self.PUT(user.uid, request: { (request: NSMutableURLRequest!) -> Void in
-            request.setJSON(self.dictionaryWithValuesForKeys(keys))
-            }) { (results: Array!, error: NSError!) -> Void in
-                completion(results: results, error: error)
+extension User {
+    func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, error: NSError?)->()) {
+            self.PUT(user.uid, request: { (request: NSMutableURLRequest!) -> Void in
+                request.setJSON(self.dictionaryWithValuesForKeys(keys))
+                }) { (results: Array!, error: NSError!) -> Void in
+                    completion(results: results, error: error)
+            }
         }
-    }
+}
 ```
 
 ```objective-c
+@implementation User (Request)
+
 - (void)saveValuesForKeys:(NSArray *)keys withCompletion:(CompletionBlock)completion
 {
     [self PUT:user.uid request:^(NSMutableURLRequest *request) {
@@ -332,10 +351,14 @@ func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, err
         completion(results, error);
     }];
 }
+
+@end
 ```
 
 #### `PUT` Request
 ```objective-c
+@implementation User (Request)
+
 - (void)saveValuesForKeyPathMappings:(NSDictionary *)keyMappings withCompletion:(CompletionBlock)completion
 {
     [self PUT:@"user" request:^(NSMutableURLRequest *request) {
@@ -350,24 +373,32 @@ func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, err
         completion(results, error);
     }];
 }
+
+@end
 ```
 
 #### `DELETE` Request
 ```swift
 // Swift
-func deleteUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
-        self.DELETE(self.uid, withCompletion: { (results: Array!, error: NSError!) -> Void in
-            completion(results: results, error: error)
-        })
-    }
+extension User {
+    func deleteUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
+            self.DELETE(self.uid, withCompletion: { (results: Array!, error: NSError!) -> Void in
+                completion(results: results, error: error)
+            })
+        }
+}
 ```
 
 ```objc
 // Objective-C
+@implementation User (Request)
+
 - (void)deleteUserWithCompletion:(CompletionBlock)completion
 {
     [self DELETE:self.uid request:nil withCompletion:^(NSArray *results, NSError *error) {
         completion(results, error);
     }
 }
+
+@end
 ```
