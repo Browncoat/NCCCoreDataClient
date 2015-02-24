@@ -329,11 +329,11 @@ You can also use several request helper methods such as `setJSON` and `setPNG`
 extension User {
     func saveValuesForKeys(keys: [NSString], completion: (results: [AnyObject]?, error: NSError?)->()) {
         self.PUT(user.uid, request: { (request: NSMutableURLRequest!) -> Void in
-                request.setJSON(self.dictionaryWithValuesForKeys(keys))
-                }) { (results: Array!, error: NSError!) -> Void in
-                    completion(results: results, error: error)
-            }
+            request.setJSON(self.dictionaryWithValuesForKeys(keys))
+            }) { (results: Array!, error: NSError!) -> Void in
+                completion(results: results, error: error)
         }
+    }
 }
 ```
 
@@ -381,8 +381,8 @@ extension User {
 extension User {
     func deleteUserWithCompletion(completion: (results: [AnyObject]?, error: NSError?)->()) {
         self.DELETE(self.uid, withCompletion: { (results: Array!, error: NSError!) -> Void in
-                completion(results: results, error: error)
-            })
+            completion(results: results, error: error)
+        })
     }
 }
 ```
