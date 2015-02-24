@@ -11,11 +11,11 @@ import CoreData
 
 class Moment: NSManagedObject {
 
-    @NSManaged var id: String
-    @NSManaged var kind: String
-    @NSManaged var startdate: NSTimeInterval
-    @NSManaged var title: String
-    @NSManaged var type: String
+    @NSManaged var id: String?
+    @NSManaged var kind: String?
+    @NSManaged var startdate: NSDate?
+    @NSManaged var title: String?
+    @NSManaged var type: String?
     @NSManaged var object: NSManagedObject
 
 }

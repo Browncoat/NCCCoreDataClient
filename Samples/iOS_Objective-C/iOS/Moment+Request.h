@@ -11,5 +11,6 @@
 @interface Moment (Request)
 
 - (void)saveWithCompletion:(void(^)(Moment *moment, NSError *error))completion;
+- (void)deleteMomentWithCompletion:(void(^)(NSError *error))completion;
 
 @end

@@ -20,7 +20,7 @@
 {
     NSString *token = [[NSUserDefaults standardUserDefaults] valueForKey:@"access_token"];
     
-    [self POST:[NSString stringWithFormat:@"%@/%@", media.uid, @"comments"] request:^(NSMutableURLRequest *request) {
+    [self POST:[NSString stringWithFormat:@"%@/%@", media.id, @"comments"] request:^(NSMutableURLRequest *request) {
         NSData *formData = [[NSString stringWithFormat:@"access_token=%@&text=%@", token, @"Hellllloooooo"] dataUsingEncoding:NSUTF8StringEncoding];
         [request setData:formData ofContentType:postBodyContentTypeData];
     } withCompletion:^(id results, NSError *error) {

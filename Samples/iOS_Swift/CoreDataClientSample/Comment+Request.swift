@@ -9,6 +9,7 @@
 import Foundation
 
 extension Comment {
+    /*
     struct Initialize {
         static var basePath: String = "https://api.instagram.com/v1/media/"
         static var managedObjectUidKey: String = "id"
@@ -27,12 +28,12 @@ extension Comment {
         return Initialize.responseObjectUidKey
     }
     
-    func POSTCommentToMedia(media: Media completion:(results: NSArray?, error: NSError?)->()) {
+    func POSTCommentToMedia(media: Media, completion:(results: NSArray?, error: NSError?)->()) {
         if let token = NSUserDefaults.standardUserDefaults().stringForKey("access_token") {
-            self.POST(<#resource: String!#>, request: { (<#NSMutableURLRequest!#>) -> Void in
-                <#code#>
+            self.POST(media.id + "/comments", request: { (request: NSMutableURLRequest!) -> Void in
+                request.setJSON(<#dictionary: [NSObject : AnyObject]!#>)
             }, withCompletion: { (<#[AnyObject]!#>, <#NSError!#>) -> Void in
-                <#code#>
+                completion(results: <#NSArray?#>, error: <#NSError?#>)
             })
         }
     }
@@ -45,6 +46,7 @@ extension Comment {
                 //
         }
     }
+*/
 }
 
 /*

@@ -12,6 +12,10 @@
 #import "Moment+Request.m"
 
 @interface GooglePlusViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *displayNameLabel;
+@property (weak, nonatomic) IBOutlet UIButton *postLinkButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteMomentButton;
+@property (strong, nonatomic) Moment *moment;
 
 @end
 
@@ -46,20 +50,12 @@
     signIn.delegate = self;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated
+{
+    if (ClientId.length == 0) {
+        [[[UIAlertView alloc] initWithTitle:@"Client Id Missing" message:@"Please obtain a clientId from\nhttps://console.developers.google.com" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+    }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma  mark Google+ Signin
 
@@ -69,6 +65,11 @@
     NSString *oauthToken = auth.accessToken;
     [[NSUserDefaults standardUserDefaults] setValue:oauthToken forKey:ClientAuthTokenKey];
     NSLog(@"AccessToken: %@", [[NSUserDefaults standardUserDefaults] valueForKey:ClientAuthTokenKey]);
+}
+
+- (void)didDisconnectWithError:(NSError *)error
+{
+    [[[UIAlertView alloc] initWithTitle:@"Sign In Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 }
 
 - (void)presentSignInViewController:(UIViewController *)viewController {
@@ -81,15 +82,46 @@
 - (IBAction)didPressGetPersonButton:(id)sender
 {
     [Person personWithId:@"me" completion:^(Person *person, NSError *error) {
-        NSLog(@"Person: %@", person);
+        if (error) {
+            self.displayNameLabel.text = error.localizedDescription;
+        } else {
+            self.displayNameLabel.text = person.displayName;
+            NSLog(@"Person: %@", person);
+        }
     }];
 }
 
 - (IBAction)didPressPostMomentButton:(id)sender
 {
-    Moment *moment = [Moment objectInManagedObjectContext:[Moment mainContext]];
+    Moment *moment = [Moment objectInManagedObjectContext:[NSManagedObjectContext mainContext]];
     [moment saveWithCompletion:^(Moment *moment, NSError *error) {
-        NSLog(@"Moment: %@", moment);
+        if (error) {
+            [self.postLinkButton setTitle:error.localizedDescription forState:UIControlStateNormal];
+        } else {
+            self.moment = moment;
+            self.postLinkButton.enabled = YES;
+            [self.postLinkButton setTitle:@"View your posts at https://plus.google.com/apps" forState:UIControlStateNormal];
+            self.deleteMomentButton.enabled = YES;
+            NSLog(@"Moment: %@", moment);
+        }
     }];
 }
+
+- (IBAction)didPressDeleteMomentButton:(id)sender
+{
+    [self.moment deleteMomentWithCompletion:^(NSError *error) {
+        if (error) {
+            [[[UIAlertView alloc] initWithTitle:@"Delete Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        } else {
+            self.deleteMomentButton.enabled = NO;
+            [self.postLinkButton setTitle:@"" forState:UIControlStateNormal];
+        }
+    }];
+}
+
+- (IBAction)didPressPostLinkButton:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"https://plus.google.com/apps"]];
+}
+
 @end

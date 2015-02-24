@@ -11,8 +11,8 @@ import CoreData
 
 class Person: NSManagedObject {
 
-    @NSManaged var displayName: String
-    @NSManaged var id: String
-    @NSManaged var url: String
+    @NSManaged var displayName: String?
+    @NSManaged var id: String?
+    @NSManaged var url: String?
 
 }

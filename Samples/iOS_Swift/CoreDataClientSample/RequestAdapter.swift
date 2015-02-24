@@ -10,13 +10,18 @@ import Foundation
 import CoreData
 
 extension NSManagedObject {
-    class func makeRequest(request: NSMutableURLRequest!, progress: ((CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!) {
-        println("\(request)")
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            var error: NSError?
-            if let responseObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
-                if let results: NSArray = responseObject["playlist"]?["a"]? as? NSArray {
-                    completion(results, error?)
+    class func makeRequest(request: NSMutableURLRequest!, progress: ((progress: CGFloat) -> Void)!, completion: (([AnyObject]!, NSError!) -> Void)!) {
+        if let token = NSUserDefaults.standardUserDefaults().stringForKey(Authentication.clientAuthTokenKey) {
+            let headers = ["Authorization":"Bearer \(token)"]
+            request.setHeaders(headers)
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                if ((error) != nil) {
+                    completion(nil, error)
+                } else {
+                    var error: NSError?
+                    if let responseObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &error) as? NSDictionary {
+                        completion([responseObject], error?)
+                    }
                 }
             }
         }

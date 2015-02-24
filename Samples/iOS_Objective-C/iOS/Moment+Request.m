@@ -12,17 +12,24 @@
 
 + (void)initialize
 {
-    [self setBasePath:@"https://www.googleapis.com/plus/v1/people/me/moments/vault/"];
+    [self setBasePath:@"https://www.googleapis.com/plus/v1/"];
 }
 
 - (void)saveWithCompletion:(void(^)(Moment *moment, NSError *error))completion
 {
-    [self POST:@"" progress:nil request:^(NSMutableURLRequest *request) {
+    [self POST:@"people/me/moments/vault/" progress:nil request:^(NSMutableURLRequest *request) {
         NSError *error;
         NSData *postBody = [NSJSONSerialization dataWithJSONObject:[self moment] options:0 error:&error];
         [request setData:postBody ofContentType:postBodyContentTypeJSON];
     } withCompletion:^(NSArray *results, NSError *error) {
         completion(results.lastObject, error);
+    }];
+}
+
+- (void)deleteMomentWithCompletion:(void(^)(NSError *error))completion
+{
+    [self DELETE:[NSString stringWithFormat:@"moments/%@", self.id] withCompletion:^(NSArray *results, NSError *error) {
+        completion(error);
     }];
 }
 
@@ -36,7 +43,7 @@
     NSDictionary *moment = @{@"type":@"http://schema.org/AddAction",
                              @"startDate":dateString,
                              @"object":@{@"id":@"target-id-1",
-                                          @"image":@"http://www.google.com/s2/static/images/GoogleyEyes.png",
+                                          @"image":@"http://www.fillmurray.com/50/50",
                                           @"type":@"http://schema.org/AddAction",
                                           @"description":@"The description for the activity",
                                           @"name":@"An example of AddActivity"}
