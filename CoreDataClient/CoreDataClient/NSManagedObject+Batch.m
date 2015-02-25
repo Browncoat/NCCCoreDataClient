@@ -101,12 +101,17 @@
         sortedManagedObjects = [[context executeFetchRequest:fetchRequest error:&error] sortedArrayUsingDescriptors:@[[self sortDescriptorForKey:[self managedObjectUidKey]]]];
     }
     
-    __block NSUInteger index = 0;
+    // Walk the arrays
+//    __block NSUInteger index = 0;
+    __block NSEnumerator *sortedManagedObjectsEnumerator = [sortedManagedObjects objectEnumerator];
+    __block NSManagedObject *nextManagedObject = [sortedManagedObjectsEnumerator nextObject];
     [sortedResponseObjects enumerateObjectsUsingBlock:^(NSDictionary *responseObject, NSUInteger idx, BOOL *stop) {
+        
+        
         NSComparisonResult comparison;
         
-        BOOL reachedEndOfLocalManagedObjects = sortedManagedObjects.count == 0 || index > sortedManagedObjects.count - 1;
-        if (reachedEndOfLocalManagedObjects) {
+//        BOOL reachedEndOfLocalManagedObjects = !nextManagedObject;
+        if (!nextManagedObject) {
             comparison = NSOrderedAscending; // NEW Objects
         } else {
             // compare local and remote ids (make them the same type, NSString)
@@ -114,38 +119,44 @@
             if ([remoteUid isKindOfClass:[NSNumber class]]) {
                 remoteUid = [remoteUid stringValue];
             }
-            id localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
+//            id object = sortedManagedObjects[index];
+            
+            id localUid = [nextManagedObject valueForKey:[self managedObjectUidKey]];
             if ([localUid isKindOfClass:[NSNumber class]]) {
                 localUid = [localUid stringValue];
             }
             comparison = [remoteUid compare:localUid options:NSNumericSearch]; // NSNumericSearch in case values are strings
             
             // check for duplicates
+            /*
             if (index > 0 && [[sortedManagedObjects[index - 1] valueForKey:[self managedObjectUidKey]] compare:[sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]]] == NSOrderedSame) {
                 NSLog(@"More than one %@ object with unique id not expected", self);
             }
+             */
         }
         
         if (comparison == NSOrderedSame) { // same uids from both lists, UPDATE
-            NSManagedObject *object = sortedManagedObjects[index];
-            [object updateWithDictionary:responseObject];
-            [upsertedObjects addObject:[context.parentContext objectWithID:object.objectID]];
-            index++;
+//            NSManagedObject *object = nextManagedObject;
+            [nextManagedObject updateWithDictionary:responseObject];
+            [upsertedObjects addObject:[context.parentContext objectWithID:nextManagedObject.objectID]];
+//            index++;
+            [sortedManagedObjectsEnumerator nextObject];
         } else if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, NEW
             // new
             NSManagedObject *object = [NSEntityDescription insertNewObjectForEntityForName:self.classNameWithoutNamespace inManagedObjectContext:context];
             [object updateWithDictionary:responseObject];
             [upsertedObjects addObject:[context.parentContext objectWithID:object.objectID]];
         } else { // localUid not in remoteObjects, delete until next local object uid matches current remote uid, DELETE
-            while (comparison == NSOrderedDescending && index < sortedManagedObjects.count) {
-                [context deleteObject:sortedManagedObjects[index]];
-                index++;
-                if (index < sortedManagedObjects.count) {
+            while (comparison == NSOrderedDescending && nextManagedObject) {
+                [context deleteObject:nextManagedObject];
+                nextManagedObject = [sortedManagedObjectsEnumerator nextObject];
+//                index++;
+                if (nextManagedObject) {
                     id remoteUid = [responseObject valueForKey:[self responseObjectUidKey]];
                     if ([remoteUid isKindOfClass:[NSNumber class]]) {
                         remoteUid = [remoteUid stringValue];
                     }
-                    id localUid = [sortedManagedObjects[index] valueForKey:[self managedObjectUidKey]];
+                    id localUid = [nextManagedObject valueForKey:[self managedObjectUidKey]];
                     if ([localUid isKindOfClass:[NSNumber class]]) {
                         localUid = [localUid stringValue];
                     }
@@ -156,10 +167,11 @@
             }
             
             if (comparison == NSOrderedSame) {
-                NSManagedObject *object = sortedManagedObjects[index];
-                [object updateWithDictionary:responseObject];
-                [upsertedObjects addObject:[context.parentContext objectWithID:object.objectID]];
-                index++;
+//                NSManagedObject *object = nextManagedObject;
+                [nextManagedObject updateWithDictionary:responseObject];
+                [upsertedObjects addObject:[context.parentContext objectWithID:nextManagedObject.objectID]];
+//                index++;
+                [sortedManagedObjectsEnumerator nextObject];
             }
             
             if (comparison == NSOrderedAscending) { // remoteUid not in fetchedObjects, new object
@@ -177,13 +189,14 @@
     }];
     
     // DELETE local objects that are beyond end of remote objects array
-    BOOL reachedEndOfRemoteObjects = sortedResponseObjects.count == 0 || index > sortedResponseObjects.count - 1;
-    if (reachedEndOfRemoteObjects) {
-        while (index < sortedManagedObjects.count) {
-            [context deleteObject:sortedManagedObjects[index]];
-            index++;
+//    BOOL reachedEndOfRemoteObjects = sortedResponseObjects.count == 0 || index > sortedResponseObjects.count - 1;
+//    if (reachedEndOfRemoteObjects) {
+        while (nextManagedObject) {
+            [context deleteObject:nextManagedObject];
+//            index++;
+            [sortedManagedObjectsEnumerator nextObject];
         }
-    }
+//    }
     
     // Add objects that have no id property
     NSMutableArray *objectsWithoutIds = [NSMutableArray arrayWithArray:objects];
