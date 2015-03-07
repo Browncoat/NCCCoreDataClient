@@ -45,7 +45,7 @@
     return [self batchUpdateAndWaitObjects:objects destinationContext:context progress:&progress error:outError];
 }
 
-+ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects  destinationContext:(NSManagedObjectContext *)context progress:(CGFloat *)outProgress error:(NSError **)outError
++ (NSArray *)batchUpdateAndWaitObjects:(NSArray *)objects destinationContext:(NSManagedObjectContext *)context progress:(CGFloat *)outProgress error:(NSError **)outError
 {
     NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     childContext.parentContext = context;
@@ -80,6 +80,7 @@
     [childContext performBlock:^{
         
         NSArray *resultObjects = [self managedObjectsWithResponseObjects:objects context:childContext progress:progress];
+//        NSLog(@"%@", resultObjects);
         
         [NSManagedObject saveContext:childContext completion:^(NSError *error) {
             if (error) {

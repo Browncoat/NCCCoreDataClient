@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6018C3381AA92951006850C4 /* NSManagedObjectTests+Batch.m in Sources */ = {isa = PBXBuildFile; fileRef = 6018C3371AA92951006850C4 /* NSManagedObjectTests+Batch.m */; };
+		6018C33A1AA92986006850C4 /* NSManagedObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6018C3391AA92986006850C4 /* NSManagedObjectTests.m */; };
 		DC1B6FD51A088477001CC514 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC1B6FCC1A088477001CC514 /* Info.plist */; };
 		DC1B6FD61A088477001CC514 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FCD1A088477001CC514 /* main.m */; };
 		DC1B6FD71A088477001CC514 /* CoreDataClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1B6FCF1A088477001CC514 /* CoreDataClientTests.m */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6018C3371AA92951006850C4 /* NSManagedObjectTests+Batch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectTests+Batch.m"; sourceTree = "<group>"; };
+		6018C3391AA92986006850C4 /* NSManagedObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSManagedObjectTests.m; sourceTree = "<group>"; };
 		DC1B6FCC1A088477001CC514 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC1B6FCD1A088477001CC514 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DC1B6FCF1A088477001CC514 /* CoreDataClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataClientTests.m; sourceTree = "<group>"; };
@@ -138,6 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				DC1B6FCF1A088477001CC514 /* CoreDataClientTests.m */,
+				6018C3391AA92986006850C4 /* NSManagedObjectTests.m */,
+				6018C3371AA92951006850C4 /* NSManagedObjectTests+Batch.m */,
 				DC1B6FD01A088477001CC514 /* Info.plist */,
 			);
 			path = CoreDataClientTests;
@@ -205,7 +211,7 @@
 		DCAC53081A01E83D00C23278 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = RST_;
+				CLASSPREFIX = NCC;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Nathaniel Potter";
 				TargetAttributes = {
@@ -283,6 +289,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6018C3381AA92951006850C4 /* NSManagedObjectTests+Batch.m in Sources */,
+				6018C33A1AA92986006850C4 /* NSManagedObjectTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
