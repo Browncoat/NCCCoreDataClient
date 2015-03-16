@@ -1,16 +1,16 @@
 //
-//  NSManagedObjectTests.m
-//  CoreDataClient
+//  RESTfulCoreDataTests.m
+//  RESTfulCoreDataTests
 //
-//  Created by Nate Potter on 3/5/15.
-//  Copyright (c) 2015 Nathaniel Potter. All rights reserved.
+//  Created by Nathaniel Potter on 10/29/14.
+//  Copyright (c) 2014 Nathaniel Potter. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import <CoreData/CoreData.h>
 
-@interface NSManagedObjectTests : XCTestCase
+@interface CoreDataClientTests : XCTestCase
 
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -19,13 +19,12 @@
 
 @end
 
-@implementation NSManagedObjectTests
+@implementation CoreDataClientTests
 
 - (void)setUp {
     [super setUp];
-    
-    [self setUpDataStack];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    [self setUpDataStack];
 }
 
 - (void)tearDown {
@@ -50,10 +49,10 @@
     _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:[NSBundle allBundles]];
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:_managedObjectModel];
     _persistentStore = [_persistentStoreCoordinator addPersistentStoreWithType: NSInMemoryStoreType
-                                      configuration: nil
-                                                URL: nil
-                                            options: nil
-                                              error: NULL];
+                                                                 configuration: nil
+                                                                           URL: nil
+                                                                       options: nil
+                                                                         error: NULL];
     _managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     _managedObjectContext.persistentStoreCoordinator = _persistentStoreCoordinator;
 }

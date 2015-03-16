@@ -1,6 +1,6 @@
 //
-//  RESTfulCoreDataTests.m
-//  RESTfulCoreDataTests
+//  iOSTests.m
+//  iOSTests
 //
 //  Created by Nathaniel Potter on 10/29/14.
 //  Copyright (c) 2014 Nathaniel Potter. All rights reserved.
@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-@interface CoreDataClientTests : XCTestCase
+@interface iOSTests : XCTestCase
 
 @end
 
-@implementation CoreDataClientTests
+@implementation iOSTests
 
 - (void)setUp {
     [super setUp];

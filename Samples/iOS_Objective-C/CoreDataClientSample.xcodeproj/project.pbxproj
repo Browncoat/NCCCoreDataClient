@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		60505FFC1AB77E5B006FDBDF /* NSManagedObjectTests+Batch.m in Sources */ = {isa = PBXBuildFile; fileRef = 6018C35D1AB75F11006850C4 /* NSManagedObjectTests+Batch.m */; };
 		DC2173E31A9112350061D082 /* NSManagedObject+Batch.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173CA1A9112350061D082 /* NSManagedObject+Batch.m */; };
 		DC2173E41A9112350061D082 /* NSManagedObject+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173CC1A9112350061D082 /* NSManagedObject+Create.m */; };
 		DC2173E51A9112350061D082 /* NSManagedObject+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2173CE1A9112350061D082 /* NSManagedObject+Delete.m */; };
@@ -46,7 +47,6 @@
 		DCAC535B1A01F40300C23278 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCAC53591A01F40300C23278 /* Main.storyboard */; };
 		DCAC535D1A01F40300C23278 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCAC535C1A01F40300C23278 /* Images.xcassets */; };
 		DCAC53601A01F40300C23278 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCAC535E1A01F40300C23278 /* LaunchScreen.xib */; };
-		DCAC536C1A01F40300C23278 /* iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAC536B1A01F40300C23278 /* iOSTests.m */; };
 		DCAC53D11A0542E700C23278 /* User+Request.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAC53D01A0542E700C23278 /* User+Request.m */; };
 		DCB1BD241A059A3600F1991D /* User+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB1BD231A059A3600F1991D /* User+JSON.m */; };
 		DCB1BD2B1A05B74500F1991D /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB1BD2A1A05B74500F1991D /* User.m */; };
@@ -71,6 +71,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6018C35B1AB75F11006850C4 /* CoreDataClientTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataClientTests.m; sourceTree = "<group>"; };
+		6018C35C1AB75F11006850C4 /* NSManagedObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSManagedObjectTests.m; sourceTree = "<group>"; };
+		6018C35D1AB75F11006850C4 /* NSManagedObjectTests+Batch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectTests+Batch.m"; sourceTree = "<group>"; };
 		DC2173C81A9112350061D082 /* NCCCoreDataClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCCCoreDataClient.h; sourceTree = "<group>"; };
 		DC2173C91A9112350061D082 /* NSManagedObject+Batch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Batch.h"; sourceTree = "<group>"; };
 		DC2173CA1A9112350061D082 /* NSManagedObject+Batch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Batch.m"; sourceTree = "<group>"; };
@@ -300,6 +303,9 @@
 		DCAC53681A01F40300C23278 /* iOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				6018C35B1AB75F11006850C4 /* CoreDataClientTests.m */,
+				6018C35C1AB75F11006850C4 /* NSManagedObjectTests.m */,
+				6018C35D1AB75F11006850C4 /* NSManagedObjectTests+Batch.m */,
 				DCAC536B1A01F40300C23278 /* iOSTests.m */,
 				DCAC53691A01F40300C23278 /* Supporting Files */,
 			);
@@ -495,7 +501,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DCAC536C1A01F40300C23278 /* iOSTests.m in Sources */,
+				60505FFC1AB77E5B006FDBDF /* NSManagedObjectTests+Batch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
