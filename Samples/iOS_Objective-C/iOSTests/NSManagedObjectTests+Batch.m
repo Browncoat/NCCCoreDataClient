@@ -27,19 +27,20 @@
     }];
 }
 
-- (void)testThatItBatchingAddsManagedObject
+- (void)testThatItAddsManagedObject
 {
     // given
-    NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"}];
+    NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
     [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
+        
+        // then
         XCTAssertEqual(responseObjects.count, results.count);
         [expectation fulfill];
     }];
     
-    // then
     [self waitForExpectationsWithTimeout:5
                                  handler:^(NSError *error) {
                                      // handler is called on _either_ success or failure
@@ -49,7 +50,36 @@
                                  }];
 }
 
-- (void)testThatItBatchingRemovesManagedObject
+- (void)testThatItRemovesFirstManagedObject
+{
+    // given
+    NSArray *responseObjects = @[@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
+    
+    // when
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
+    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
+        NSArray *allResponseObjectIds = [[responseObjects valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            return [obj1 compare:obj2 options:NSNumericSearch];
+        }];
+        NSArray *allPersonIds = [[[Person allObjects] valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            return [obj1 compare:obj2 options:NSNumericSearch];
+        }];
+        
+        // then
+        XCTAssertTrue([allResponseObjectIds isEqualToArray:allPersonIds]);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5
+                                 handler:^(NSError *error) {
+                                     // handler is called on _either_ success or failure
+                                     if (error != nil) {
+                                         XCTFail(@"timeout error: %@", error);
+                                     }
+                                 }];
+}
+
+- (void)testThatItRemovesMiddleManagedObject
 {
     // given
     NSArray *responseObjects = @[@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"}];
@@ -58,11 +88,85 @@
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
     [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
         NSArray *allPersons = [Person allObjects];
+        
+        // then
         XCTAssertEqual(responseObjects.count, allPersons.count);
         [expectation fulfill];
     }];
     
-    // then
+    [self waitForExpectationsWithTimeout:5
+                                 handler:^(NSError *error) {
+                                     // handler is called on _either_ success or failure
+                                     if (error != nil) {
+                                         XCTFail(@"timeout error: %@", error);
+                                     }
+                                 }];
+}
+
+- (void)testThatItRemovesLastManagedObject
+{
+    // given
+    NSArray *responseObjects = @[@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"}];
+    
+    // when
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
+    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
+        NSArray *allPersons = [Person allObjects];
+        
+        // then
+        XCTAssertEqual(responseObjects.count, allPersons.count);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5
+                                 handler:^(NSError *error) {
+                                     // handler is called on _either_ success or failure
+                                     if (error != nil) {
+                                         XCTFail(@"timeout error: %@", error);
+                                     }
+                                 }];
+}
+
+- (void)testThatItAddsManagedObjectWithoutId
+{
+    // given
+    NSArray *responseObjects = @[@{@"id":@""},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"}];
+    
+    // when
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
+    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
+        NSArray *allPersons = [Person allObjects];
+        
+        // then
+        XCTAssertEqual(responseObjects.count, allPersons.count);
+        [expectation fulfill];
+    }];
+    
+    [self waitForExpectationsWithTimeout:5
+                                 handler:^(NSError *error) {
+                                     // handler is called on _either_ success or failure
+                                     if (error != nil) {
+                                         XCTFail(@"timeout error: %@", error);
+                                     }
+                                 }];
+}
+
+- (void)testThatItUpdatesManagedObjectWithout
+{
+    // given
+    NSString *displayName = @"Jane Doe";
+    NSArray *responseObjects = @[@{@"id":@"1", @"displayName":displayName},@{@"id":@"2"},@{@"id":@"3"}];
+    
+    // when
+    XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
+    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
+        Person *janeDoe = [Person objectWithId:@"1"];
+        
+        // then
+        XCTAssertEqual(janeDoe.displayName, displayName);
+        [expectation fulfill];
+    }];
+    
     [self waitForExpectationsWithTimeout:5
                                  handler:^(NSError *error) {
                                      // handler is called on _either_ success or failure
