@@ -34,7 +34,7 @@
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
-    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
+    [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
         
         // then
         XCTAssertEqual(responseObjects.count, results.count);
@@ -57,11 +57,11 @@
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
-    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
+    [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
         NSArray *allResponseObjectIds = [[responseObjects valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [obj1 compare:obj2 options:NSNumericSearch];
         }];
-        NSArray *allPersonIds = [[[Person allObjects] valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSArray *allPersonIds = [[[Person allObjectsInManagedObjectContext:self.managedObjectContext] valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             return [obj1 compare:obj2 options:NSNumericSearch];
         }];
         
@@ -86,8 +86,8 @@
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
-    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
-        NSArray *allPersons = [Person allObjects];
+    [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
+        NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
         
         // then
         XCTAssertEqual(responseObjects.count, allPersons.count);
@@ -110,8 +110,8 @@
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
-    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
-        NSArray *allPersons = [Person allObjects];
+    [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
+        NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
         
         // then
         XCTAssertEqual(responseObjects.count, allPersons.count);
@@ -134,8 +134,8 @@
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
-    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
-        NSArray *allPersons = [Person allObjects];
+    [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
+        NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
         
         // then
         XCTAssertEqual(responseObjects.count, allPersons.count);
@@ -159,8 +159,8 @@
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
-    [Person batchUpdateObjects:responseObjects destinationContext:[NSManagedObjectContext mainContext] completion:^(NSArray *results, NSError *error) {
-        Person *janeDoe = [Person objectWithId:@"1"];
+    [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
+        Person *janeDoe = [Person objectWithId:@"1" inManagedObjectContext:self.managedObjectContext];
         
         // then
         XCTAssertEqual(janeDoe.displayName, displayName);

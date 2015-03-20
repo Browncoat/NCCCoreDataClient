@@ -15,12 +15,6 @@
 {
     __block BOOL success = NO;
     
-    // check if we're at privateSaveToDiskContext
-    if ([context isEqual:self.saveToDiskContext]) {
-        NSError *error;
-        success = [self.saveToDiskContext save:&error];
-    }
-    
     if ([context hasChanges]) {
         [context performBlockAndWait:^{
             success = [context save:saveError];
@@ -46,35 +40,14 @@
 
 + (void)saveContext:(NSManagedObjectContext *)context completion:(void(^)(NSError *error))completion
 {
-    // check if we're at privateSaveToDiskContext
-    if ([context isEqual:self.saveToDiskContext]) {
-        
-        void (^saveToDisk) (void) = ^ {
-            NSError *error;
-            BOOL success = [self.saveToDiskContext save:&error];
+    if ([context hasChanges]) {
+        [context performBlock:^{
+            NSError *saveError = nil;
+            BOOL success = [context save:&saveError];
             if (success) {
-                NSLog(@"save done %@", [self class]);
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion) {
-                    completion(error);
-                }
-            });
-        };
-        
-        [self.saveToDiskContext performBlock:saveToDisk];
-        
-    } else {
-        
-        if ([context hasChanges]) {
-            [context performBlock:^{
-                NSError *saveError = nil;
-                BOOL success = [context save:&saveError];
-                if (success) {
-                    // recursively save up the context chain
-                    if (context.parentContext) {
-                        [self saveContext:context.parentContext completion:completion];
-                    }
+                // recursively save up the context chain
+                if (context.parentContext) {
+                    [self saveContext:context.parentContext completion:completion];
                 } else {
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (completion) {
@@ -82,18 +55,24 @@
                         }
                     });
                 }
-            }];
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSError *error;
-                if (!context) {
-                    error = [NSError errorWithDomain:@"com.ncccoredataclient" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"%@: mangedObjectContext is nil, you must set it's managedObjectContext property in order to save", self]}];
-                }
-                if (completion) {
-                    completion(error);
-                }
-            });
-        }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (completion) {
+                        completion(saveError);
+                    }
+                });
+            }
+        }];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *error;
+            if (!context) {
+                error = [NSError errorWithDomain:@"com.ncccoredataclient" code:0 userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"%@: mangedObjectContext is nil, you must set it's managedObjectContext property in order to save", self]}];
+            }
+            if (completion) {
+                completion(error);
+            }
+        });
     }
 }
 
