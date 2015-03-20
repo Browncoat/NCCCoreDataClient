@@ -27,7 +27,7 @@
     }];
 }
 
-- (void)testThatItAddsManagedObject
+- (void)testThatItAddsManagedObjects
 {
     // given
     NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
@@ -53,17 +53,14 @@
 - (void)testThatItRemovesFirstManagedObject
 {
     // given
+    [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
     NSArray *responseObjects = @[@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
     [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
-        NSArray *allResponseObjectIds = [[responseObjects valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            return [obj1 compare:obj2 options:NSNumericSearch];
-        }];
-        NSArray *allPersonIds = [[[Person allObjectsInManagedObjectContext:self.managedObjectContext] valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            return [obj1 compare:obj2 options:NSNumericSearch];
-        }];
+        NSArray *allResponseObjectIds = [self arrayOfSortedIdsForArray:responseObjects];
+        NSArray *allPersonIds = [self arrayOfSortedIdsForArray:[Person allObjectsInManagedObjectContext:self.managedObjectContext]];
         
         // then
         XCTAssertTrue([allResponseObjectIds isEqualToArray:allPersonIds]);
@@ -82,7 +79,10 @@
 - (void)testThatItRemovesMiddleManagedObject
 {
     // given
-    NSArray *responseObjects = @[@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"}];
+    [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
+    NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"5"}];
+    NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
+
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
@@ -90,7 +90,7 @@
         NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
         
         // then
-        XCTAssertEqual(responseObjects.count, allPersons.count);
+        XCTAssertTrue([allPersons containsObject:@"4"] == NO);
         [expectation fulfill];
     }];
     
@@ -106,7 +106,9 @@
 - (void)testThatItRemovesLastManagedObject
 {
     // given
-    NSArray *responseObjects = @[@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"}];
+    [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
+    NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"}];
+    NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
@@ -114,7 +116,7 @@
         NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
         
         // then
-        XCTAssertEqual(responseObjects.count, allPersons.count);
+        XCTAssertTrue([allPersons containsObject:@"5"] == NO);
         [expectation fulfill];
     }];
     
@@ -130,7 +132,8 @@
 - (void)testThatItAddsManagedObjectWithoutId
 {
     // given
-    NSArray *responseObjects = @[@{@"id":@""},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"}];
+    [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
+    NSArray *responseObjects = @[@{@"id":@""},@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
@@ -151,11 +154,12 @@
                                  }];
 }
 
-- (void)testThatItUpdatesManagedObjectWithout
+- (void)testThatItUpdatesManagedObject
 {
     // given
     NSString *displayName = @"Jane Doe";
-    NSArray *responseObjects = @[@{@"id":@"1", @"displayName":displayName},@{@"id":@"2"},@{@"id":@"3"}];
+    [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
+    NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1", @"displayName":displayName},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
@@ -174,6 +178,23 @@
                                          XCTFail(@"timeout error: %@", error);
                                      }
                                  }];
+}
+
+- (NSArray *)arrayOfSortedIdsForArray:(NSArray *)array
+{
+    NSArray *sortedIds = [[array valueForKey:@"id"] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj1 compare:obj2 options:NSNumericSearch];
+    }];
+    
+    return sortedIds;
+}
+
+- (void)addPersonObjectsWithIds:(NSArray *)uids inContext:(NSManagedObjectContext *)context
+{
+    for (NSString *uid in uids) {
+        Person *person = (Person *)[[NSManagedObject alloc] initWithEntity:[NSEntityDescription entityForName:@"Person" inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+        person.id = uid;
+    }
 }
 
 @end
