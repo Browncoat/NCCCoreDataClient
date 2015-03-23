@@ -35,9 +35,11 @@
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
     [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
+        NSArray *allResponseObjectIds = [self arrayOfSortedIdsForArray:responseObjects];
+        NSArray *allPersonIds = [self arrayOfSortedIdsForArray:[Person allObjectsInManagedObjectContext:self.managedObjectContext]];
         
         // then
-        XCTAssertEqual(responseObjects.count, results.count);
+        XCTAssertTrue([allResponseObjectIds isEqualToArray:allPersonIds]);
         [expectation fulfill];
     }];
     
@@ -80,17 +82,17 @@
 {
     // given
     [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
+    
     NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"5"}];
-    NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
-
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
     [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
-        NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
+        NSArray *allResponseObjectIds = [self arrayOfSortedIdsForArray:responseObjects];
+        NSArray *allPersonIds = [self arrayOfSortedIdsForArray:[Person allObjectsInManagedObjectContext:self.managedObjectContext]];
         
         // then
-        XCTAssertTrue([allPersons containsObject:@"4"] == NO);
+        XCTAssertTrue([allResponseObjectIds isEqualToArray:allPersonIds]);
         [expectation fulfill];
     }];
     
@@ -108,15 +110,15 @@
     // given
     [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
     NSArray *responseObjects = @[@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"}];
-    NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
     [Person batchUpdateObjects:responseObjects destinationContext:self.managedObjectContext completion:^(NSArray *results, NSError *error) {
-        NSArray *allPersons = [Person allObjectsInManagedObjectContext:self.managedObjectContext];
+        NSArray *allResponseObjectIds = [self arrayOfSortedIdsForArray:responseObjects];
+        NSArray *allPersonIds = [self arrayOfSortedIdsForArray:[Person allObjectsInManagedObjectContext:self.managedObjectContext]];
         
         // then
-        XCTAssertTrue([allPersons containsObject:@"5"] == NO);
+        XCTAssertTrue([allResponseObjectIds isEqualToArray:allPersonIds]);
         [expectation fulfill];
     }];
     
@@ -129,11 +131,11 @@
                                  }];
 }
 
-- (void)testThatItAddsManagedObjectWithoutId
+- (void)testThatItAddsManagedObjectsWithoutId
 {
     // given
     [self addPersonObjectsWithIds:@[@"0", @"1", @"2", @"3", @"4", @"5"] inContext:self.managedObjectContext];
-    NSArray *responseObjects = @[@{@"id":@""},@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
+    NSArray *responseObjects = @[@{@"id":@""},@{@"id":@""},@{@"id":@"0"},@{@"id":@"1"},@{@"id":@"2"},@{@"id":@"3"},@{@"id":@"4"},@{@"id":@"5"}];
     
     // when
     XCTestExpectation *expectation = [self expectationWithDescription:@"Batch Response Objects"];
